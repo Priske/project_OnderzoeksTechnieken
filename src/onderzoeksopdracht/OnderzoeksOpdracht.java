@@ -21,7 +21,7 @@ public class OnderzoeksOpdracht extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
+      /*  Button btn = new Button();
         btn.setText("Say 'Hello World'");
         btn.setOnAction(new EventHandler<ActionEvent>() {
             
@@ -38,7 +38,7 @@ public class OnderzoeksOpdracht extends Application {
         
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
     /**
