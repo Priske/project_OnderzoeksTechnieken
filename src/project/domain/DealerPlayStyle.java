@@ -25,7 +25,11 @@ public class DealerPlayStyle implements PlayStyle {
 	}
 
 	public int getValue(ArrayList<Card> hand) {
-		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
+		int valueOutput = 0;
+		for (Card c : hand) {
+			int value = c.getValue();
+			valueOutput += value;
+		}
 		return valueOutput;
 	}
 }

@@ -36,7 +36,7 @@ public class DeckOfCards {
 
 	public void printDeck() {
 		this.deck.stream().forEach(card -> card.printCard());
-		System.out.println("Aantal kaarten:" + this.deck.size() + ", Aantal Decks: " + this.aantalDecks);
+		System.out.println("Aantal kaarten: " + this.deck.size() + ", Aantal Decks: " + this.aantalDecks);
 	}
 
 	public void shoufle() {

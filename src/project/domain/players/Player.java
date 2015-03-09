@@ -41,7 +41,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		String output = this.hand.stream().map(card -> card.toString()).reduce(" ", String::concat);
+		String output = this.hand.stream().map(card -> card.toString()).reduce("", String::concat);
 		return output;
 	}
 }
