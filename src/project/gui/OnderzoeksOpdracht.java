@@ -15,9 +15,10 @@ public class OnderzoeksOpdracht extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 		Player[] player = {new Player("Ben"), new Player("Michiel")};
 		BlackjackGame bjg = new BlackjackGame(new Dealer(1, new DealerPlayStyle()), player, new Rules());
 		bjg.play();
+		System.exit(0);
 	}
 }
