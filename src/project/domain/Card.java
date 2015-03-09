@@ -22,7 +22,9 @@ public class Card {
 	public void printCard() {
 		System.out.println(this.toString());
 	}
-
+        public String getFace(){
+            return face;
+        }
 	@Override
 	public String toString() {
 		return this.face + " of " + this.suit;
