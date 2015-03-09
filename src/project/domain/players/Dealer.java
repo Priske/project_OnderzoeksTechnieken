@@ -3,10 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project.domain;
+package project.domain.players;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import project.domain.ActionEnum;
+import project.domain.Card;
+import project.domain.DeckOfCards;
+import project.domain.PlayStyle;
 
 /**
 
@@ -20,7 +24,7 @@ public class Dealer {
 
 	public Dealer(int Amount, PlayStyle ps) {
 		this.deck = new DeckOfCards(Amount);
-		this.Shoufle();
+		this.shoufle();
 		this.pS = ps;
 	}
 
@@ -61,7 +65,7 @@ public class Dealer {
 		return output;
 	}
 
-	private void Shoufle() {
+	private void shoufle() {
 		this.deck.shoufle();
 	}
 
