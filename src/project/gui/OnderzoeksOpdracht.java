@@ -1,8 +1,13 @@
 package project.gui;
 
-import domein.*;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import project.domain.BlackjackGame;
+import project.domain.DealerPlayStyle;
+import project.domain.Rules;
+import project.domain.players.Dealer;
+import project.domain.players.Player;
 
 public class OnderzoeksOpdracht extends Application {
 
