@@ -12,6 +12,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import domein.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import domein.Card;
 
 /**
  *
@@ -21,24 +25,11 @@ public class OnderzoeksOpdracht extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-      /*  Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();*/
+        Player[] player = { new Player("Ben"), new Player("Michiel")};
+        BlackjackGame bjg = new BlackjackGame(new Dealer(1, new DealerPlayStyle()),player , new Rules());
+        bjg.Play();
+      
     }
 
     /**
