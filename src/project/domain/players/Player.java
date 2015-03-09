@@ -6,6 +6,7 @@
 package project.domain.players;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import project.domain.Card;
 
 /**
@@ -41,7 +42,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		String output = this.hand.stream().map(card -> card.toString()).reduce(" ", String::concat);
+		String output = this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
 		return output;
 	}
 }
