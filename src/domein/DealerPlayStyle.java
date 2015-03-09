@@ -8,35 +8,24 @@ package domein;
 import java.util.ArrayList;
 
 /**
- *
- * @author Ben
+
+ @author Ben
  */
 public class DealerPlayStyle implements PlayStyle {
 
-    
+	@Override
+	public ActionEnum play(ArrayList<Card> DealerHand, ArrayList<Card> PlayerHand) {
+		int playerValue = this.getValue(PlayerHand);
+		int dealerValue = this.getValue(DealerHand);
+		if(playerValue > dealerValue) {
+			return ActionEnum.Hit;
+		} else {
+			return ActionEnum.Stay;
+		}
+	}
 
-    @Override
-    public  ActionEnum Play(ArrayList<Card> DealerHand, ArrayList<Card> PlayerHand) {
-        int dealerValue;
-        int playerValue;
-        playerValue =this.getValue(PlayerHand);
-        dealerValue = this.getValue(DealerHand);
-        
-        if(playerValue>dealerValue){
-            return ActionEnum.Hit;
-        }else{
-            return ActionEnum.Stay;
-        }
-        
-    }
-    
-    public int getValue(ArrayList<Card> hand){
-        int valueOutput=0;
-        for(Card c: hand){
-            valueOutput+= c.getValue();
-            
-        }
-        return valueOutput;
-    }
-    
+	public int getValue(ArrayList<Card> hand) {
+		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
+		return valueOutput;
+	}
 }

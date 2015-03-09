@@ -8,11 +8,10 @@ package domein;
 import java.util.ArrayList;
 
 /**
- *
- * @author Ben
+
+ @author Ben
  */
 public interface PlayStyle {
 
-  
-    public ActionEnum Play(ArrayList<Card> DealerHand, ArrayList<Card> PlayerHand);
+	public ActionEnum play(ArrayList<Card> DealerHand, ArrayList<Card> PlayerHand);
 }

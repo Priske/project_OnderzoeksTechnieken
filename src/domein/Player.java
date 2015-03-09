@@ -8,44 +8,39 @@ package domein;
 import java.util.ArrayList;
 
 /**
- *
- * @author Ben
+
+ @author Ben
  */
 public class Player {
 
-    private String name;
-    private ArrayList<Card> hand;
-    public Player(String name) {
-    this.name = name;
-    hand = new ArrayList<Card>();
-    }
-    
-    public String getName(){
-        return name;
-    }
-    public void getCard(Card card){
-      hand.add(card);
-    }
-    
-    public ArrayList<Card> getHand(){
-        return hand;
-    }
-    public String toString(){
-        String output="";
-        for(Card card : hand){
-           output+= card.toString();
-        }
-        return output;
-    }
-    
-    public  void Play(){
-        int value= 0;
-        for(Card c: hand){
-            value+= c.getValue();
-            
-        }
-        System.out.println(value);
-                
-    }
-    
+	private final ArrayList<Card> hand = new ArrayList<>();
+	private final String name;
+
+	public Player(String name) {
+		this.name = name;
+	}
+
+	public void play() {
+		int value = 0;
+		value = this.hand.stream().mapToInt(c -> c.getValue()).sum();
+		System.out.println(value);
+	}
+
+	public void getCard(Card card) {
+		this.hand.add(card);
+	}
+
+	public ArrayList<Card> getHand() {
+		return this.hand;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public String toString() {
+		String output = this.hand.stream().map(card -> card.toString()).reduce(" ", String::concat);
+		return output;
+	}
 }

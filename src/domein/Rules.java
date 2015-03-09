@@ -6,16 +6,16 @@
 package domein;
 
 /**
- *
- * @author Ben
+
+ @author Ben
  */
 public class Rules {
-    private int amountOfDecks;
-    private int amount_Of_Cards_Played_Before_Shoufle;
-    private boolean player_Cards_Face_Up;
-    private int amount_Of_Players;
 
-    public Rules() {
-    }
-    
+	private int amountOfDecks;
+	private int amount_Of_Cards_Played_Before_Shoufle;
+	private int amount_Of_Players;
+	private boolean player_Cards_Face_Up;
+
+	public Rules() {
+	}
 }

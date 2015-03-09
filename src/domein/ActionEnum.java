@@ -6,9 +6,10 @@
 package domein;
 
 /**
- *
- * @author Ben
+
+ @author Ben
  */
 public enum ActionEnum {
-    Hit,Stay,Split;
+
+	Hit, Stay, Split;
 }
