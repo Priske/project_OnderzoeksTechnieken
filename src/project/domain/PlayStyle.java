@@ -13,5 +13,5 @@ import java.util.ArrayList;
  */
 public interface PlayStyle {
 
-	public ActionEnum play(ArrayList<Card> DealerHand, ArrayList<Card> PlayerHand);
+	public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Card> playerHand);
 }

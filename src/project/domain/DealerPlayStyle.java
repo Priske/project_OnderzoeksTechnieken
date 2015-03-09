@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class DealerPlayStyle implements PlayStyle {
 
 	@Override
-	public ActionEnum play(ArrayList<Card> DealerHand, ArrayList<Card> PlayerHand) {
-		int playerValue = this.getValue(PlayerHand);
-		int dealerValue = this.getValue(DealerHand);
+	public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Card> playerHand) {
+		int playerValue = this.getValue(playerHand);
+		int dealerValue = this.getValue(dealerHand);
 		if(playerValue > dealerValue) {
-			return ActionEnum.Hit;
+			return ActionEnum.HIT;
 		} else {
-			return ActionEnum.Stay;
+			return ActionEnum.STAY;
 		}
 	}
 

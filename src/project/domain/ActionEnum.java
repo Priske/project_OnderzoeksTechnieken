@@ -11,5 +11,5 @@ package project.domain;
  */
 public enum ActionEnum {
 
-	Hit, Stay, Split;
+	HIT, STAY, SPLIT;
 }

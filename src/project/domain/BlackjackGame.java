@@ -34,7 +34,7 @@ public class BlackjackGame {
 		for (Player player : this.players) {
 			System.out.println(player.getName() + ": " + player.toString());
 		}
-		if(this.dealer.play(this.players[1].getHand()) == ActionEnum.Hit) {
+		if(this.dealer.play(this.players[1].getHand()) == ActionEnum.HIT) {
 			this.dealer.deal(this.dealer);
 		}
 		System.out.println(this.dealer.toString());
