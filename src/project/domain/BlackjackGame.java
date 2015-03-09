@@ -5,6 +5,9 @@
  */
 package project.domain;
 
+import project.domain.players.Dealer;
+import project.domain.players.Player;
+
 /**
 
  @author Ben
