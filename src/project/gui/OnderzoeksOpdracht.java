@@ -21,6 +21,8 @@ public class OnderzoeksOpdracht extends Application {
 		ArrayList<Player> player = new ArrayList<>();
                 player.add(new Player("Ben", new MimicDealerPlaystyle()));
                 player.add(new Player("Michiel", new MimicDealerPlaystyle()));
+                player.add(new Player("Siel", new MimicDealerPlaystyle()));
+                player.add(new Player("Maxim", new MimicDealerPlaystyle()));
 		BlackjackGame bjg = new BlackjackGame(new Dealer(1, new DealerPlayStyle()), player, new Rules());
 		bjg.play(10);
 		System.exit(0);
