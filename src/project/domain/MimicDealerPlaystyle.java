@@ -6,47 +6,26 @@
 package project.domain;
 
 import java.util.ArrayList;
-import project.domain.players.Player;
 
 /**
-
- @author Ben
+ *
+ * @author Ben
  */
-public class DealerPlayStyle  {
+public class MimicDealerPlaystyle implements PlayStyle{
 
-	
-	public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Player> players) {
-            ArrayList<Player> clean= new ArrayList<>();
-            for(Player player: players){
-                if(getValue(player.getHand()) > 21){
-                    
-                }else{
-                    clean.add(player);
-                }
-            }
-            if(clean.size() == 1){
-                if (getValue(clean.get(0).getHand()) > getValue(dealerHand) ){
-                    return ActionEnum.HIT;
-                }else{
-                    return ActionEnum.STAY;
-                }
-            }else{
-                if(getValue(dealerHand)<=16) {
+    @Override
+    public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Card> playerHand) {
+        int playerValue = this.getValue(playerHand);
+		
+		if(playerValue<17) {
 			return ActionEnum.HIT;
 		} else {
 			return ActionEnum.STAY;
 		}
-                
-            }
-            
-            
-            
-		
-                    
-		
-	}
-
-	public int getValue(ArrayList<Card> hand) {
+        
+    }
+    
+    public int getValue(ArrayList<Card> hand) {
 
                 int aces= 0;
 		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
@@ -68,4 +47,5 @@ public class DealerPlayStyle  {
 		
 
 	}
+    
 }
