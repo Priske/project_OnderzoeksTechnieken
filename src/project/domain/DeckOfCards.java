@@ -17,7 +17,7 @@ public class DeckOfCards {
 
 	private static final int NUMBER_OF_CARDS = 52;
 	private final int aantalDecks;
-	private final ArrayList<Card> deck = new ArrayList<>();
+	private  ArrayList<Card> deck = new ArrayList<>();
 
 	public DeckOfCards(int decks) {
 		String[] faces = {"Ace", "Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"};
@@ -41,6 +41,12 @@ public class DeckOfCards {
 
 	public void shoufle() {
 		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(this.deck));
-		this.printDeck();
+		//this.printDeck();
 	}
+        public int getDeckSize(){
+            return deck.size();
+        }
+        public void returnCardInDeck(Card card ){
+            deck.add(card);
+        }
 }
