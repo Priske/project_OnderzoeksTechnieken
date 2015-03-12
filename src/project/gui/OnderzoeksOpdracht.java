@@ -7,6 +7,7 @@ import project.domain.BlackjackGame;
 import project.domain.DealerPlayStyle;
 import project.domain.MimicDealerPlaystyle;
 import project.domain.Rules;
+import project.domain.ThorpsPlayStyle;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -19,11 +20,11 @@ public class OnderzoeksOpdracht extends Application {
 	@Override
 	public void start(Stage stage) {
 		ArrayList<Player> player = new ArrayList<>();
-                player.add(new Player("Ben", new MimicDealerPlaystyle()));
-                player.add(new Player("Michiel", new MimicDealerPlaystyle()));
-                player.add(new Player("Siel", new MimicDealerPlaystyle()));
-                player.add(new Player("Maxim", new MimicDealerPlaystyle()));
-		BlackjackGame bjg = new BlackjackGame(new Dealer(1, new DealerPlayStyle()), player, new Rules());
+                player.add(new Player("Ben", new ThorpsPlayStyle()));
+                player.add(new Player("Michiel", new ThorpsPlayStyle()));
+                player.add(new Player("Siel", new ThorpsPlayStyle()));
+                player.add(new Player("Maxim", new ThorpsPlayStyle()));
+		BlackjackGame bjg = new BlackjackGame(new Dealer(8, new DealerPlayStyle()), player, new Rules());
 		bjg.play(10);
 		System.exit(0);
 	}
