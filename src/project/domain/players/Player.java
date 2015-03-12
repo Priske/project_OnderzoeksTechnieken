@@ -20,13 +20,13 @@ public class Player {
 	private final ArrayList<Card> hand = new ArrayList<>();
 	private int losses = 0;
 	private final String name;
-	private PlayStyle ps;
+	private PlayStyle playStyle;
 	private int ties = 0;
 	private int wins = 0;
 
-	public Player(String name, PlayStyle ps) {
+	public Player(String name, PlayStyle playStyle) {
 		this.name = name;
-		this.ps = ps;
+		this.playStyle = playStyle;
 	}
 
 	public void getCard(Card card) {
@@ -38,11 +38,14 @@ public class Player {
 	}
 
 	public int getLosses() {
-		return losses;
+		return this.losses;
 	}
 
-	public void setLosses(int losses) {
-		this.losses = losses;
+//	public void setLosses(int losses) {
+//		this.losses = losses;
+//	}
+	public void lost() {
+		this.losses++;
 	}
 
 	public String getName() {
@@ -50,23 +53,29 @@ public class Player {
 	}
 
 	public int getTies() {
-		return ties;
+		return this.ties;
 	}
 
-	public void setTies(int ties) {
-		this.ties = ties;
+//	public void setTies(int ties) {
+//		this.ties = ties;
+//	}
+	public void tied() {
+		this.ties++;
 	}
 
 	public int getWins() {
 		return wins;
 	}
 
-	public void setWins(int wins) {
-		this.wins = wins;
+//	public void setWins(int wins) {
+//		this.wins = wins;
+//	}
+	public void won() {
+		this.wins++;
 	}
 
 	public ActionEnum play(ArrayList<Card> playerHand) {
-		return this.ps.play(this.hand, playerHand);
+		return this.playStyle.play(this.hand, playerHand);
 	}
 	/*
 	 public ActionEnum play() {
@@ -79,7 +88,6 @@ public class Player {
 
 	@Override
 	public String toString() {
-		String output = this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
-		return output;
+		return this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
 	}
 }

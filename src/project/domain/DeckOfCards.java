@@ -6,6 +6,7 @@
 package project.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
@@ -15,40 +16,49 @@ import java.util.stream.IntStream;
  */
 public class DeckOfCards {
 
-	private static final int NUMBER_OF_CARDS = 52;
 	private final int aantalDecks;
-	private ArrayList<Card> deck = new ArrayList<>();
+	private ArrayList<Card> cards = new ArrayList<>();
 
 	public DeckOfCards(int decks) {
-		String[] faces = {"Ace", "Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"};
-		String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
 		this.aantalDecks = decks;
-		for (int t = 0; t < decks; t++) {
-			for (int c = 0; c < NUMBER_OF_CARDS; c++) {
-				this.deck.add(new Card(faces[c % 13], suits[c / 13]));
-			}
-		}
+		this.createDeck();
 	}
 
-	public ArrayList<Card> getDeck() {
-		return this.deck;
+	private void createDeck() {
+		this.cards.clear();
+		IntStream.of(this.aantalDecks).forEach(i -> this.cards.addAll(this.createCardSet()));
+		this.shuffleCards();
+	}
+
+	private ArrayList<Card> createCardSet() {
+		ArrayList<Card> cardSet = new ArrayList<>();
+		Arrays.asList(CardSuit.values()).forEach(suit -> {
+			Arrays.asList(CardFace.values()).forEach(face -> {
+				cardSet.add(new Card(suit, face));
+			});
+		});
+		return cardSet;
+	}
+
+	public ArrayList<Card> getCards() {
+		return this.cards;
 	}
 
 	public void printDeck() {
-		this.deck.stream().forEach(card -> card.printCard());
-		System.out.println("Aantal kaarten: " + this.deck.size() + ", Aantal Decks: " + this.aantalDecks);
+		this.cards.stream().forEach(card -> System.out.println(card));
+		System.out.println("Aantal kaarten: " + this.getSize() + ", Aantal Decks: " + this.aantalDecks);
 	}
 
-	public void shoufle() {
-		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(this.deck));
+	private void shuffleCards() {
+		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(this.cards));
 		//this.printDeck();
 	}
 
-	public int getDeckSize() {
-		return deck.size();
+	public int getSize() {
+		return this.cards.size();
 	}
 
 	public void returnCardInDeck(Card card) {
-		deck.add(card);
+		this.cards.add(card);
 	}
 }

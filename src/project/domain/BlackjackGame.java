@@ -99,8 +99,7 @@ public class BlackjackGame {
 				if(getValue(player.getHand()) > 21) {
 					dealer.setWins(dealer.getWins() + 1);
 				} else {
-
-					player.setWins(player.getWins() + 1);
+					player.won();
 				}
 			}
 		}
@@ -111,7 +110,7 @@ public class BlackjackGame {
 		int aces = 0;
 		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
 		for (Card c : hand) {
-			if(c.getFace().equals("Ace")) {
+			if(c.getFace() == CardFace.ACE) {
 				aces++;
 			}
 		}

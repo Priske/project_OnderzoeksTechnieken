@@ -25,7 +25,6 @@ public class Dealer {
 
 	public Dealer(int Amount, DealerPlayStyle ps) {
 		this.deck = new DeckOfCards(Amount);
-		this.shoufle();
 		this.pS = ps;
 	}
 
@@ -98,13 +97,9 @@ public class Dealer {
 
 	private Card getTopCard() {
 
-		Card card = this.deck.getDeck().get(0);
-		this.deck.getDeck().remove(0);
+		Card card = this.deck.getCards().get(0);
+		this.deck.getCards().remove(0);
 		//System.out.println("cards in deck: " + this.deck.getDeckSize());
 		return card;
-	}
-
-	private void shoufle() {
-		this.deck.shoufle();
 	}
 }

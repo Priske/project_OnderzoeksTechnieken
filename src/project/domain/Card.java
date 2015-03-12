@@ -11,20 +11,16 @@ package project.domain;
  */
 public class Card {
 
-	private final String face;
-	private final String suit;
+	private final CardFace face;
+	private final CardSuit suit;
 
-	public Card(String cardFace, String cardSuit) {
-		this.face = cardFace;
-		this.suit = cardSuit;
+	public Card(CardSuit suit, CardFace face) {
+		this.suit = suit;
+		this.face = face;
 	}
 
-	public void printCard() {
-		System.out.println(this.toString());
-	}
-
-	public String getFace() {
-		return face;
+	public CardFace getFace() {
+		return this.face;
 	}
 
 	@Override
@@ -33,34 +29,6 @@ public class Card {
 	}
 
 	public int getValue() {
-		switch (this.face) {
-			case "Ace":
-				return 1;
-			case "Deuce":
-				return 2;
-			case "Three":
-				return 3;
-			case "Four":
-				return 4;
-			case "Five":
-				return 5;
-			case "Six":
-				return 6;
-			case "Seven":
-				return 7;
-			case "Eight":
-				return 8;
-			case "Nine":
-				return 9;
-			case "Ten":
-				return 10;
-			case "Jack":
-				return 10;
-			case "King":
-				return 10;
-			case "Queen":
-				return 10;
-		}
-		return 11;
+		return this.face.getValue();
 	}
 }
