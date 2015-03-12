@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import project.domain.BlackjackGame;
 import project.domain.DealerPlayStyle;
 import project.domain.MimicDealerPlaystyle;
+import project.domain.NeverBustPlaystyle;
 import project.domain.Rules;
 import project.domain.ThorpsPlayStyle;
 import project.domain.players.Dealer;
@@ -21,11 +22,11 @@ public class OnderzoeksOpdracht extends Application {
 	public void start(Stage stage) {
 		ArrayList<Player> player = new ArrayList<>();
                 player.add(new Player("Ben", new ThorpsPlayStyle()));
-                player.add(new Player("Michiel", new ThorpsPlayStyle()));
+                player.add(new Player("Michiel", new NeverBustPlaystyle()));
                 player.add(new Player("Siel", new ThorpsPlayStyle()));
                 player.add(new Player("Maxim", new ThorpsPlayStyle()));
 		BlackjackGame bjg = new BlackjackGame(new Dealer(8, new DealerPlayStyle()), player, new Rules());
-		bjg.play(10);
+		bjg.play(1000);
 		System.exit(0);
 	}
 }
