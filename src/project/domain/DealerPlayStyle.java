@@ -26,24 +26,23 @@ public class DealerPlayStyle implements PlayStyle {
 
 	public int getValue(ArrayList<Card> hand) {
 
-                int aces= 0;
+		int aces = 0;
 		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
-                for(Card c : hand){
-                    if(c.getFace()== "Ace"){
-                        aces++;
-                    }
-                }
-                if(aces == 0){
-                 return valueOutput;    
-                }else{
-                    if(valueOutput <= 11){
-                        valueOutput+=9;
-                    }else{
-                      
-                    }
-                    return valueOutput;
-                }
-		
+		for (Card c : hand) {
+			if(c.getFace().equalsIgnoreCase("Ace")) {
+				aces++;
+			}
+		}
+		if(aces == 0) {
+			return valueOutput;
+		} else {
+			if(valueOutput <= 11) {
+				valueOutput += 9;
+			} else {
+
+			}
+			return valueOutput;
+		}
 
 	}
 }
