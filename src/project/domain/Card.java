@@ -22,9 +22,11 @@ public class Card {
 	public void printCard() {
 		System.out.println(this.toString());
 	}
-        public String getFace(){
-            return face;
-        }
+
+	public String getFace() {
+		return face;
+	}
+
 	@Override
 	public String toString() {
 		return this.face + " of " + this.suit;
@@ -32,7 +34,7 @@ public class Card {
 
 	public int getValue() {
 		switch (this.face) {
-			case "One":
+			case "Ace":
 				return 1;
 			case "Deuce":
 				return 2;

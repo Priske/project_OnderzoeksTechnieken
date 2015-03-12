@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import project.domain.ActionEnum;
 import project.domain.Card;
-import project.domain.PlayStyle;
+import project.domain.strategies.PlayStyle;
 
 /**
 
@@ -18,50 +18,16 @@ import project.domain.PlayStyle;
 public class Player {
 
 	private final ArrayList<Card> hand = new ArrayList<>();
+	private int losses = 0;
 	private final String name;
-        private PlayStyle ps;
-        private int wins = 0;
-        private int losses = 0;
-        private int ties = 0;
-
-    public int getWins() {
-        return wins;
-    }
-
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public int getLosses() {
-        return losses;
-    }
-
-    public void setLosses(int losses) {
-        this.losses = losses;
-    }
-
-    public int getTies() {
-        return ties;
-    }
-
-    public void setTies(int ties) {
-        this.ties = ties;
-    }
-        
+	private PlayStyle ps;
+	private int ties = 0;
+	private int wins = 0;
 
 	public Player(String name, PlayStyle ps) {
 		this.name = name;
-                this.ps=ps;
+		this.ps = ps;
 	}
-        public ActionEnum play(ArrayList<Card> playerHand) {
-		return this.ps.play(this.hand, playerHand);
-	}
-	/*public ActionEnum play() {
-		int value = 0;
-		value = this.hand.stream().mapToInt(c -> c.getValue()).sum();
-		System.out.println(value);
-                return 
-	}*/
 
 	public void getCard(Card card) {
 		this.hand.add(card);
@@ -71,9 +37,45 @@ public class Player {
 		return this.hand;
 	}
 
+	public int getLosses() {
+		return losses;
+	}
+
+	public void setLosses(int losses) {
+		this.losses = losses;
+	}
+
 	public String getName() {
 		return this.name;
 	}
+
+	public int getTies() {
+		return ties;
+	}
+
+	public void setTies(int ties) {
+		this.ties = ties;
+	}
+
+	public int getWins() {
+		return wins;
+	}
+
+	public void setWins(int wins) {
+		this.wins = wins;
+	}
+
+	public ActionEnum play(ArrayList<Card> playerHand) {
+		return this.ps.play(this.hand, playerHand);
+	}
+	/*
+	 public ActionEnum play() {
+	 int value = 0;
+	 value = this.hand.stream().mapToInt(c -> c.getValue()).sum();
+	 System.out.println(value);
+	 return
+	 }
+	 */
 
 	@Override
 	public String toString() {

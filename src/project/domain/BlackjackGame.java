@@ -5,11 +5,9 @@
  */
 package project.domain;
 
-
 import java.util.ArrayList;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
-
 
 /**
 
@@ -28,106 +26,105 @@ public class BlackjackGame {
 	}
 
 	public void play(int times) {
-            int gamesPlayed = 0;
-                do{
-                     ArrayList<Player> donePlaying = new ArrayList<>();
-                
-		this.dealer.deal(this.players);
-		//System.out.println("TestDealDone");
-		for (Player player : this.players) {
-			System.out.println(player.getName() + ": " + player.toString());
-		}
-		System.out.println("Dealer: "+this.dealer.toString());
-                do{
-                    for (Player player : this.players) {
-			if(player.play(dealer.getHand()) == ActionEnum.HIT){
-                            this.dealer.deal(player);
-                            //System.out.println(player.getName()+": gets a card");
-                        }else{
-                            //System.out.println(player.getName()+": stays");
-                            donePlaying.add(player);
-                        }
-		}
-                    
-                }while(players.size() > donePlaying.size());
-                int x = 0;
-                do{
-                    if(dealer.play(players) == ActionEnum.HIT){
-                        dealer.getCard();
-                       // System.out.println("Dealer gets a card");
-                    }
-                    else{
-                        x= 1;
-                       // System.out.println("Dealer Stays");
-                    }
-                     
-                }while(x ==0);
-		
-		for (Player player : this.players) {
-			System.out.println(player.getName() + ": " + player.toString());
-		}
-		/*if(this.dealer.play(this.players[1].getHand()) == ActionEnum.HIT) {
-			this.dealer.deal(this.dealer);
-		}*/
-		System.out.println("Dealer: "+this.dealer.toString());
-                System.out.println("Dealer: "  + getValue(this.dealer.getHand()));
-                for(Player player: players){
-                    System.out.println(player.getName()+ " : "  + getValue(player.getHand()));
-                }
-                finishRound();
-                gamesPlayed++;
-                
-                }while(times > gamesPlayed);
-               
+		int gamesPlayed = 0;
+		do {
+			ArrayList<Player> donePlaying = new ArrayList<>();
+
+			this.dealer.deal(this.players);
+			//System.out.println("TestDealDone");
+			for (Player player : this.players) {
+				System.out.println(player.getName() + ": " + player.toString());
+			}
+			System.out.println("Dealer: " + this.dealer.toString());
+			do {
+				for (Player player : this.players) {
+					if(player.play(dealer.getHand()) == ActionEnum.HIT) {
+						this.dealer.deal(player);
+						//System.out.println(player.getName()+": gets a card");
+					} else {
+						//System.out.println(player.getName()+": stays");
+						donePlaying.add(player);
+					}
+				}
+
+			} while (players.size() > donePlaying.size());
+			int x = 0;
+			do {
+				if(dealer.play(players) == ActionEnum.HIT) {
+					dealer.getCard();
+					// System.out.println("Dealer gets a card");
+				} else {
+					x = 1;
+					// System.out.println("Dealer Stays");
+				}
+
+			} while (x == 0);
+
+			for (Player player : this.players) {
+				System.out.println(player.getName() + ": " + player.toString());
+			}
+			/*
+			 if(this.dealer.play(this.players[1].getHand()) == ActionEnum.HIT) {
+			 this.dealer.deal(this.dealer);
+			 }
+			 */
+			System.out.println("Dealer: " + this.dealer.toString());
+			System.out.println("Dealer: " + getValue(this.dealer.getHand()));
+			for (Player player : players) {
+				System.out.println(player.getName() + " : " + getValue(player.getHand()));
+			}
+			finishRound();
+			gamesPlayed++;
+
+		} while (times > gamesPlayed);
+
 	}
-        
-        private void finishRound(){
-                  checkWinner(dealer, players);
-                  dealer.retrieveCards(players);  
-                  System.out.println("score: ");
-                  for(Player player : players){
-                      System.out.println( "Name: "+ player.getName() + "Score: " + "Wins: " + player.getWins());
-                  }
-                  System.out.println("Dealer: " + dealer.getWins());
-                  
-        }
-        private void checkWinner(Dealer dealer, ArrayList<Player> players){
-            for(Player player: players){
-            if((getValue(dealer.getHand())< 22) && getValue(dealer.getHand())>= getValue(player.getHand())){
-                dealer.setWins(dealer.getWins()+1);
-            }else{
-                if(getValue(player.getHand())> 21){
-                    dealer.setWins(dealer.getWins()+1);
-                }else{
 
-                
-                    player.setWins(player.getWins()+1);
-                }
-            }
-            }
-        }
-            
-        
-        public int getValue(ArrayList<Card> hand) {
+	private void finishRound() {
+		checkWinner(dealer, players);
+		dealer.retrieveCards(players);
+		System.out.println("score: ");
+		for (Player player : players) {
+			System.out.println("Name: " + player.getName() + "Score: " + "Wins: " + player.getWins());
+		}
+		System.out.println("Dealer: " + dealer.getWins());
 
-                int aces= 0;
+	}
+
+	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
+		for (Player player : players) {
+			if((getValue(dealer.getHand()) < 22) && getValue(dealer.getHand()) >= getValue(player.getHand())) {
+				dealer.setWins(dealer.getWins() + 1);
+			} else {
+				if(getValue(player.getHand()) > 21) {
+					dealer.setWins(dealer.getWins() + 1);
+				} else {
+
+					player.setWins(player.getWins() + 1);
+				}
+			}
+		}
+	}
+
+	public int getValue(ArrayList<Card> hand) {
+
+		int aces = 0;
 		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
-                for(Card c : hand){
-                    if(c.getFace().equals("Ace")){
-                        aces++;
-                    }
-                }
-                if(aces == 0){
-                 return valueOutput;    
-                }else{
-                    if(valueOutput <= 11){
-                        valueOutput+=9;
-                    }else{
-                      
-                    }
-                    return valueOutput;
-                }
-		
+		for (Card c : hand) {
+			if(c.getFace().equals("Ace")) {
+				aces++;
+			}
+		}
+		if(aces == 0) {
+			return valueOutput;
+		} else {
+			if(valueOutput <= 11) {
+				valueOutput += 9;
+			} else {
+
+			}
+			return valueOutput;
+		}
 
 	}
 }
