@@ -33,16 +33,18 @@ public class BlackjackGame {
                      ArrayList<Player> donePlaying = new ArrayList<>();
                 
 		this.dealer.deal(this.players);
-		System.out.println("TestDealDone");
+		//System.out.println("TestDealDone");
 		for (Player player : this.players) {
 			System.out.println(player.getName() + ": " + player.toString());
 		}
 		System.out.println("Dealer: "+this.dealer.toString());
                 do{
                     for (Player player : this.players) {
-			if(player.play(player.getHand()) == ActionEnum.HIT){
+			if(player.play(dealer.getHand()) == ActionEnum.HIT){
                             this.dealer.deal(player);
+                            //System.out.println(player.getName()+": gets a card");
                         }else{
+                            //System.out.println(player.getName()+": stays");
                             donePlaying.add(player);
                         }
 		}
@@ -52,11 +54,11 @@ public class BlackjackGame {
                 do{
                     if(dealer.play(players) == ActionEnum.HIT){
                         dealer.getCard();
-                        System.out.println("Dealer gets a card");
+                       // System.out.println("Dealer gets a card");
                     }
                     else{
                         x= 1;
-                        System.out.println("Dealer Stays");
+                       // System.out.println("Dealer Stays");
                     }
                      
                 }while(x ==0);

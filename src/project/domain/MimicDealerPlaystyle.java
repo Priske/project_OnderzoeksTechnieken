@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class MimicDealerPlaystyle implements PlayStyle{
 
     @Override
-    public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Card> playerHand) {
+    public ActionEnum play(ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
         int playerValue = this.getValue(playerHand);
 		
 		if(playerValue<17) {
