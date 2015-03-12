@@ -32,11 +32,11 @@ public class Dealer {
 		for (Player player : players) {
 			player.getCard(this.getTopCard());
 		}
-		hand.add(getTopCard());
+		this.hand.add(getTopCard());
 		for (Player player : players) {
 			player.getCard(this.getTopCard());
 		}
-		hand.add(getTopCard());
+		this.hand.add(getTopCard());
 		return players;
 	}
 
@@ -76,12 +76,11 @@ public class Dealer {
 			//System.out.println("test");
 			ArrayList<Card> hand = player.getHand();
 			for (Card card : hand) {
-				deck.returnCardInDeck(card);
-
+				this.deck.returnCardInDeck(card);
 			}
 			player.getHand().clear();
 			for (Card card : this.hand) {
-				deck.returnCardInDeck(card);
+				this.deck.returnCardInDeck(card);
 			}
 			this.hand.clear();
 			//System.out.println(deck.getDeckSize());
@@ -100,7 +99,6 @@ public class Dealer {
 	}
 
 	private Card getTopCard() {
-
 		Card card = this.deck.getCards().get(0);
 		this.deck.getCards().remove(0);
 		//System.out.println("cards in deck: " + this.deck.getDeckSize());

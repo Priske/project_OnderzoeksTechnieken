@@ -81,25 +81,26 @@ public class BlackjackGame {
 	}
 
 	private void finishRound() {
-		checkWinner(dealer, players);
-		dealer.retrieveCards(players);
-		System.out.println("score: ");
-		for (Player player : players) {
+		this.checkWinner(this.dealer, this.players);
+		this.dealer.retrieveCards(this.players);
+		System.out.println("Score: ");
+		for (Player player : this.players) {
 			System.out.println("Name: " + player.getName() + "Score: " + "Wins: " + player.getWins());
 		}
-		System.out.println("Dealer: " + dealer.getWins());
-
+		System.out.println("Dealer: " + this.dealer.getWins());
 	}
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
 		for (Player player : players) {
 			if((getValue(dealer.getHand()) < 22) && getValue(dealer.getHand()) >= getValue(player.getHand())) {
-				dealer.setWins(dealer.getWins() + 1);
+				dealer.win();
+				player.loss();
 			} else {
 				if(getValue(player.getHand()) > 21) {
-					dealer.setWins(dealer.getWins() + 1);
+					dealer.win();
+					player.loss();
 				} else {
-					player.won();
+					player.win();
 				}
 			}
 		}
@@ -124,6 +125,5 @@ public class BlackjackGame {
 			}
 			return valueOutput;
 		}
-
 	}
 }
