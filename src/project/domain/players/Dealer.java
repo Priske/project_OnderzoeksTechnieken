@@ -56,11 +56,11 @@ public class Dealer {
 	}
 
 	public ArrayList<Card> getHand() {
-		return hand;
+		return this.hand;
 	}
 
 	public int getWins() {
-		return wins;
+		return this.wins;
 	}
 
 	public void setWins(int wins) {
@@ -93,6 +93,10 @@ public class Dealer {
 	public String toString() {
 		String output = this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
 		return output;
+	}
+
+	public void win() {
+		this.wins++;
 	}
 
 	private Card getTopCard() {

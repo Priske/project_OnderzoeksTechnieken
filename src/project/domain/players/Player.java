@@ -20,8 +20,7 @@ public class Player {
 	private final ArrayList<Card> hand = new ArrayList<>();
 	private int losses = 0;
 	private final String name;
-	private PlayStyle playStyle;
-	private int ties = 0;
+	private final PlayStyle playStyle;
 	private int wins = 0;
 
 	public Player(String name, PlayStyle playStyle) {
@@ -41,10 +40,7 @@ public class Player {
 		return this.losses;
 	}
 
-//	public void setLosses(int losses) {
-//		this.losses = losses;
-//	}
-	public void lost() {
+	public void loss() {
 		this.losses++;
 	}
 
@@ -52,25 +48,11 @@ public class Player {
 		return this.name;
 	}
 
-	public int getTies() {
-		return this.ties;
-	}
-
-//	public void setTies(int ties) {
-//		this.ties = ties;
-//	}
-	public void tied() {
-		this.ties++;
-	}
-
 	public int getWins() {
 		return wins;
 	}
 
-//	public void setWins(int wins) {
-//		this.wins = wins;
-//	}
-	public void won() {
+	public void win() {
 		this.wins++;
 	}
 
