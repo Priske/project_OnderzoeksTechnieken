@@ -6,7 +6,6 @@
 package project.domain.players;
 
 import project.domain.Action;
-import project.domain.Card;
 import project.domain.strategies.PlayStyle;
 
 /**
@@ -25,10 +24,6 @@ public class Player extends Participant {
 
 	public String getName() {
 		return this.name;
-	}
-
-	public void giveCard(Card card) {
-		this.hand.add(card);
 	}
 
 	public Action play(Dealer dealer) {

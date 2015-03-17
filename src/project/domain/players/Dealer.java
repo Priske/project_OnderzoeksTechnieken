@@ -36,8 +36,8 @@ public class Dealer extends Participant {
 		player.giveCard(this.deck.getTopCard());
 	}
 
-	public void getCard() {
-		this.hand.add(this.deck.getTopCard());
+	public void takeCard() {
+		this.giveCard(this.deck.getTopCard());
 	}
 
 	public Action play(ArrayList<Player> playerHand) {

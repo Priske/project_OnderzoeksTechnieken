@@ -28,21 +28,18 @@ public class BlackjackGame {
 
 	public void play(int times) {
 		do {
+			System.out.println("*** Game " + (this.gamesPlayed + 1) + " ***");
 			ArrayList<Player> donePlaying = new ArrayList<>();
 			this.dealer.deal(this.players);
-			//System.out.println("TestDealDone");
-			for (Player player : this.players) {
-				System.out.println(player.getName() + ": " + player.toString());
-			}
-			System.out.println("Dealer: " + this.dealer.toString());
+			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			do {
 				for (Player player : this.players) {
 					if(player.play(this.dealer) == Action.HIT) {
 						this.dealer.deal(player);
-						//System.out.println(player.getName()+": gets a card");
+//						System.out.println(player.getName() + ": gets a card");
 					} else {
-						//System.out.println(player.getName()+": stays");
 						donePlaying.add(player);
+//						System.out.println(player.getName() + ": stays");
 					}
 				}
 
@@ -50,7 +47,7 @@ public class BlackjackGame {
 			int x = 0;
 			do {
 				if(this.dealer.play(this.players) == Action.HIT) {
-					this.dealer.getCard();
+					this.dealer.takeCard();
 					// System.out.println("Dealer gets a card");
 				} else {
 					x = 1;
@@ -58,20 +55,17 @@ public class BlackjackGame {
 				}
 
 			} while (x == 0);
+			System.out.println("Hands:");
 			for (Player player : this.players) {
-				System.out.println(player.getName() + ": " + player.toString());
+				System.out.println("\t" + player.getName() + ":\n\t\t" + player.toString() + "\n\t\tValue: " + player.getValue());
 			}
 			/*
 			 if(this.dealer.play(this.players[1].getHand()) == ActionEnum.HIT) {
 			 this.dealer.deal(this.dealer);
 			 }
 			 */
-			System.out.println("Dealer: " + this.dealer);
-			System.out.println("Dealer: " + this.dealer.getValue());
-			for (Player player : this.players) {
-				System.out.println(player.getName() + " : " + player.getValue());
-			}
-			finishRound();
+			System.out.println("\tDealer:\n\t\t" + this.dealer + "\n\t\tValue: " + this.dealer.getValue());
+			this.finishRound();
 			this.gamesPlayed++;
 		} while (times > this.gamesPlayed);
 	}
@@ -83,9 +77,9 @@ public class BlackjackGame {
 		this.players.forEach(p -> p.clearHand());
 		System.out.println("Score: ");
 		for (Player player : this.players) {
-			System.out.println("Name: " + player.getName() + "\n\t" + "Wins: " + player.getWins());
+			System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins());
 		}
-		System.out.println("Dealer: " + this.dealer.getWins());
+		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins());
 	}
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {

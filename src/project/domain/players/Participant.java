@@ -39,6 +39,10 @@ public abstract class Participant {
 		return this.wins;
 	}
 
+	public void giveCard(Card card) {
+		this.hand.add(card);
+	}
+
 	@Override
 	public String toString() {
 		return this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));

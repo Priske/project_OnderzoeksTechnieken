@@ -39,7 +39,7 @@ public class ThorpsPlayStyle implements PlayStyle {
 					return Action.STAY;
 				}
 			} else {
-				System.out.println(dealer.showTopCard().getFace());
+//				System.out.println(dealer.showTopCard().getFace());
 				switch (dealer.showTopCard().getFace()) {
 					case ACE:
 						if(player.getValue() < 17) {
