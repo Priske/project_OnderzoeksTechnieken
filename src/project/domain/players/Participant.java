@@ -43,8 +43,6 @@ public abstract class Participant {
 		} else {
 			if(valueOutput <= 11) {
 				valueOutput += 9;
-			} else {
-
 			}
 			return valueOutput;
 		}

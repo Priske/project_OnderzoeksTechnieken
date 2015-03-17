@@ -19,9 +19,7 @@ public class DealerPlayStyle {
 	public ActionEnum play(Dealer dealer, ArrayList<Player> players) {
 		ArrayList<Player> clean = new ArrayList<>();
 		for (Player player : players) {
-			if(player.getValue() > 21) {
-
-			} else {
+			if(player.getValue() <= 21) {
 				clean.add(player);
 			}
 		}
