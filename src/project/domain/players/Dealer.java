@@ -17,11 +17,11 @@ import project.domain.strategies.DealerPlayStyle;
  */
 public class Dealer extends Participant {
 
-	private CardDeck deck;
+	private final CardDeck deck;
 	private final DealerPlayStyle playStyle;
 
-	public Dealer(int Amount, DealerPlayStyle ps) {
-		this.deck = new CardDeck(Amount);
+	public Dealer(int numberOfDecks, DealerPlayStyle ps) {
+		this.deck = new CardDeck(numberOfDecks);
 		this.playStyle = ps;
 	}
 
@@ -36,18 +36,16 @@ public class Dealer extends Participant {
 		player.giveCard(this.deck.getTopCard());
 	}
 
-	/*
-	 public Dealer deal(Dealer player) {
-	 player.getCard(this.getTopCard());
-	 return player;
-	 }
-	 */
 	public void getCard() {
 		this.hand.add(this.deck.getTopCard());
 	}
 
 	public ActionEnum play(ArrayList<Player> playerHand) {
 		return this.playStyle.play(this, playerHand);
+	}
+
+	public void resetDeck() {
+		this.deck.reset();
 	}
 
 	public Card showTopCard() {

@@ -31,6 +31,17 @@ public class CardDeck {
 		return this.cards.pop();
 	}
 
+	public void reset() {
+		this.createDeck();
+	}
+
+	@Override
+	public String toString() {
+		String output = "Aantal kaarten: " + this.getSize() + ", Aantal Decks: " + this.aantalDecks;
+		output += this.cards.stream().map(c -> c.toString()).collect(Collectors.joining("\\n\t"));
+		return output;
+	}
+
 	private ArrayList<Card> createCardSet() {
 		ArrayList<Card> cardSet = new ArrayList<>();
 		Arrays.asList(CardSuit.values()).forEach(suit -> {
@@ -49,12 +60,5 @@ public class CardDeck {
 
 	private void shuffleCards() {
 		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(this.cards));
-	}
-
-	@Override
-	public String toString() {
-		String output = "Aantal kaarten: " + this.getSize() + ", Aantal Decks: " + this.aantalDecks;
-		output += this.cards.stream().map(c -> c.toString()).collect(Collectors.joining("\\n\t"));
-		return output;
 	}
 }

@@ -18,7 +18,7 @@ public abstract class Participant {
 		return this.wins;
 	}
 
-	public void resetHand() {
+	public void clearHand() {
 		this.hand.clear();
 	}
 
