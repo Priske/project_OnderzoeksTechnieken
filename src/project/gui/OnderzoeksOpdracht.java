@@ -18,13 +18,13 @@ public class OnderzoeksOpdracht extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		ArrayList<Player> player = new ArrayList<>();
-		player.add(new Player("Ben", new ThorpsPlayStyle()));
-		player.add(new Player("Michiel", new ThorpsPlayStyle()));
-		player.add(new Player("Siel", new ThorpsPlayStyle()));
-		player.add(new Player("Maxim", new ThorpsPlayStyle()));
-		BlackjackGame bjg = new BlackjackGame(new Dealer(8, new DealerPlayStyle()), player, new Rules());
-		bjg.play(1000);
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(new Player("Ben", new ThorpsPlayStyle()));
+		players.add(new Player("Michiel", new ThorpsPlayStyle()));
+		players.add(new Player("Siel", new ThorpsPlayStyle()));
+		players.add(new Player("Maxim", new ThorpsPlayStyle()));
+		BlackjackGame game = new BlackjackGame(new Dealer(8, new DealerPlayStyle()), players, new Rules());
+		game.play(1000);
 		System.exit(0);
 	}
 }
