@@ -6,7 +6,6 @@
 package project.domain.players;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 import project.domain.ActionEnum;
 import project.domain.Card;
 import project.domain.strategies.PlayStyle;
@@ -15,45 +14,22 @@ import project.domain.strategies.PlayStyle;
 
  @author Ben
  */
-public class Player {
+public class Player extends Participant {
 
-	private final ArrayList<Card> hand = new ArrayList<>();
-	private int losses = 0;
 	private final String name;
 	private final PlayStyle playStyle;
-	private int wins = 0;
 
 	public Player(String name, PlayStyle playStyle) {
 		this.name = name;
 		this.playStyle = playStyle;
 	}
 
-	public void getCard(Card card) {
-		this.hand.add(card);
-	}
-
-	public ArrayList<Card> getHand() {
-		return this.hand;
-	}
-
-	public int getLosses() {
-		return this.losses;
-	}
-
-	public void loss() {
-		this.losses++;
-	}
-
 	public String getName() {
 		return this.name;
 	}
 
-	public int getWins() {
-		return wins;
-	}
-
-	public void win() {
-		this.wins++;
+	public void giveCard(Card card) {
+		this.hand.add(card);
 	}
 
 	public ActionEnum play(ArrayList<Card> playerHand) {
@@ -67,9 +43,4 @@ public class Player {
 	 return
 	 }
 	 */
-
-	@Override
-	public String toString() {
-		return this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
-	}
 }

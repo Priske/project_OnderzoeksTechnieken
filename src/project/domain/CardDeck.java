@@ -5,29 +5,30 @@
  */
 package project.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
 
  @author Ben
  */
-public class DeckOfCards {
+public class CardDeck {
 
 	private final int aantalDecks;
-	private ArrayList<Card> cards = new ArrayList<>();
+	private final Stack<Card> cards = new Stack();
 
-	public DeckOfCards(int decks) {
+	public CardDeck(int decks) {
 		this.aantalDecks = decks;
 		this.createDeck();
 	}
 
-	private void createDeck() {
-		this.cards.clear();
-		IntStream.of(this.aantalDecks).forEach(i -> this.cards.addAll(this.createCardSet()));
-		this.shuffleCards();
+	public int getSize() {
+		return this.cards.size();
+	}
+
+	public Card getTopCard() {
+		return this.cards.pop();
 	}
 
 	private ArrayList<Card> createCardSet() {
@@ -40,25 +41,20 @@ public class DeckOfCards {
 		return cardSet;
 	}
 
-	public ArrayList<Card> getCards() {
-		return this.cards;
-	}
-
-	public void printDeck() {
-		this.cards.stream().forEach(card -> System.out.println(card));
-		System.out.println("Aantal kaarten: " + this.getSize() + ", Aantal Decks: " + this.aantalDecks);
+	private void createDeck() {
+		this.cards.clear();
+		IntStream.of(this.aantalDecks).forEach(i -> this.cards.addAll(this.createCardSet()));
+		this.shuffleCards();
 	}
 
 	private void shuffleCards() {
 		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(this.cards));
-		//this.printDeck();
 	}
 
-	public int getSize() {
-		return this.cards.size();
-	}
-
-	public void returnCardInDeck(Card card) {
-		this.cards.add(card);
+	@Override
+	public String toString() {
+		String output = "Aantal kaarten: " + this.getSize() + ", Aantal Decks: " + this.aantalDecks;
+		output += this.cards.stream().map(c -> c.toString()).collect(Collectors.joining("\\n\t"));
+		return output;
 	}
 }

@@ -18,6 +18,7 @@ public class BlackjackGame {
 	private Dealer dealer;
 	private ArrayList<Player> players;
 	private Rules rules;
+	private int gamesPlayed;
 
 	public BlackjackGame(Dealer dealer, ArrayList<Player> players, Rules rules) {
 		this.dealer = dealer;
@@ -26,7 +27,6 @@ public class BlackjackGame {
 	}
 
 	public void play(int times) {
-		int gamesPlayed = 0;
 		do {
 			ArrayList<Player> donePlaying = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class BlackjackGame {
 			System.out.println("Dealer: " + this.dealer.toString());
 			do {
 				for (Player player : this.players) {
-					if(player.play(dealer.getHand()) == ActionEnum.HIT) {
+					if(player.play(this.dealer.getHand()) == ActionEnum.HIT) {
 						this.dealer.deal(player);
 						//System.out.println(player.getName()+": gets a card");
 					} else {
@@ -47,11 +47,11 @@ public class BlackjackGame {
 					}
 				}
 
-			} while (players.size() > donePlaying.size());
+			} while (this.players.size() > donePlaying.size());
 			int x = 0;
 			do {
-				if(dealer.play(players) == ActionEnum.HIT) {
-					dealer.getCard();
+				if(this.dealer.play(this.players) == ActionEnum.HIT) {
+					this.dealer.getCard();
 					// System.out.println("Dealer gets a card");
 				} else {
 					x = 1;
@@ -74,15 +74,15 @@ public class BlackjackGame {
 				System.out.println(player.getName() + " : " + getValue(player.getHand()));
 			}
 			finishRound();
-			gamesPlayed++;
-
-		} while (times > gamesPlayed);
+			this.gamesPlayed++;
+		} while (times > this.gamesPlayed);
 
 	}
 
 	private void finishRound() {
 		this.checkWinner(this.dealer, this.players);
-		this.dealer.retrieveCards(this.players);
+		this.dealer.resetHand();
+		this.players.forEach(p -> p.resetHand());
 		System.out.println("Score: ");
 		for (Player player : this.players) {
 			System.out.println("Name: " + player.getName() + "Score: " + "Wins: " + player.getWins());
@@ -93,21 +93,18 @@ public class BlackjackGame {
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
 		for (Player player : players) {
 			if((getValue(dealer.getHand()) < 22) && getValue(dealer.getHand()) >= getValue(player.getHand())) {
-				dealer.win();
-				player.loss();
+				dealer.won();
 			} else {
 				if(getValue(player.getHand()) > 21) {
-					dealer.win();
-					player.loss();
+					dealer.won();
 				} else {
-					player.win();
+					player.won();
 				}
 			}
 		}
 	}
 
 	public int getValue(ArrayList<Card> hand) {
-
 		int aces = 0;
 		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
 		for (Card c : hand) {
