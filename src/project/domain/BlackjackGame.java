@@ -28,7 +28,7 @@ public class BlackjackGame {
 
 	public void play(int times) {
 		do {
-			System.out.println("*** Game " + (this.gamesPlayed + 1) + " ***");
+			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 			ArrayList<Player> donePlaying = new ArrayList<>();
 			this.dealer.deal(this.players);
 			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
@@ -66,6 +66,7 @@ public class BlackjackGame {
 			 */
 			System.out.println("\tDealer:\n\t\t" + this.dealer + "\n\t\tValue: " + this.dealer.getValue());
 			this.finishRound();
+			System.out.println("*** Game " + (this.gamesPlayed + 1) + " ended ***\n\n\n");
 			this.gamesPlayed++;
 		} while (times > this.gamesPlayed);
 	}
