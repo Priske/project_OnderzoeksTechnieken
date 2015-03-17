@@ -7,7 +7,7 @@ package project.domain.strategies;
 
 import java.util.ArrayList;
 import project.domain.ActionEnum;
-import project.domain.Card;
+import project.domain.players.Dealer;
 import project.domain.players.Player;
 
 /**
@@ -16,49 +16,28 @@ import project.domain.players.Player;
  */
 public class DealerPlayStyle {
 
-	public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Player> players) {
+	public ActionEnum play(Dealer dealer, ArrayList<Player> players) {
 		ArrayList<Player> clean = new ArrayList<>();
 		for (Player player : players) {
-			if(getValue(player.getHand()) > 21) {
+			if(player.getValue() > 21) {
 
 			} else {
 				clean.add(player);
 			}
 		}
 		if(clean.size() == 1) {
-			if(getValue(clean.get(0).getHand()) > getValue(dealerHand)) {
+			Player player = clean.get(0);
+			if(player.getValue() > dealer.getValue()) {
 				return ActionEnum.HIT;
 			} else {
 				return ActionEnum.STAY;
 			}
 		} else {
-			if(getValue(dealerHand) <= 16) {
+			if(dealer.getValue() <= 16) {
 				return ActionEnum.HIT;
 			} else {
 				return ActionEnum.STAY;
 			}
 		}
-	}
-
-	public int getValue(ArrayList<Card> hand) {
-
-		int aces = 0;
-		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
-		for (Card c : hand) {
-			if(c.getFace().equals("Ace")) {
-				aces++;
-			}
-		}
-		if(aces == 0) {
-			return valueOutput;
-		} else {
-			if(valueOutput <= 11) {
-				valueOutput += 9;
-			} else {
-
-			}
-			return valueOutput;
-		}
-
 	}
 }

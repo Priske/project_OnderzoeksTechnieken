@@ -5,9 +5,9 @@
  */
 package project.domain.strategies;
 
-import java.util.ArrayList;
 import project.domain.ActionEnum;
-import project.domain.Card;
+import project.domain.players.Dealer;
+import project.domain.players.Player;
 
 /**
 
@@ -15,30 +15,9 @@ import project.domain.Card;
  */
 public class MimicDealerPlaystyle implements PlayStyle {
 
-	public int getValue(ArrayList<Card> hand) {
-
-		int aces = 0;
-		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
-		for (Card c : hand) {
-			if(c.getFace().equals("Ace")) {
-				aces++;
-			}
-		}
-		if(aces == 0) {
-			return valueOutput;
-		} else {
-			if(valueOutput <= 11) {
-				valueOutput += 9;
-			} else {
-
-			}
-			return valueOutput;
-		}
-	}
-
 	@Override
-	public ActionEnum play(ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
-		int playerValue = this.getValue(playerHand);
+	public ActionEnum play(Player player, Dealer dealer) {
+		int playerValue = player.getValue();
 		if(playerValue < 17) {
 			return ActionEnum.HIT;
 		} else {

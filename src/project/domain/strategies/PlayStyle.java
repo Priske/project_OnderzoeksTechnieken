@@ -5,9 +5,9 @@
  */
 package project.domain.strategies;
 
-import java.util.ArrayList;
 import project.domain.ActionEnum;
-import project.domain.Card;
+import project.domain.players.Dealer;
+import project.domain.players.Player;
 
 /**
 
@@ -15,5 +15,5 @@ import project.domain.Card;
  */
 public interface PlayStyle {
 
-	public ActionEnum play(ArrayList<Card> playerHand, ArrayList<Card> dealerHand);
+	public ActionEnum play(Player player, Dealer dealer);
 }

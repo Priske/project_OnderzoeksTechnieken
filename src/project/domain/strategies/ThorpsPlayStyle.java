@@ -8,6 +8,9 @@ package project.domain.strategies;
 import java.util.ArrayList;
 import project.domain.ActionEnum;
 import project.domain.Card;
+import project.domain.CardFace;
+import project.domain.players.Dealer;
+import project.domain.players.Player;
 
 /**
 
@@ -15,130 +18,72 @@ import project.domain.Card;
  */
 public class ThorpsPlayStyle implements PlayStyle {
 
-	public ActionEnum acePlay(Card dealer, Card player) {
-		switch (player.getFace()) {
-			case "Deuce":
-			case "Three":
-			case "Four":
-			case "Five":
-			case "Six":
-				return ActionEnum.HIT;
-			case "Seven":
-				if(dealer.getValue() < 9) {
-					return ActionEnum.STAY;
-				} else {
-					return ActionEnum.HIT;
-				}
-
-			case "Eight":
-			case "Nine":
-				return ActionEnum.STAY;
-
-		}
-		return null;
-	}
-
-	public int checkForAces(ArrayList<Card> hand) {
-		int aces = 0;
+	private Card getNonAceCard(ArrayList<Card> hand) {
 		for (Card card : hand) {
-			if(card.getFace().equals("Ace")) {
-				aces += 1;
-			}
-		}
-		return aces;
-	}
-
-	public Card getNonAceCard(ArrayList<Card> hand) {
-		for (Card card : hand) {
-			if(card.getFace().equals("Ace")) {
-
-			} else {
+			if(card.getFace() != CardFace.ACE) {
 				return card;
 			}
 		}
 		return null;
 	}
 
-	public int getValue(ArrayList<Card> hand) {
-
-		int aces = 0;
-		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
-		for (Card c : hand) {
-			if(c.getFace().equals("Ace")) {
-				aces++;
-			}
-		}
-		if(aces == 0) {
-			return valueOutput;
-		} else {
-			if(valueOutput <= 11 && aces == 1) {
-				valueOutput += 9;
-			} else {
-
-			}
-			return valueOutput;
-		}
-	}
-
 	@Override
-	public ActionEnum play(ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
-		if(checkForAces(playerHand) == 1 && getValue(playerHand) < 16) {
-			return acePlay(dealerHand.get(0), getNonAceCard(playerHand));
+	public ActionEnum play(Player player, Dealer dealer) {
+		if(player.countAces() == 1 && player.getValue() < 16) {
+			return this.acePlay(dealer.showTopCard(), this.getNonAceCard(player.getHand()));
 		} else {
-			if(checkForAces(playerHand) == 2) {
-				if(getValue(playerHand) < 17) {
+			if(player.countAces() == 2) {
+				if(player.getValue() < 17) {
 					return ActionEnum.HIT;
 				} else {
 					return ActionEnum.STAY;
 				}
 			} else {
-				System.out.println(dealerHand.get(0).getFace());
-				switch (dealerHand.get(0).getFace()) {
-
-					case "Ace":
-						if(getValue(playerHand) < 17) {
+				System.out.println(dealer.showTopCard().getFace());
+				switch (dealer.showTopCard().getFace()) {
+					case ACE:
+						if(player.getValue() < 17) {
 							return ActionEnum.HIT;
 						} else {
 							return ActionEnum.STAY;
 						}
 
-					case "Deuce":
-						if(getValue(playerHand) < 13) {
+					case DEUCE:
+						if(player.getValue() < 13) {
 							return ActionEnum.HIT;
 						} else {
 							return ActionEnum.STAY;
 						}
-					case "Three":
-						if(getValue(playerHand) < 13) {
+					case THREE:
+						if(player.getValue() < 13) {
 							return ActionEnum.HIT;
 						} else {
 							return ActionEnum.STAY;
 						}
-					case "Four":
-					case "Five":
-					case "Six":
-						if(getValue(playerHand) < 12) {
+					case FOUR:
+					case FIVE:
+					case SIX:
+						if(player.getValue() < 12) {
 							return ActionEnum.HIT;
 						} else {
 							return ActionEnum.STAY;
 						}
-					case "Seven":
-					case "Eight":
-					case "Nine":
-					case "Ten":
-					case "Jack":
-					case "Queen":
-					case "King":
-						if(getValue(playerHand) < 17) {
+					case SEVEN:
+					case EIGHT:
+					case NINE:
+					case TEN:
+					case JACK:
+					case QUEEN:
+					case KING:
+						if(player.getValue() < 17) {
 							return ActionEnum.HIT;
 						} else {
 							return ActionEnum.STAY;
 						}
-
+					default:
+						return null;
 				}
-
 			}
-
 		}
 		/*
 		 System.out.println(dealerHand.get(0).getFace());
@@ -196,8 +141,27 @@ public class ThorpsPlayStyle implements PlayStyle {
 
 		 }
 		 */
+	}
 
-		return null;
-
+	private ActionEnum acePlay(Card dealerCard, Card playerCard) {
+		switch (playerCard.getFace()) {
+			case DEUCE:
+			case THREE:
+			case FOUR:
+			case FIVE:
+			case SIX:
+				return ActionEnum.HIT;
+			case SEVEN:
+				if(dealerCard.getValue() < 9) {
+					return ActionEnum.STAY;
+				} else {
+					return ActionEnum.HIT;
+				}
+			case EIGHT:
+			case NINE:
+				return ActionEnum.STAY;
+			default:
+				return null;
+		}
 	}
 }

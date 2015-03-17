@@ -3,6 +3,7 @@ package project.domain.players;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import project.domain.Card;
+import project.domain.CardFace;
 
 public abstract class Participant {
 
@@ -28,5 +29,24 @@ public abstract class Participant {
 
 	public void won() {
 		this.wins++;
+	}
+
+	public int countAces() {
+		return this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
+	}
+
+	public int getValue() {
+		int valueOutput = this.hand.stream().mapToInt(c -> c.getValue()).sum();
+		int aces = this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
+		if(aces == 0) {
+			return valueOutput;
+		} else {
+			if(valueOutput <= 11) {
+				valueOutput += 9;
+			} else {
+
+			}
+			return valueOutput;
+		}
 	}
 }

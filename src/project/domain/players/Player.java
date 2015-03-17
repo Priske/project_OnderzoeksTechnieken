@@ -5,7 +5,6 @@
  */
 package project.domain.players;
 
-import java.util.ArrayList;
 import project.domain.ActionEnum;
 import project.domain.Card;
 import project.domain.strategies.PlayStyle;
@@ -32,15 +31,7 @@ public class Player extends Participant {
 		this.hand.add(card);
 	}
 
-	public ActionEnum play(ArrayList<Card> playerHand) {
-		return this.playStyle.play(this.hand, playerHand);
+	public ActionEnum play(Dealer dealer) {
+		return this.playStyle.play(this, dealer);
 	}
-	/*
-	 public ActionEnum play() {
-	 int value = 0;
-	 value = this.hand.stream().mapToInt(c -> c.getValue()).sum();
-	 System.out.println(value);
-	 return
-	 }
-	 */
 }
