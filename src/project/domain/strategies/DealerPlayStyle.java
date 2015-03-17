@@ -6,7 +6,7 @@
 package project.domain.strategies;
 
 import java.util.ArrayList;
-import project.domain.ActionEnum;
+import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -16,7 +16,7 @@ import project.domain.players.Player;
  */
 public class DealerPlayStyle {
 
-	public ActionEnum play(Dealer dealer, ArrayList<Player> players) {
+	public Action play(Dealer dealer, ArrayList<Player> players) {
 		ArrayList<Player> clean = new ArrayList<>();
 		for (Player player : players) {
 			if(player.getValue() <= 21) {
@@ -26,15 +26,15 @@ public class DealerPlayStyle {
 		if(clean.size() == 1) {
 			Player player = clean.get(0);
 			if(player.getValue() > dealer.getValue()) {
-				return ActionEnum.HIT;
+				return Action.HIT;
 			} else {
-				return ActionEnum.STAY;
+				return Action.STAY;
 			}
 		} else {
 			if(dealer.getValue() <= 16) {
-				return ActionEnum.HIT;
+				return Action.HIT;
 			} else {
-				return ActionEnum.STAY;
+				return Action.STAY;
 			}
 		}
 	}

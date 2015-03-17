@@ -5,7 +5,7 @@
  */
 package project.domain.players;
 
-import project.domain.ActionEnum;
+import project.domain.Action;
 import project.domain.Card;
 import project.domain.strategies.PlayStyle;
 
@@ -31,7 +31,7 @@ public class Player extends Participant {
 		this.hand.add(card);
 	}
 
-	public ActionEnum play(Dealer dealer) {
+	public Action play(Dealer dealer) {
 		return this.playStyle.play(this, dealer);
 	}
 }

@@ -23,12 +23,12 @@ public class Card {
 		return this.face;
 	}
 
+	public int getValue() {
+		return this.face.getValue();
+	}
+
 	@Override
 	public String toString() {
 		return this.face + " of " + this.suit;
-	}
-
-	public int getValue() {
-		return this.face.getValue();
 	}
 }

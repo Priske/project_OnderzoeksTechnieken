@@ -9,7 +9,7 @@ package project.domain;
 
  @author Ben
  */
-public enum ActionEnum {
+public enum Action {
 
-	HIT, STAY, SPLIT;
+	HIT, SPLIT, STAY;
 }

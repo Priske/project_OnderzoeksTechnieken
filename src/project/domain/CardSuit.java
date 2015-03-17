@@ -2,7 +2,7 @@ package project.domain;
 
 public enum CardSuit {
 
-	SPADES("Spades"), HEARTS("Hearts"), DIAMONDS("Diamonds"), CLUBS("Clubs");
+	CLUBS("Clubs"), DIAMONDS("Diamonds"), HEARTS("Hearts"), SPADES("Spades");
 
 	private final String name;
 

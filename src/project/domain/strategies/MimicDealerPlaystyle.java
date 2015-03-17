@@ -5,7 +5,7 @@
  */
 package project.domain.strategies;
 
-import project.domain.ActionEnum;
+import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -16,12 +16,12 @@ import project.domain.players.Player;
 public class MimicDealerPlaystyle implements PlayStyle {
 
 	@Override
-	public ActionEnum play(Player player, Dealer dealer) {
+	public Action play(Player player, Dealer dealer) {
 		int playerValue = player.getValue();
 		if(playerValue < 17) {
-			return ActionEnum.HIT;
+			return Action.HIT;
 		} else {
-			return ActionEnum.STAY;
+			return Action.STAY;
 		}
 	}
 }

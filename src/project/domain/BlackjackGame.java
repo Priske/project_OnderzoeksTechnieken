@@ -37,7 +37,7 @@ public class BlackjackGame {
 			System.out.println("Dealer: " + this.dealer.toString());
 			do {
 				for (Player player : this.players) {
-					if(player.play(this.dealer) == ActionEnum.HIT) {
+					if(player.play(this.dealer) == Action.HIT) {
 						this.dealer.deal(player);
 						//System.out.println(player.getName()+": gets a card");
 					} else {
@@ -49,7 +49,7 @@ public class BlackjackGame {
 			} while (this.players.size() > donePlaying.size());
 			int x = 0;
 			do {
-				if(this.dealer.play(this.players) == ActionEnum.HIT) {
+				if(this.dealer.play(this.players) == Action.HIT) {
 					this.dealer.getCard();
 					// System.out.println("Dealer gets a card");
 				} else {
@@ -83,7 +83,7 @@ public class BlackjackGame {
 		this.players.forEach(p -> p.clearHand());
 		System.out.println("Score: ");
 		for (Player player : this.players) {
-			System.out.println("Name: " + player.getName() + "Score: " + "Wins: " + player.getWins());
+			System.out.println("Name: " + player.getName() + "\n\t" + "Wins: " + player.getWins());
 		}
 		System.out.println("Dealer: " + this.dealer.getWins());
 	}

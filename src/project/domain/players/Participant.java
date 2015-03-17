@@ -10,29 +10,16 @@ public abstract class Participant {
 	protected final ArrayList<Card> hand = new ArrayList<>();
 	private int wins = 0;
 
-	public ArrayList<Card> getHand() {
-		return this.hand;
-	}
-
-	public int getWins() {
-		return this.wins;
-	}
-
 	public void clearHand() {
 		this.hand.clear();
 	}
 
-	@Override
-	public String toString() {
-		return this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
-	}
-
-	public void won() {
-		this.wins++;
-	}
-
 	public int countAces() {
 		return this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
+	}
+
+	public ArrayList<Card> getHand() {
+		return this.hand;
 	}
 
 	public int getValue() {
@@ -46,5 +33,18 @@ public abstract class Participant {
 			}
 			return valueOutput;
 		}
+	}
+
+	public int getWins() {
+		return this.wins;
+	}
+
+	@Override
+	public String toString() {
+		return this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
+	}
+
+	public void won() {
+		this.wins++;
 	}
 }

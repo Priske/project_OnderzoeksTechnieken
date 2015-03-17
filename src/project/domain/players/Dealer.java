@@ -6,7 +6,7 @@
 package project.domain.players;
 
 import java.util.ArrayList;
-import project.domain.ActionEnum;
+import project.domain.Action;
 import project.domain.Card;
 import project.domain.CardDeck;
 import project.domain.strategies.DealerPlayStyle;
@@ -40,7 +40,7 @@ public class Dealer extends Participant {
 		this.hand.add(this.deck.getTopCard());
 	}
 
-	public ActionEnum play(ArrayList<Player> playerHand) {
+	public Action play(ArrayList<Player> playerHand) {
 		return this.playStyle.play(this, playerHand);
 	}
 

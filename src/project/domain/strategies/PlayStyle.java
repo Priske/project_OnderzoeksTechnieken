@@ -5,7 +5,7 @@
  */
 package project.domain.strategies;
 
-import project.domain.ActionEnum;
+import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -15,5 +15,5 @@ import project.domain.players.Player;
  */
 public interface PlayStyle {
 
-	public ActionEnum play(Player player, Dealer dealer);
+	public Action play(Player player, Dealer dealer);
 }

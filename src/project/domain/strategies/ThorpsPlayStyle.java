@@ -6,7 +6,7 @@
 package project.domain.strategies;
 
 import java.util.ArrayList;
-import project.domain.ActionEnum;
+import project.domain.Action;
 import project.domain.Card;
 import project.domain.CardFace;
 import project.domain.players.Dealer;
@@ -28,45 +28,45 @@ public class ThorpsPlayStyle implements PlayStyle {
 	}
 
 	@Override
-	public ActionEnum play(Player player, Dealer dealer) {
+	public Action play(Player player, Dealer dealer) {
 		if(player.countAces() == 1 && player.getValue() < 16) {
 			return this.acePlay(dealer.showTopCard(), this.getNonAceCard(player.getHand()));
 		} else {
 			if(player.countAces() == 2) {
 				if(player.getValue() < 17) {
-					return ActionEnum.HIT;
+					return Action.HIT;
 				} else {
-					return ActionEnum.STAY;
+					return Action.STAY;
 				}
 			} else {
 				System.out.println(dealer.showTopCard().getFace());
 				switch (dealer.showTopCard().getFace()) {
 					case ACE:
 						if(player.getValue() < 17) {
-							return ActionEnum.HIT;
+							return Action.HIT;
 						} else {
-							return ActionEnum.STAY;
+							return Action.STAY;
 						}
 
 					case DEUCE:
 						if(player.getValue() < 13) {
-							return ActionEnum.HIT;
+							return Action.HIT;
 						} else {
-							return ActionEnum.STAY;
+							return Action.STAY;
 						}
 					case THREE:
 						if(player.getValue() < 13) {
-							return ActionEnum.HIT;
+							return Action.HIT;
 						} else {
-							return ActionEnum.STAY;
+							return Action.STAY;
 						}
 					case FOUR:
 					case FIVE:
 					case SIX:
 						if(player.getValue() < 12) {
-							return ActionEnum.HIT;
+							return Action.HIT;
 						} else {
-							return ActionEnum.STAY;
+							return Action.STAY;
 						}
 					case SEVEN:
 					case EIGHT:
@@ -76,9 +76,9 @@ public class ThorpsPlayStyle implements PlayStyle {
 					case QUEEN:
 					case KING:
 						if(player.getValue() < 17) {
-							return ActionEnum.HIT;
+							return Action.HIT;
 						} else {
-							return ActionEnum.STAY;
+							return Action.STAY;
 						}
 					default:
 						return null;
@@ -143,23 +143,23 @@ public class ThorpsPlayStyle implements PlayStyle {
 		 */
 	}
 
-	private ActionEnum acePlay(Card dealerCard, Card playerCard) {
+	private Action acePlay(Card dealerCard, Card playerCard) {
 		switch (playerCard.getFace()) {
 			case DEUCE:
 			case THREE:
 			case FOUR:
 			case FIVE:
 			case SIX:
-				return ActionEnum.HIT;
+				return Action.HIT;
 			case SEVEN:
 				if(dealerCard.getValue() < 9) {
-					return ActionEnum.STAY;
+					return Action.STAY;
 				} else {
-					return ActionEnum.HIT;
+					return Action.HIT;
 				}
 			case EIGHT:
 			case NINE:
-				return ActionEnum.STAY;
+				return Action.STAY;
 			default:
 				return null;
 		}
