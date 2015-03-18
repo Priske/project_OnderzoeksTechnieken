@@ -1,25 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.domain;
-
 
 import java.util.ArrayList;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
-
-/**
-
- @author Ben
- */
 public class BlackjackGame {
 
-	private Dealer dealer;
-	private ArrayList<Player> players;
-	private Rules rules;
+	private final Dealer dealer;
+	private final ArrayList<Player> players;
+	private final Rules rules;
+	private int gamesPlayed;
 
 	public BlackjackGame(Dealer dealer, ArrayList<Player> players, Rules rules) {
 		this.dealer = dealer;
@@ -28,106 +18,82 @@ public class BlackjackGame {
 	}
 
 	public void play(int times) {
-            int gamesPlayed = 0;
-                do{
-                     ArrayList<Player> donePlaying = new ArrayList<>();
-                
-		this.dealer.deal(this.players);
-		//System.out.println("TestDealDone");
-		for (Player player : this.players) {
-			System.out.println(player.getName() + ": " + player.toString());
-		}
-		System.out.println("Dealer: "+this.dealer.toString());
-                do{
-                    for (Player player : this.players) {
-			if(player.play(dealer.getHand()) == ActionEnum.HIT){
-                            this.dealer.deal(player);
-                            //System.out.println(player.getName()+": gets a card");
-                        }else{
-                            //System.out.println(player.getName()+": stays");
-                            donePlaying.add(player);
-                        }
-		}
-                    
-                }while(players.size() > donePlaying.size());
-                int x = 0;
-                do{
-                    if(dealer.play(players) == ActionEnum.HIT){
-                        dealer.getCard();
-                       // System.out.println("Dealer gets a card");
-                    }
-                    else{
-                        x= 1;
-                       // System.out.println("Dealer Stays");
-                    }
-                     
-                }while(x ==0);
-		
-		for (Player player : this.players) {
-			System.out.println(player.getName() + ": " + player.toString());
-		}
-		/*if(this.dealer.play(this.players[1].getHand()) == ActionEnum.HIT) {
-			this.dealer.deal(this.dealer);
-		}*/
-		System.out.println("Dealer: "+this.dealer.toString());
-                System.out.println("Dealer: "  + getValue(this.dealer.getHand()));
-                for(Player player: players){
-                    System.out.println(player.getName()+ " : "  + getValue(player.getHand()));
-                }
-                finishRound();
-                gamesPlayed++;
-                
-                }while(times > gamesPlayed);
-               
+		do {
+			this.gamesPlayed++;
+//			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
+			ArrayList<Player> donePlaying = new ArrayList<>();
+			this.dealer.deal(this.players);
+//			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
+			do {
+				this.players.stream().forEach(player -> {
+					if(player.play(this.dealer) == Action.HIT) {
+						this.dealer.deal(player);
+//						System.out.println(player.getName() + ": gets a card");
+					} else {
+						donePlaying.add(player);
+//						System.out.println(player.getName() + ": stays");
+					}
+				});
+
+			} while (this.players.size() > donePlaying.size());
+			int x = 0;
+			do {
+				if(this.dealer.play(this.players) == Action.HIT) {
+					this.dealer.takeCard();
+					// System.out.println("Dealer gets a card");
+				} else {
+					x = 1;
+					// System.out.println("Dealer Stays");
+				}
+
+			} while (x == 0);
+//			this.printPlayerHands();
+			this.finishRound();
+//			this.printGameScore();
+//			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
+		} while (times > this.gamesPlayed);
+		this.printGameScore();
 	}
-        
-        private void finishRound(){
-                  checkWinner(dealer, players);
-                  dealer.retrieveCards(players);  
-                  System.out.println("score: ");
-                  for(Player player : players){
-                      System.out.println( "Name: "+ player.getName() + "Score: " + "Wins: " + player.getWins());
-                  }
-                  System.out.println("Dealer: " + dealer.getWins());
-                  
-        }
-        private void checkWinner(Dealer dealer, ArrayList<Player> players){
-            for(Player player: players){
-            if((getValue(dealer.getHand())< 22) && getValue(dealer.getHand())>= getValue(player.getHand())){
-                dealer.setWins(dealer.getWins()+1);
-            }else{
-                if(getValue(player.getHand())> 21){
-                    dealer.setWins(dealer.getWins()+1);
-                }else{
 
-                
-                    player.setWins(player.getWins()+1);
-                }
-            }
-            }
-        }
-            
-        
-        public int getValue(ArrayList<Card> hand) {
+	private void finishRound() {
+		this.checkWinner(this.dealer, this.players);
+		this.dealer.clearHand();
+		this.dealer.resetDeck();
+		this.players.forEach(p -> p.clearHand());
+	}
 
-                int aces= 0;
-		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
-                for(Card c : hand){
-                    if(c.getFace().equals("Ace")){
-                        aces++;
-                    }
-                }
-                if(aces == 0){
-                 return valueOutput;    
-                }else{
-                    if(valueOutput <= 11){
-                        valueOutput+=9;
-                    }else{
-                      
-                    }
-                    return valueOutput;
-                }
-		
+	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
+		int dealerValue = dealer.getValue();
+		players.stream().forEach(player -> {
+			int playerValue = player.getValue();
+			if(playerValue > 21 || playerValue <= dealerValue && dealerValue <= 21) {
+				if(playerValue > 21) {
+					player.burned();
+				}
+				dealer.won();
+			} else {
+				if(dealerValue > 21) {
+					dealer.burned();
+				}
+				player.won();
+			}
+		});
+	}
 
+	private double getPercentage(double value) {
+		return (value / this.gamesPlayed) * 100;
+	}
+
+	private void printGameScore() {
+		System.out.println("Game score: ");
+		System.out.println("\tGames played: " + this.gamesPlayed);
+		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins() + " -> " + this.getPercentage(player.getWins()) + "%"));
+		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins() + " -> " + this.getPercentage(this.dealer.getWins()) + "%");
+	}
+
+	private void printPlayerHands() {
+		System.out.println("Hands:");
+		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + player.toString() + "\n\t\tValue: " + player.getValue()));
+		System.out.println("\tDealer:\n\t\t" + this.dealer + "\n\t\tValue: " + this.dealer.getValue());
 	}
 }

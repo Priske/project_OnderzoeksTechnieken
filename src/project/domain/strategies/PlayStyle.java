@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project.domain;
+package project.domain.strategies;
 
-import java.util.ArrayList;
+import project.domain.Action;
+import project.domain.players.Dealer;
+import project.domain.players.Player;
 
 /**
 
@@ -13,5 +15,5 @@ import java.util.ArrayList;
  */
 public interface PlayStyle {
 
-	public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Card> playerHand);
+	public Action play(Player player, Dealer dealer);
 }

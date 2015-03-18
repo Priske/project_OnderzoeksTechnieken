@@ -6,107 +6,49 @@
 package project.domain.players;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.stream.Collectors;
-import project.domain.ActionEnum;
+import project.domain.Action;
 import project.domain.Card;
-import project.domain.DealerPlayStyle;
-import project.domain.DeckOfCards;
-import project.domain.PlayStyle;
+import project.domain.CardDeck;
+import project.domain.strategies.DealerPlayStyle;
 
 /**
 
  @author Ben
  */
-public class Dealer {
+public class Dealer extends Participant {
 
-	private  DeckOfCards deck;
-	private final ArrayList<Card> hand = new ArrayList<>();
-	private final DealerPlayStyle pS;
-        private int wins=0;
+	private final CardDeck deck;
+	private final DealerPlayStyle playStyle;
 
-
-
-	public Dealer(int Amount, DealerPlayStyle ps) {
-		this.deck = new DeckOfCards(Amount);
-		this.shoufle();
-		this.pS = ps;
+	public Dealer(int numberOfDecks, DealerPlayStyle ps) {
+		this.deck = new CardDeck(numberOfDecks);
+		this.playStyle = ps;
 	}
 
-	public ActionEnum play(ArrayList<Player> playerHand) {
-		return this.pS.play(this.hand, playerHand);
-	}
-        public int getWins() {
-                return wins;
-        }
-
-        public void setWins(int wins) {
-                this.wins = wins;
-        }
-        public ArrayList<Card> getHand() {
-                return hand;
-        }
-
-	public ArrayList<Player> deal(ArrayList<Player> players) {
-		
-		for (Player player : players) {
-			player.getCard(this.getTopCard());
-		}
-		hand.add(getTopCard());
-		for (Player player : players) {
-			player.getCard(this.getTopCard());
-		}
-		hand.add(getTopCard());
-		return players;
+	public void deal(ArrayList<Player> players) {
+		players.stream().forEach(player -> player.giveCard(this.deck.getTopCard()));
+		this.hand.add(this.deck.getTopCard());
+		players.stream().forEach(player -> player.giveCard(this.deck.getTopCard()));
+		this.hand.add(this.deck.getTopCard());
 	}
 
-	public Player deal(Player player) {
-		player.getCard(this.getTopCard());
-		return player;
+	public void deal(Player player) {
+		player.giveCard(this.deck.getTopCard());
 	}
 
-	/*public Dealer deal(Dealer player) {
-		player.getCard(this.getTopCard());
-		return player;
-	}*/
-
-	public void getCard() {
-		this.hand.add(getTopCard());
+	public void takeCard() {
+		this.giveCard(this.deck.getTopCard());
 	}
 
-	@Override
-	public String toString() {
-		String output = this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
-		return output;
+	public Action play(ArrayList<Player> playerHand) {
+		return this.playStyle.play(this, playerHand);
 	}
 
-	private void shoufle() {
-		this.deck.shoufle();
+	public void resetDeck() {
+		this.deck.reset();
 	}
 
-	private Card getTopCard() {
-
-                Card card = this.deck.getDeck().get(0);
-                this.deck.getDeck().remove(0);
-                //System.out.println("cards in deck: " + this.deck.getDeckSize());
-		return card;
+	public Card showTopCard() {
+		return this.hand.get(0);
 	}
-        
-        public  void retrieveCards(ArrayList<Player> players){
-            for(Player player: players){
-                //System.out.println("test");
-                ArrayList<Card> hand= player.getHand();
-                for(Card card: hand){
-                   deck.returnCardInDeck(card);
-                   
-                }
-                player.getHand().clear();
-                for(Card card: this.hand){
-                    deck.returnCardInDeck(card);
-                }
-                this.hand.clear();
-                //System.out.println(deck.getDeckSize());
-                //deck.printDeck();
-            }
-        }
 }
