@@ -34,7 +34,6 @@ public class BlackjackGame {
 					if(player.play(this.dealer) == Action.HIT) {
 						this.dealer.deal(player);
 					} else {
-						System.out.println(player.getName() + ": stays");
 						iter.remove();
 					}
 				}
