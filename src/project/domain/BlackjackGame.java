@@ -21,10 +21,10 @@ public class BlackjackGame {
 	public void play(int times) {
 		do {
 			this.gamesPlayed++;
-//			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
+			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 			ArrayList<Player> donePlaying = new ArrayList<>();
 			this.dealer.deal(this.players);
-//			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
+			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			do {
 				this.players.stream().forEach(player -> {
 					if(player.play(this.dealer) == Action.HIT) {
@@ -48,12 +48,12 @@ public class BlackjackGame {
 				}
 
 			} while (x == 0);
-//			this.printPlayerHands();
+			this.printPlayerHands();
 			this.finishRound();
-//			this.printGameScore();
-//			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
+			this.printGameScore();
+			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
-		this.printGameScore();
+//		this.printGameScore();
 	}
 
 	private void finishRound() {
@@ -65,16 +65,12 @@ public class BlackjackGame {
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
 		int dealerValue = dealer.getValue();
-		players.stream().forEach((player) -> {
+		players.stream().forEach(player -> {
 			int playerValue = player.getValue();
-			if(dealerValue <= 21 && playerValue < dealerValue) {
+			if(playerValue < dealerValue && (dealerValue <= 21 || playerValue > 21)) {
 				dealer.won();
 			} else {
-				if(playerValue > dealerValue && playerValue <= 21) {
-					player.won();
-				} else {
-					dealer.won();
-				}
+				player.won();
 			}
 		});
 	}
