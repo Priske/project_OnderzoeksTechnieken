@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.domain;
 
 import java.util.ArrayList;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
-/**
-
- @author Ben
- */
 public class BlackjackGame {
 
-	private Dealer dealer;
-	private ArrayList<Player> players;
-	private Rules rules;
+	private final Dealer dealer;
+	private final ArrayList<Player> players;
+	private final Rules rules;
 	private int gamesPlayed;
 
 	public BlackjackGame(Dealer dealer, ArrayList<Player> players, Rules rules) {
@@ -33,7 +24,7 @@ public class BlackjackGame {
 			this.dealer.deal(this.players);
 			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			do {
-				for (Player player : this.players) {
+				this.players.stream().forEach(player -> {
 					if(player.play(this.dealer) == Action.HIT) {
 						this.dealer.deal(player);
 //						System.out.println(player.getName() + ": gets a card");
@@ -41,7 +32,7 @@ public class BlackjackGame {
 						donePlaying.add(player);
 //						System.out.println(player.getName() + ": stays");
 					}
-				}
+				});
 
 			} while (this.players.size() > donePlaying.size());
 			int x = 0;
@@ -55,17 +46,9 @@ public class BlackjackGame {
 				}
 
 			} while (x == 0);
-			System.out.println("Hands:");
-			for (Player player : this.players) {
-				System.out.println("\t" + player.getName() + ":\n\t\t" + player.toString() + "\n\t\tValue: " + player.getValue());
-			}
-			/*
-			 if(this.dealer.play(this.players[1].getHand()) == ActionEnum.HIT) {
-			 this.dealer.deal(this.dealer);
-			 }
-			 */
-			System.out.println("\tDealer:\n\t\t" + this.dealer + "\n\t\tValue: " + this.dealer.getValue());
+			this.printPlayerHands();
 			this.finishRound();
+			this.printGameScore();
 			System.out.println("*** Game " + (this.gamesPlayed + 1) + " ended ***\n\n\n");
 			this.gamesPlayed++;
 		} while (times > this.gamesPlayed);
@@ -76,11 +59,6 @@ public class BlackjackGame {
 		this.dealer.clearHand();
 		this.dealer.resetDeck();
 		this.players.forEach(p -> p.clearHand());
-		System.out.println("Score: ");
-		for (Player player : this.players) {
-			System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins());
-		}
-		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins());
 	}
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
@@ -95,9 +73,21 @@ public class BlackjackGame {
 		}
 		int dealerValue = dealer.getValue();
 		if(dealerValue > highestValue && dealerValue <= 21) {
-			winningPlayer.won();
-		} else {
 			dealer.won();
+		} else {
+			winningPlayer.won();
 		}
+	}
+
+	private void printGameScore() {
+		System.out.println("Game score: ");
+		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins()));
+		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins());
+	}
+
+	private void printPlayerHands() {
+		System.out.println("Hands:");
+		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + player.toString() + "\n\t\tValue: " + player.getValue()));
+		System.out.println("\tDealer:\n\t\t" + this.dealer + "\n\t\tValue: " + this.dealer.getValue());
 	}
 }
