@@ -42,8 +42,8 @@ public class CardDeck {
 		return output;
 	}
 
-	private ArrayList<Card> createCardSet() {
-		ArrayList<Card> cardSet = new ArrayList<>();
+	private List<Card> createCardSet() {
+		List<Card> cardSet = new ArrayList<>();
 		Arrays.asList(CardSuit.values()).forEach(suit -> {
 			Arrays.asList(CardFace.values()).forEach(face -> {
 				cardSet.add(new Card(suit, face));

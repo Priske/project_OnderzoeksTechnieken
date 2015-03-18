@@ -16,10 +16,19 @@ public class Player extends Participant {
 
 	private final String name;
 	private final PlayStyle playStyle;
+	private boolean done = false;
 
 	public Player(String name, PlayStyle playStyle) {
 		this.name = name;
 		this.playStyle = playStyle;
+	}
+
+	public void done() {
+		done = true;
+	}
+
+	public boolean isDone() {
+		return done;
 	}
 
 	public String getName() {

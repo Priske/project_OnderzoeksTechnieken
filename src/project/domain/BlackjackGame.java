@@ -1,6 +1,8 @@
 package project.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -18,40 +20,57 @@ public class BlackjackGame {
 	}
 
 	public void play(int times) {
+		long start = System.currentTimeMillis();
 		do {
 			this.gamesPlayed++;
 //			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
-			ArrayList<Player> donePlaying = new ArrayList<>();
+			List<Player> tempPlayers = new ArrayList<>(this.players);
 			this.dealer.deal(this.players);
 //			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			do {
-				this.players.stream().forEach(player -> {
+				Iterator<Player> iter = tempPlayers.iterator();
+				while (iter.hasNext()) {
+					Player player = iter.next();
 					if(player.play(this.dealer) == Action.HIT) {
 						this.dealer.deal(player);
-//						System.out.println(player.getName() + ": gets a card");
 					} else {
-						donePlaying.add(player);
-//						System.out.println(player.getName() + ": stays");
+						System.out.println(player.getName() + ": stays");
+						iter.remove();
 					}
-				});
-
-			} while (this.players.size() > donePlaying.size());
-			int x = 0;
+				}
+			} while (!tempPlayers.isEmpty());
+//			ArrayList<Player> donePlaying = new ArrayList<>();
+//			do {
+//				this.players.stream().forEach(player -> {
+//					if(player.play(this.dealer) == Action.HIT) {
+//						this.dealer.deal(player);
+////						System.out.println(player.getName() + ": gets a card");
+//					} else {
+//						donePlaying.add(player);
+//						player.done();
+////						System.out.println(player.getName() + ": stays");
+//					}
+//				});
+//			} while (this.players.size() > donePlaying.size());
+//			if(this.players.stream().filter(p -> !p.isDone()).count() > 0) {
+//				System.out.println("MOTHERFUCKING FACKING PLAYERS ARE NOT DONE PLAYING YET, YOU EVIL BASTARD");
+//			}
+			boolean stop = false;
 			do {
 				if(this.dealer.play(this.players) == Action.HIT) {
 					this.dealer.takeCard();
 					// System.out.println("Dealer gets a card");
 				} else {
-					x = 1;
+					stop = true;
 					// System.out.println("Dealer Stays");
 				}
-
-			} while (x == 0);
+			} while (!stop);
 //			this.printPlayerHands();
 			this.finishRound();
 //			this.printGameScore();
 //			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
+		System.out.println("Round took: " + (System.currentTimeMillis() - start) + "ms");
 		this.printGameScore();
 	}
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.domain.players;
 
 import java.util.ArrayList;
@@ -11,10 +6,6 @@ import project.domain.Card;
 import project.domain.CardDeck;
 import project.domain.strategies.DealerPlayStyle;
 
-/**
-
- @author Ben
- */
 public class Dealer extends Participant {
 
 	private final CardDeck deck;
@@ -40,8 +31,8 @@ public class Dealer extends Participant {
 		this.giveCard(this.deck.getTopCard());
 	}
 
-	public Action play(ArrayList<Player> playerHand) {
-		return this.playStyle.play(this, playerHand);
+	public Action play(ArrayList<Player> players) {
+		return this.playStyle.play(this, players);
 	}
 
 	public void resetDeck() {
