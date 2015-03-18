@@ -10,6 +10,7 @@ public class BlackjackGame {
 	private final ArrayList<Player> players;
 	private final Rules rules;
 	private int gamesPlayed;
+	private int draws = 0;
 
 	public BlackjackGame(Dealer dealer, ArrayList<Player> players, Rules rules) {
 		this.dealer = dealer;
@@ -19,10 +20,11 @@ public class BlackjackGame {
 
 	public void play(int times) {
 		do {
-			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
+			this.gamesPlayed++;
+//			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 			ArrayList<Player> donePlaying = new ArrayList<>();
 			this.dealer.deal(this.players);
-			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
+//			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			do {
 				this.players.stream().forEach(player -> {
 					if(player.play(this.dealer) == Action.HIT) {
@@ -46,12 +48,12 @@ public class BlackjackGame {
 				}
 
 			} while (x == 0);
-			this.printPlayerHands();
+//			this.printPlayerHands();
 			this.finishRound();
-			this.printGameScore();
-			System.out.println("*** Game " + (this.gamesPlayed + 1) + " ended ***\n\n\n");
-			this.gamesPlayed++;
+//			this.printGameScore();
+//			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
+		this.printGameScore();
 	}
 
 	private void finishRound() {
@@ -62,27 +64,27 @@ public class BlackjackGame {
 	}
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
-		Player winningPlayer = null;
-		int highestValue = 0;
-		for (Player player : players) {
-			int playerValue = player.getValue();
-			if(playerValue > highestValue && playerValue <= 21) {
-				highestValue = playerValue;
-				winningPlayer = player;
-			}
-		}
 		int dealerValue = dealer.getValue();
-		if(dealerValue > highestValue && dealerValue <= 21) {
-			dealer.won();
-		} else {
-			winningPlayer.won();
-		}
+		players.stream().forEach((player) -> {
+			int playerValue = player.getValue();
+			if(playerValue > dealerValue && playerValue <= 21) {
+				player.won();
+			} else {
+				dealer.won();
+			}
+		});
+	}
+
+	private double getPercentage(double value) {
+		return (value / this.gamesPlayed) * 100;
 	}
 
 	private void printGameScore() {
 		System.out.println("Game score: ");
-		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins()));
-		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins());
+		System.out.println("\tGames played: " + this.gamesPlayed);
+		System.out.println("\tDraws: " + this.draws + " -> " + this.getPercentage(this.draws) + "%");
+		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins() + " -> " + this.getPercentage(player.getWins()) + "%"));
+		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins() + " -> " + this.getPercentage(this.dealer.getWins()) + "%");
 	}
 
 	private void printPlayerHands() {

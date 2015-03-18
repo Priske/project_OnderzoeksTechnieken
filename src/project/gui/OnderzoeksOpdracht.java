@@ -24,7 +24,7 @@ public class OnderzoeksOpdracht extends Application {
 		players.add(new Player("Siel", new ThorpsPlayStyle()));
 		players.add(new Player("Maxim", new ThorpsPlayStyle()));
 		BlackjackGame game = new BlackjackGame(new Dealer(8, new DealerPlayStyle()), players, new Rules());
-		game.play(10);
+		game.play(100);
 		System.exit(0);
 	}
 }
