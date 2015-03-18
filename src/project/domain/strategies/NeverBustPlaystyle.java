@@ -3,45 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project.domain;
+package project.domain.strategies;
 
-import java.util.ArrayList;
+import project.domain.Action;
+import project.domain.players.Dealer;
+import project.domain.players.Player;
 
 /**
- *
- * @author Ben
+
+ @author Ben
  */
-public class NeverBustPlaystyle implements PlayStyle{
+public class NeverBustPlaystyle implements PlayStyle {
 
-    @Override
-    public ActionEnum play(ArrayList<Card> dealerHand, ArrayList<Card> playerHand) {
-        if( getValue(playerHand) > 10){
-            return ActionEnum.STAY;
-        }
-        return ActionEnum.HIT;
-    }
-    
-    public int getValue(ArrayList<Card> hand) {
-
-                int aces= 0;
-		int valueOutput = hand.stream().mapToInt(c -> c.getValue()).sum();
-                for(Card c : hand){
-                    if(c.getFace().equals("Ace")){
-                        aces++;
-                    }
-                }
-                if(aces == 0){
-                 return valueOutput;    
-                }else{
-                    if(valueOutput <= 11){
-                        valueOutput+=9;
-                    }else{
-                      
-                    }
-                    return valueOutput;
-                }
-		
-
+	@Override
+	public Action play(Player player, Dealer dealer) {
+		if(player.getValue() > 10) {
+			return Action.STAY;
+		}
+		return Action.HIT;
 	}
-    
 }
