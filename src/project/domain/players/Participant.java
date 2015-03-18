@@ -9,9 +9,14 @@ public abstract class Participant {
 
 	protected final ArrayList<Card> hand = new ArrayList<>();
 	private int wins = 0;
+	private int burned = 0;
 
 	public void clearHand() {
 		this.hand.clear();
+	}
+
+	public void burned() {
+		this.burned++;
 	}
 
 	public int countAces() {

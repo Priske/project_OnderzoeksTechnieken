@@ -10,7 +10,6 @@ public class BlackjackGame {
 	private final ArrayList<Player> players;
 	private final Rules rules;
 	private int gamesPlayed;
-	private int draws = 0;
 
 	public BlackjackGame(Dealer dealer, ArrayList<Player> players, Rules rules) {
 		this.dealer = dealer;
@@ -68,8 +67,14 @@ public class BlackjackGame {
 		players.stream().forEach(player -> {
 			int playerValue = player.getValue();
 			if(playerValue > 21 || playerValue <= dealerValue && dealerValue <= 21) {
+				if(playerValue > 21) {
+					player.burned();
+				}
 				dealer.won();
 			} else {
+				if(dealerValue > 21) {
+					dealer.burned();
+				}
 				player.won();
 			}
 		});
@@ -82,7 +87,6 @@ public class BlackjackGame {
 	private void printGameScore() {
 		System.out.println("Game score: ");
 		System.out.println("\tGames played: " + this.gamesPlayed);
-		System.out.println("\tDraws: " + this.draws + " -> " + this.getPercentage(this.draws) + "%");
 		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins() + " -> " + this.getPercentage(player.getWins()) + "%"));
 		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins() + " -> " + this.getPercentage(this.dealer.getWins()) + "%");
 	}
