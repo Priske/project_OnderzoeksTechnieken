@@ -67,7 +67,7 @@ public class BlackjackGame {
 		int dealerValue = dealer.getValue();
 		players.stream().forEach(player -> {
 			int playerValue = player.getValue();
-			if(playerValue < dealerValue && (dealerValue <= 21 || playerValue > 21)) {
+			if(playerValue <= dealerValue && dealerValue <= 21 || playerValue > 21) {
 				dealer.won();
 			} else {
 				player.won();
