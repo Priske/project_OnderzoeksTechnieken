@@ -84,18 +84,20 @@ public class BlackjackGame {
 	}
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
-		int dealerValue = dealer.getValue();
-		players.forEach(player -> {
+		Player winningPlayer = null;
+		int highestValue = 0;
+		for (Player player : players) {
 			int playerValue = player.getValue();
-			if(dealerValue < 22 && dealerValue >= playerValue) {
-				dealer.won();
-			} else {
-				if(playerValue > 21) {
-					dealer.won();
-				} else {
-					player.won();
-				}
+			if(playerValue > highestValue && playerValue <= 21) {
+				highestValue = playerValue;
+				winningPlayer = player;
 			}
-		});
+		}
+		int dealerValue = dealer.getValue();
+		if(dealerValue > highestValue && dealerValue <= 21) {
+			winningPlayer.won();
+		} else {
+			dealer.won();
+		}
 	}
 }
