@@ -3,6 +3,7 @@ package project.domain;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.IntStream;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -19,21 +20,27 @@ public class BlackjackGame {
 		this.rules = rules;
 	}
 
+	private void initiateGameRound() {
+		IntStream.of(2).forEach(i -> {
+			this.players.forEach(p -> p.addCard(this.dealer.deal()));
+			this.dealer.takeCard();
+		});
+	}
+
 	public void play(int times) {
 		long start = System.currentTimeMillis();
 		do {
 			this.gamesPlayed++;
 //			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 			List<Player> tempPlayers = new ArrayList<>(this.players);
-			this.dealer.deal(this.players);
+//			this.dealer.deal(this.players);
+			this.initiateGameRound();
 //			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			do {
 				Iterator<Player> iter = tempPlayers.iterator();
 				while (iter.hasNext()) {
 					Player player = iter.next();
-					if(player.play(this.dealer) == Action.HIT) {
-						this.dealer.deal(player);
-					} else {
+					if(player.play(this.dealer) != Action.HIT) {
 						iter.remove();
 					}
 				}
@@ -52,18 +59,16 @@ public class BlackjackGame {
 //				});
 //			} while (this.players.size() > donePlaying.size());
 //			if(this.players.stream().filter(p -> !p.isDone()).count() > 0) {
-//				System.out.println("MOTHERFUCKING FACKING PLAYERS ARE NOT DONE PLAYING YET, YOU EVIL BASTARD");
+//				System.out.println("PLAYERS ARE NOT DONE PLAYING YET, YOU EVIL BASTARD");
 //			}
-			boolean stop = false;
 			do {
-				if(this.dealer.play(this.players) == Action.HIT) {
-					this.dealer.takeCard();
-					// System.out.println("Dealer gets a card");
-				} else {
-					stop = true;
+				if(this.dealer.play(this.players) != Action.HIT) {
+					break;
 					// System.out.println("Dealer Stays");
+				} else {
+					// System.out.println("Dealer gets a card");
 				}
-			} while (!stop);
+			} while (true);
 //			this.printPlayerHands();
 			this.finishRound();
 //			this.printGameScore();

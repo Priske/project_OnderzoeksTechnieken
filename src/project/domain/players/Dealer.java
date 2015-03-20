@@ -22,18 +22,22 @@ public class Dealer extends Participant {
 	}
 
 	public void deal(List<Player> players) {
-		players.stream().forEach(player -> player.giveCard(this.deck.getNewCard()));
+		players.stream().forEach(player -> player.addCard(this.deck.getNewCard()));
 		this.hand.add(this.deck.getNewCard());
-		players.stream().forEach(player -> player.giveCard(this.deck.getNewCard()));
+		players.stream().forEach(player -> player.addCard(this.deck.getNewCard()));
 		this.hand.add(this.deck.getNewCard());
 	}
 
-	public void deal(Player player) {
-		player.giveCard(this.deck.getNewCard());
+	public Card deal() {
+		return this.deck.getNewCard();
 	}
 
 	public Action play(List<Player> players) {
-		return this.playStyle.play(this, players);
+		Action action = this.playStyle.play(this, players);
+		if(action == Action.HIT) {
+			this.takeCard();
+		}
+		return action;
 	}
 
 	private void resetDeck() {
@@ -45,6 +49,6 @@ public class Dealer extends Participant {
 	}
 
 	public void takeCard() {
-		this.giveCard(this.deck.getNewCard());
+		this.addCard(this.deck.getNewCard());
 	}
 }

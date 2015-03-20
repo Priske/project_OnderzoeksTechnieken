@@ -47,7 +47,7 @@ public abstract class Participant {
 		return this.wins;
 	}
 
-	public void giveCard(Card card) {
+	public void addCard(Card card) {
 		this.hand.add(card);
 	}
 

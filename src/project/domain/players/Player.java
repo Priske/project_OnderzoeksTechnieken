@@ -36,6 +36,14 @@ public class Player extends Participant {
 	}
 
 	public Action play(Dealer dealer) {
-		return this.playStyle.play(this, dealer);
+		Action action = this.playStyle.play(this, dealer);
+		if(action == Action.HIT) {
+			this.requestCard(dealer);
+		}
+		return action;
+	}
+
+	private void requestCard(Dealer dealer) {
+		this.addCard(dealer.deal());
 	}
 }
