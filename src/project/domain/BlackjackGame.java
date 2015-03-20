@@ -10,21 +10,14 @@ import project.domain.players.Player;
 public class BlackjackGame {
 
 	private final Dealer dealer;
-	private final ArrayList<Player> players;
-	private final Rules rules;
 	private int gamesPlayed;
+	private final List<Player> players;
+	private final Rules rules;
 
-	public BlackjackGame(Dealer dealer, ArrayList<Player> players, Rules rules) {
+	public BlackjackGame(Dealer dealer, List<Player> players, Rules rules) {
 		this.dealer = dealer;
 		this.players = players;
 		this.rules = rules;
-	}
-
-	private void initiateGameRound() {
-		IntStream.of(2).forEach(i -> {
-			this.players.forEach(p -> p.addCard(this.dealer.deal()));
-			this.dealer.takeCard();
-		});
 	}
 
 	public void play(int times) {
@@ -77,12 +70,7 @@ public class BlackjackGame {
 		this.printGameScore();
 	}
 
-	private void finishRound() {
-		this.checkWinner(this.dealer, this.players);
-		this.dealer.collectCards(this.players);
-	}
-
-	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
+	private void checkWinner(Dealer dealer, List<Player> players) {
 		int dealerValue = dealer.getValue();
 		players.stream().forEach(player -> {
 			int playerValue = player.getValue();
@@ -100,15 +88,27 @@ public class BlackjackGame {
 		});
 	}
 
-	private double getPercentage(double value) {
+	private void finishRound() {
+		this.checkWinner(this.dealer, this.players);
+		this.dealer.collectCards(this.players);
+	}
+
+	private double getWinPercentage(double value) {
 		return (value / this.gamesPlayed) * 100;
+	}
+
+	private void initiateGameRound() {
+		IntStream.of(2).forEach(i -> {
+			this.players.forEach(p -> p.addCard(this.dealer.deal()));
+			this.dealer.takeCard();
+		});
 	}
 
 	private void printGameScore() {
 		System.out.println("Game score: ");
 		System.out.println("\tGames played: " + this.gamesPlayed);
-		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins() + " -> " + this.getPercentage(player.getWins()) + "%"));
-		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins() + " -> " + this.getPercentage(this.dealer.getWins()) + "%");
+		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins() + " -> " + this.getWinPercentage(player.getWins()) + "%"));
+		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins() + " -> " + this.getWinPercentage(this.dealer.getWins()) + "%");
 	}
 
 	private void printPlayerHands() {
