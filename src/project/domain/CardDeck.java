@@ -49,15 +49,14 @@ public class CardDeck {
 
 	private void createDeck() {
 		this.cards.clear();
-		IntStream.of(this.aantalDecks).forEach(i -> this.cards.addAll(this.createCardSet()));
-		this.shuffleCards();
+		List<Card> newCards = new ArrayList<>();
+		IntStream.range(0, this.aantalDecks).forEach(i -> newCards.addAll(this.createCardSet()));
+		this.shuffleCards(newCards);
+		this.cards.addAll(newCards);
 	}
 
-	private void shuffleCards() {
-		List<Card> shuffleList = new ArrayList<>(this.cards);
-		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(shuffleList));
-		this.cards.clear();
-		this.cards.addAll(shuffleList);
+	private void shuffleCards(List<Card> cards) {
+		IntStream.range(0, this.aantalDecks * 4).forEach(i -> Collections.shuffle(cards));
 	}
 
 	public void addCards(List<Card> cards) {

@@ -12,6 +12,7 @@ public class Dealer extends Participant {
 	private final DealerPlayStyle playStyle;
 
 	public Dealer(int numberOfDecks, DealerPlayStyle ps) {
+		super("Dealer");
 		this.deck = new CardDeck(numberOfDecks);
 		this.playStyle = ps;
 	}
@@ -20,13 +21,6 @@ public class Dealer extends Participant {
 		this.deck.addCards(this.emptyHand());
 		players.stream().forEach(p -> this.deck.addCards(p.emptyHand()));
 		this.deck.addCards(this.emptyHand());
-	}
-
-	public void deal(List<Player> players) {
-		players.stream().forEach(player -> player.addCard(this.deck.getNewCard()));
-		this.hand.add(this.deck.getNewCard());
-		players.stream().forEach(player -> player.addCard(this.deck.getNewCard()));
-		this.hand.add(this.deck.getNewCard());
 	}
 
 	public Card deal() {
@@ -41,15 +35,15 @@ public class Dealer extends Participant {
 		return action;
 	}
 
-	private void resetDeck() {
-		this.deck.reset();
-	}
-
 	public Card showTopCard() {
 		return this.hand.get(0);
 	}
 
 	public void takeCard() {
 		this.addCard(this.deck.getNewCard());
+	}
+
+	private void resetDeck() {
+		this.deck.reset();
 	}
 }

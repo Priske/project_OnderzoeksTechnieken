@@ -5,7 +5,10 @@
  */
 package project.domain.players;
 
+import java.util.Collections;
+import java.util.List;
 import project.domain.Action;
+import project.domain.Card;
 import project.domain.strategies.PlayStyle;
 
 /**
@@ -14,25 +17,29 @@ import project.domain.strategies.PlayStyle;
  */
 public class Player extends Participant {
 
-	private final String name;
-	private final PlayStyle playStyle;
 	private boolean done = false;
+	private final PlayStyle playStyle;
 
 	public Player(String name, PlayStyle playStyle) {
-		this.name = name;
+		super(name);
 		this.playStyle = playStyle;
+	}
+
+	public Player(String name, PlayStyle playStyle, List<Card> cards) {
+		this(name, playStyle);
+		this.hand.addAll(cards);
 	}
 
 	public void done() {
 		this.done = true;
 	}
 
-	public boolean isDone() {
-		return this.done;
+	public List<Card> getHand() {
+		return Collections.unmodifiableList(this.hand);
 	}
 
-	public String getName() {
-		return this.name;
+	public boolean isDone() {
+		return this.done;
 	}
 
 	public Action play(Dealer dealer) {

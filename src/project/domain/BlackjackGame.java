@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 import project.domain.players.Dealer;
+import project.domain.players.Participant;
 import project.domain.players.Player;
 
 public class BlackjackGame {
@@ -25,16 +26,21 @@ public class BlackjackGame {
 		do {
 			this.gamesPlayed++;
 //			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
-//			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			this.initiateGameRound();
+//			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			List<Player> tempPlayers = new ArrayList<>(this.players);
 			do {
 				Iterator<Player> iter = tempPlayers.iterator();
 				while (iter.hasNext()) {
 					Player player = iter.next();
+//					try {
 					if(player.play(this.dealer) != Action.HIT) {
 						iter.remove();
 					}
+//					} catch (Exception e) {
+//						this.printParticipantHand(player);
+//						iter.remove();
+//					}
 				}
 			} while (!tempPlayers.isEmpty());
 //			ArrayList<Player> donePlaying = new ArrayList<>();
@@ -60,12 +66,12 @@ public class BlackjackGame {
 					// System.out.println("Dealer gets a card");
 				}
 			} while (true);
-			this.printPlayerHands();
+//			this.printPlayerHands();
 			this.finishGameRound();
 //			this.printGameScore();
 //			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
-		this.printGameScore();
+		this.printGameSummary();
 		System.out.println("Game batch took: " + (System.currentTimeMillis() - start) + "ms");
 	}
 
@@ -97,22 +103,30 @@ public class BlackjackGame {
 	}
 
 	private void initiateGameRound() {
-		IntStream.of(2).forEach(i -> {
+		IntStream.range(0, 2).forEach(i -> {
 			this.players.forEach(p -> p.addCard(this.dealer.deal()));
 			this.dealer.takeCard();
 		});
 	}
 
-	private void printGameScore() {
-		System.out.println("Game score: ");
+	private void printGameSummary() {
+		System.out.println("Game Summary: ");
 		System.out.println("\tGames played: " + this.gamesPlayed);
-		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins() + " -> " + this.getWinPercentage(player.getWins()) + "%"));
-		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins() + " -> " + this.getWinPercentage(this.dealer.getWins()) + "%");
+		this.players.stream().forEach(player -> this.printPlayerScore(player));
+		System.out.println("\t" + this.dealer.getName() + ": \n\t\tWins: " + this.dealer.getWins() + "/" + this.gamesPlayed * 4 + " -> " + ((double)this.dealer.getWins() / (this.gamesPlayed * 4)) * 100 + "%");
+	}
+
+	private void printParticipantHand(Participant p) {
+		System.out.println("\t" + p.getName() + ":\n\t\t" + p.toString() + "\n\t\tValue: " + p.getValue());
 	}
 
 	private void printPlayerHands() {
 		System.out.println("Hands:");
-		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + player.toString() + "\n\t\tValue: " + player.getValue()));
-		System.out.println("\tDealer:\n\t\t" + this.dealer + "\n\t\tValue: " + this.dealer.getValue());
+		this.players.stream().forEach(player -> this.printParticipantHand(player));
+		this.printParticipantHand(this.dealer);
+	}
+
+	private void printPlayerScore(Player p) {
+		System.out.println("\t" + p.getName() + ":\n\t\t" + "Wins: " + p.getWins() + " -> " + this.getWinPercentage(p.getWins()) + "%");
 	}
 }
