@@ -19,6 +19,7 @@ public class Dealer extends Participant {
 	public void collectCards(List<Player> players) {
 		this.deck.addCards(this.emptyHand());
 		players.stream().forEach(p -> this.deck.addCards(p.emptyHand()));
+		this.deck.addCards(this.emptyHand());
 	}
 
 	public void deal(List<Player> players) {

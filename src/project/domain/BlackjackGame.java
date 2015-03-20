@@ -32,10 +32,9 @@ public class BlackjackGame {
 		do {
 			this.gamesPlayed++;
 //			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
-			List<Player> tempPlayers = new ArrayList<>(this.players);
-//			this.dealer.deal(this.players);
-			this.initiateGameRound();
 //			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
+			this.initiateGameRound();
+			List<Player> tempPlayers = new ArrayList<>(this.players);
 			do {
 				Iterator<Player> iter = tempPlayers.iterator();
 				while (iter.hasNext()) {
@@ -81,7 +80,6 @@ public class BlackjackGame {
 	private void finishRound() {
 		this.checkWinner(this.dealer, this.players);
 		this.dealer.collectCards(this.players);
-		this.players.forEach(p -> p.emptyHand());
 	}
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
