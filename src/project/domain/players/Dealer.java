@@ -1,6 +1,6 @@
 package project.domain.players;
 
-import java.util.ArrayList;
+import java.util.List;
 import project.domain.Action;
 import project.domain.Card;
 import project.domain.CardDeck;
@@ -16,30 +16,35 @@ public class Dealer extends Participant {
 		this.playStyle = ps;
 	}
 
-	public void deal(ArrayList<Player> players) {
-		players.stream().forEach(player -> player.giveCard(this.deck.getTopCard()));
-		this.hand.add(this.deck.getTopCard());
-		players.stream().forEach(player -> player.giveCard(this.deck.getTopCard()));
-		this.hand.add(this.deck.getTopCard());
+	public void collectCards(List<Player> players) {
+		this.deck.addCards(this.emptyHand());
+		players.stream().forEach(p -> this.deck.addCards(p.emptyHand()));
+	}
+
+	public void deal(List<Player> players) {
+		players.stream().forEach(player -> player.giveCard(this.deck.getNewCard()));
+		this.hand.add(this.deck.getNewCard());
+		players.stream().forEach(player -> player.giveCard(this.deck.getNewCard()));
+		this.hand.add(this.deck.getNewCard());
 	}
 
 	public void deal(Player player) {
-		player.giveCard(this.deck.getTopCard());
+		player.giveCard(this.deck.getNewCard());
 	}
 
-	public void takeCard() {
-		this.giveCard(this.deck.getTopCard());
-	}
-
-	public Action play(ArrayList<Player> players) {
+	public Action play(List<Player> players) {
 		return this.playStyle.play(this, players);
 	}
 
-	public void resetDeck() {
+	private void resetDeck() {
 		this.deck.reset();
 	}
 
 	public Card showTopCard() {
 		return this.hand.get(0);
+	}
+
+	public void takeCard() {
+		this.giveCard(this.deck.getNewCard());
 	}
 }

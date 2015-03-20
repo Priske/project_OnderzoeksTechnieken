@@ -75,9 +75,8 @@ public class BlackjackGame {
 
 	private void finishRound() {
 		this.checkWinner(this.dealer, this.players);
-		this.dealer.clearHand();
-		this.dealer.resetDeck();
-		this.players.forEach(p -> p.clearHand());
+		this.dealer.collectCards(this.players);
+		this.players.forEach(p -> p.emptyHand());
 	}
 
 	private void checkWinner(Dealer dealer, ArrayList<Player> players) {

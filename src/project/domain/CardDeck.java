@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 public class CardDeck {
 
 	private final int aantalDecks;
-	private final Stack<Card> cards = new Stack();
+	private final Queue<Card> cards = new ArrayDeque<>();
 
 	public CardDeck(int decks) {
 		this.aantalDecks = decks;
@@ -27,8 +27,8 @@ public class CardDeck {
 		return this.cards.size();
 	}
 
-	public Card getTopCard() {
-		return this.cards.pop();
+	public Card getNewCard() {
+		return this.cards.poll();
 	}
 
 	public void reset() {
@@ -59,6 +59,13 @@ public class CardDeck {
 	}
 
 	private void shuffleCards() {
-		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(this.cards));
+		List<Card> shuffleList = new ArrayList<>(this.cards);
+		IntStream.of(this.aantalDecks * 2).forEach(i -> Collections.shuffle(shuffleList));
+		this.cards.clear();
+		this.cards.addAll(shuffleList);
+	}
+
+	public void addCards(List<Card> cards) {
+		cards.stream().forEach(c -> this.cards.offer(c));
 	}
 }
