@@ -3,17 +3,19 @@ package project.domain;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.IntStream;
 import project.domain.players.Dealer;
+import project.domain.players.Participant;
 import project.domain.players.Player;
 
 public class BlackjackGame {
 
 	private final Dealer dealer;
-	private final ArrayList<Player> players;
-	private final Rules rules;
 	private int gamesPlayed;
+	private final List<Player> players;
+	private final Rules rules;
 
-	public BlackjackGame(Dealer dealer, ArrayList<Player> players, Rules rules) {
+	public BlackjackGame(Dealer dealer, List<Player> players, Rules rules) {
 		this.dealer = dealer;
 		this.players = players;
 		this.rules = rules;
@@ -24,62 +26,56 @@ public class BlackjackGame {
 		do {
 			this.gamesPlayed++;
 //			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
-			List<Player> tempPlayers = new ArrayList<>(this.players);
-			this.dealer.deal(this.players);
+			this.initiateGameRound();
 //			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
+			List<Player> tempPlayers = new ArrayList<>(this.players);
 			do {
 				Iterator<Player> iter = tempPlayers.iterator();
 				while (iter.hasNext()) {
 					Player player = iter.next();
-					if(player.play(this.dealer) == Action.HIT) {
-						this.dealer.deal(player);
-					} else {
+//					try {
+					if(player.play(this.dealer) != Action.HIT) {
 						iter.remove();
 					}
+//					} catch (Exception e) {
+//						this.printParticipantHand(player);
+//						iter.remove();
+//					}
 				}
 			} while (!tempPlayers.isEmpty());
 //			ArrayList<Player> donePlaying = new ArrayList<>();
 //			do {
 //				this.players.stream().forEach(player -> {
-//					if(player.play(this.dealer) == Action.HIT) {
-//						this.dealer.deal(player);
-////						System.out.println(player.getName() + ": gets a card");
-//					} else {
+//					if(player.play(this.dealer) != Action.HIT) {
 //						donePlaying.add(player);
 //						player.done();
 ////						System.out.println(player.getName() + ": stays");
+//					} else {
+////						System.out.println(player.getName() + ": gets a card");
 //					}
 //				});
 //			} while (this.players.size() > donePlaying.size());
 //			if(this.players.stream().filter(p -> !p.isDone()).count() > 0) {
-//				System.out.println("MOTHERFUCKING FACKING PLAYERS ARE NOT DONE PLAYING YET, YOU EVIL BASTARD");
+//				System.out.println("PLAYERS ARE NOT DONE PLAYING YET, YOU EVIL BASTARD");
 //			}
-			boolean stop = false;
 			do {
-				if(this.dealer.play(this.players) == Action.HIT) {
-					this.dealer.takeCard();
-					// System.out.println("Dealer gets a card");
-				} else {
-					stop = true;
+				if(this.dealer.play(this.players) != Action.HIT) {
+					break;
 					// System.out.println("Dealer Stays");
+				} else {
+					// System.out.println("Dealer gets a card");
 				}
-			} while (!stop);
+			} while (true);
 //			this.printPlayerHands();
-			this.finishRound();
+			this.finishGameRound();
 //			this.printGameScore();
 //			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
-		System.out.println("Round took: " + (System.currentTimeMillis() - start) + "ms");
-		this.printGameScore();
+		this.printGameSummary();
+		System.out.println("Game batch took: " + (System.currentTimeMillis() - start) + "ms");
 	}
 
-	private void finishRound() {
-		this.checkWinner(this.dealer, this.players);
-		this.dealer.collectCards(this.players);
-		this.players.forEach(p -> p.emptyHand());
-	}
-
-	private void checkWinner(Dealer dealer, ArrayList<Player> players) {
+	private void checkWinner(Dealer dealer, List<Player> players) {
 		int dealerValue = dealer.getValue();
 		players.stream().forEach(player -> {
 			int playerValue = player.getValue();
@@ -97,20 +93,40 @@ public class BlackjackGame {
 		});
 	}
 
-	private double getPercentage(double value) {
+	private void finishGameRound() {
+		this.checkWinner(this.dealer, this.players);
+		this.dealer.collectCards(this.players);
+	}
+
+	private double getWinPercentage(double value) {
 		return (value / this.gamesPlayed) * 100;
 	}
 
-	private void printGameScore() {
-		System.out.println("Game score: ");
+	private void initiateGameRound() {
+		IntStream.range(0, 2).forEach(i -> {
+			this.players.forEach(p -> p.addCard(this.dealer.deal()));
+			this.dealer.takeCard();
+		});
+	}
+
+	private void printGameSummary() {
+		System.out.println("Game Summary: ");
 		System.out.println("\tGames played: " + this.gamesPlayed);
-		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + "Wins: " + player.getWins() + " -> " + this.getPercentage(player.getWins()) + "%"));
-		System.out.println("\tDealer: \n\t\tWins: " + this.dealer.getWins() + " -> " + this.getPercentage(this.dealer.getWins()) + "%");
+		this.players.stream().forEach(player -> this.printPlayerScore(player));
+		System.out.println("\t" + this.dealer.getName() + ": \n\t\tWins: " + this.dealer.getWins() + "/" + this.gamesPlayed * 4 + " -> " + ((double)this.dealer.getWins() / (this.gamesPlayed * 4)) * 100 + "%");
+	}
+
+	private void printParticipantHand(Participant p) {
+		System.out.println("\t" + p.getName() + ":\n\t\t" + p.toString() + "\n\t\tValue: " + p.getValue());
 	}
 
 	private void printPlayerHands() {
 		System.out.println("Hands:");
-		this.players.stream().forEach(player -> System.out.println("\t" + player.getName() + ":\n\t\t" + player.toString() + "\n\t\tValue: " + player.getValue()));
-		System.out.println("\tDealer:\n\t\t" + this.dealer + "\n\t\tValue: " + this.dealer.getValue());
+		this.players.stream().forEach(player -> this.printParticipantHand(player));
+		this.printParticipantHand(this.dealer);
+	}
+
+	private void printPlayerScore(Player p) {
+		System.out.println("\t" + p.getName() + ":\n\t\t" + "Wins: " + p.getWins() + " -> " + this.getWinPercentage(p.getWins()) + "%");
 	}
 }

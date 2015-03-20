@@ -8,9 +8,26 @@ import project.domain.CardFace;
 
 public abstract class Participant {
 
-	protected final ArrayList<Card> hand = new ArrayList<>();
-	private int wins = 0;
+	protected final List<Card> hand = new ArrayList<>();
 	private int burned = 0;
+	private final String name;
+	private int wins = 0;
+
+	public Participant(String name) {
+		this.name = name;
+	}
+
+	public void addCard(Card card) {
+		this.hand.add(card);
+	}
+
+	public final void burned() {
+		this.burned++;
+	}
+
+	public long countAces() {
+		return this.hand.stream().filter(c -> c.getFace() == CardFace.ACE).count();
+	}
 
 	public final List<Card> emptyHand() {
 		List<Card> cards = new ArrayList<>(this.hand);
@@ -18,37 +35,27 @@ public abstract class Participant {
 		return cards;
 	}
 
-	public final void burned() {
-		this.burned++;
-	}
-
-	public int countAces() {
-		return this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
-	}
-
-	public List<Card> getHand() {
-		return this.hand;
+	public String getName() {
+		return this.name;
 	}
 
 	public int getValue() {
 		int valueOutput = this.hand.stream().mapToInt(c -> c.getValue()).sum();
-		int aces = this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
-		if(aces == 0) {
-			return valueOutput;
-		} else {
-			if(valueOutput <= 11) {
-				valueOutput += 9;
+		if(valueOutput > 21) {
+			for (Card c : this.hand) {
+				if(valueOutput <= 21) {
+					break;
+				}
+				if(c.getFace() == CardFace.ACE) {
+					valueOutput -= 10;
+				}
 			}
-			return valueOutput;
 		}
+		return valueOutput;
 	}
 
 	public int getWins() {
 		return this.wins;
-	}
-
-	public void giveCard(Card card) {
-		this.hand.add(card);
 	}
 
 	@Override

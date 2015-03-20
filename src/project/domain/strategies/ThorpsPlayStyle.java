@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.domain.strategies;
 
 import java.util.List;
@@ -22,116 +17,50 @@ public class ThorpsPlayStyle implements PlayStyle {
 	public Action play(Player player, Dealer dealer) {
 		if(player.countAces() == 1 && player.getValue() < 16) {
 			return this.acePlay(dealer.showTopCard(), this.getNonAceCard(player.getHand()));
+		} else if(player.countAces() == 2) {
+			if(player.getValue() < 17) {
+				return Action.HIT;
+			}
+			return Action.STAY;
 		} else {
-			if(player.countAces() == 2) {
-				if(player.getValue() < 17) {
-					return Action.HIT;
-				} else {
+			switch (dealer.showTopCard().getFace()) {
+				case ACE:
+					if(player.getValue() < 17) {
+						return Action.HIT;
+					}
 					return Action.STAY;
-				}
-			} else {
-//				System.out.println(dealer.showTopCard().getFace());
-				switch (dealer.showTopCard().getFace()) {
-					case ACE:
-						if(player.getValue() < 17) {
-							return Action.HIT;
-						} else {
-							return Action.STAY;
-						}
-
-					case DEUCE:
-						if(player.getValue() < 13) {
-							return Action.HIT;
-						} else {
-							return Action.STAY;
-						}
-					case THREE:
-						if(player.getValue() < 13) {
-							return Action.HIT;
-						} else {
-							return Action.STAY;
-						}
-					case FOUR:
-					case FIVE:
-					case SIX:
-						if(player.getValue() < 12) {
-							return Action.HIT;
-						} else {
-							return Action.STAY;
-						}
-					case SEVEN:
-					case EIGHT:
-					case NINE:
-					case TEN:
-					case JACK:
-					case QUEEN:
-					case KING:
-						if(player.getValue() < 17) {
-							return Action.HIT;
-						} else {
-							return Action.STAY;
-						}
-					default:
-						return null;
-				}
+				case DEUCE:
+//					if(player.getValue() < 13) {
+//						return Action.HIT;
+//					}
+//					return Action.STAY;
+				case THREE:
+					if(player.getValue() < 13) {
+						return Action.HIT;
+					}
+					return Action.STAY;
+				case FOUR:
+				case FIVE:
+				case SIX:
+					if(player.getValue() < 12) {
+						return Action.HIT;
+					}
+					return Action.STAY;
+				case SEVEN:
+				case EIGHT:
+				case NINE:
+				case TEN:
+				case JACK:
+				case QUEEN:
+				case KING:
+					if(player.getValue() < 17) {
+						return Action.HIT;
+					}
+					return Action.STAY;
+				default:
+					return null;
 			}
 		}
-		/*
-		 System.out.println(dealerHand.get(0).getFace());
-		 switch(dealerHand.get(0).getFace()){
-		 case "Ace":
-		 System.out.println("A");
-		 if(getValue(playerHand)<17)
-		 {
-		 return ActionEnum.HIT;
-		 }else{
-		 return ActionEnum.STAY;
-		 }
-
-
-		 case "Deuce":
-		 System.out.println("2");
-		 if(getValue(playerHand)<13)
-		 {
-		 return ActionEnum.HIT;
-		 }else{
-		 return ActionEnum.STAY;
-		 }
-		 case "Three":
-		 System.out.println("3");
-		 if(getValue(playerHand)<13)
-		 {
-		 return ActionEnum.HIT;
-		 }else{
-		 return ActionEnum.STAY;
-		 }
-		 case "Four":
-		 case "Five":
-		 case "Six":
-		 System.out.println("456");
-		 if(getValue(playerHand)<12){
-		 return ActionEnum.HIT;
-		 }else{
-		 return ActionEnum.STAY;
-		 }
-		 case "Seven":
-		 case "Eight":
-		 case "Nine":
-		 case "Ten":
-		 case "Jack":
-		 case "Queen":
-		 case "King":
-		 System.out.println("78910JQK");
-		 if(getValue(playerHand)<17)
-		 {
-		 return ActionEnum.HIT;
-		 }else{
-		 return ActionEnum.STAY;
-		 }
-
-
-		 }
-		 */
 	}
 
 	private Action acePlay(Card dealerCard, Card playerCard) {
@@ -145,9 +74,8 @@ public class ThorpsPlayStyle implements PlayStyle {
 			case SEVEN:
 				if(dealerCard.getValue() < 9) {
 					return Action.STAY;
-				} else {
-					return Action.HIT;
 				}
+				return Action.HIT;
 			case EIGHT:
 			case NINE:
 				return Action.STAY;
@@ -157,11 +85,7 @@ public class ThorpsPlayStyle implements PlayStyle {
 	}
 
 	private Card getNonAceCard(List<Card> hand) {
-		for (Card card : hand) {
-			if(card.getFace() != CardFace.ACE) {
-				return card;
-			}
-		}
-		return null;
+//		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElseThrow(new NoNonAceCardFoundException());
+		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElse(null);
 	}
 }
