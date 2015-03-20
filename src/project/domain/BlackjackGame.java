@@ -40,13 +40,12 @@ public class BlackjackGame {
 //			ArrayList<Player> donePlaying = new ArrayList<>();
 //			do {
 //				this.players.stream().forEach(player -> {
-//					if(player.play(this.dealer) == Action.HIT) {
-//						this.dealer.deal(player);
-////						System.out.println(player.getName() + ": gets a card");
-//					} else {
+//					if(player.play(this.dealer) != Action.HIT) {
 //						donePlaying.add(player);
 //						player.done();
 ////						System.out.println(player.getName() + ": stays");
+//					} else {
+////						System.out.println(player.getName() + ": gets a card");
 //					}
 //				});
 //			} while (this.players.size() > donePlaying.size());
@@ -66,8 +65,8 @@ public class BlackjackGame {
 //			this.printGameScore();
 //			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
-		System.out.println("Round took: " + (System.currentTimeMillis() - start) + "ms");
 		this.printGameScore();
+		System.out.println("Round took: " + (System.currentTimeMillis() - start) + "ms");
 	}
 
 	private void checkWinner(Dealer dealer, List<Player> players) {

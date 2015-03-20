@@ -20,8 +20,7 @@ public class MimicDealerPlaystyle implements PlayStyle {
 		int playerValue = player.getValue();
 		if(playerValue < 17) {
 			return Action.HIT;
-		} else {
-			return Action.STAY;
 		}
+		return Action.STAY;
 	}
 }

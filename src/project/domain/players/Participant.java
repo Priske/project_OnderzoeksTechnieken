@@ -23,8 +23,8 @@ public abstract class Participant {
 		this.burned++;
 	}
 
-	public int countAces() {
-		return this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
+	public long countAces() {
+		return this.hand.stream().filter(c -> c.getFace() == CardFace.ACE).count();
 	}
 
 	public List<Card> getHand() {
@@ -33,15 +33,10 @@ public abstract class Participant {
 
 	public int getValue() {
 		int valueOutput = this.hand.stream().mapToInt(c -> c.getValue()).sum();
-		int aces = this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
-		if(aces == 0) {
-			return valueOutput;
-		} else {
-			if(valueOutput <= 11) {
-				valueOutput += 9;
-			}
-			return valueOutput;
+		if(this.countAces() > 0 && valueOutput <= 11) {
+			valueOutput += 9;
 		}
+		return valueOutput;
 	}
 
 	public int getWins() {
