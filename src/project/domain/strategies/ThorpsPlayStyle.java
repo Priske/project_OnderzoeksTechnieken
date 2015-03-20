@@ -85,11 +85,7 @@ public class ThorpsPlayStyle implements PlayStyle {
 	}
 
 	private Card getNonAceCard(List<Card> hand) {
-		for (Card card : hand) {
-			if(card.getFace() != CardFace.ACE) {
-				return card;
-			}
-		}
-		return null;
+//		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElseThrow(new NoNonAceCardFoundException());
+		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElse(null);
 	}
 }

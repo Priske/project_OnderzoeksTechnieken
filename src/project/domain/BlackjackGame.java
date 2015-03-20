@@ -61,12 +61,12 @@ public class BlackjackGame {
 				}
 			} while (true);
 //			this.printPlayerHands();
-			this.finishRound();
+			this.finishGameRound();
 //			this.printGameScore();
 //			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
 		this.printGameScore();
-		System.out.println("Round took: " + (System.currentTimeMillis() - start) + "ms");
+		System.out.println("Game batch took: " + (System.currentTimeMillis() - start) + "ms");
 	}
 
 	private void checkWinner(Dealer dealer, List<Player> players) {
@@ -87,7 +87,7 @@ public class BlackjackGame {
 		});
 	}
 
-	private void finishRound() {
+	private void finishGameRound() {
 		this.checkWinner(this.dealer, this.players);
 		this.dealer.collectCards(this.players);
 	}
