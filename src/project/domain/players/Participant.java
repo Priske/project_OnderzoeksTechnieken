@@ -1,6 +1,7 @@
 package project.domain.players;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import project.domain.Card;
@@ -8,7 +9,7 @@ import project.domain.CardFace;
 
 public abstract class Participant {
 
-	protected final ArrayList<Card> hand = new ArrayList<>();
+	protected final List<Card> hand = new ArrayList<>();
 	private int wins = 0;
 	private int burned = 0;
 
@@ -27,7 +28,7 @@ public abstract class Participant {
 	}
 
 	public List<Card> getHand() {
-		return this.hand;
+		return Collections.unmodifiableList(this.hand);
 	}
 
 	public int getValue() {
