@@ -64,9 +64,6 @@ public class ThorpsPlayStyle implements PlayStyle {
 	}
 
 	private Action acePlay(Card dealerCard, Card playerCard) {
-		if(playerCard == null) {
-			return Action.STAY;
-		}
 		switch (playerCard.getFace()) {
 			case DEUCE:
 			case THREE:
