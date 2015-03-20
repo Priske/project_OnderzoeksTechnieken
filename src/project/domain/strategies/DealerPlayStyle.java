@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.domain.strategies;
 
 import java.util.List;
@@ -18,9 +13,9 @@ import project.domain.players.Player;
 public class DealerPlayStyle {
 
 	public Action play(Dealer dealer, List<Player> players) {
-		List<Player> list = players.stream().filter(p -> p.getValue() <= 21).collect(Collectors.toList());
-		if(list.size() == 1) {
-			Player player = list.get(0);
+		List<Player> filteredList = players.stream().filter(p -> p.getValue() <= 21).collect(Collectors.toList());
+		if(filteredList.size() == 1) {
+			Player player = filteredList.get(0);
 			if(player.getValue() > dealer.getValue()) {
 				return Action.HIT;
 			} else {
