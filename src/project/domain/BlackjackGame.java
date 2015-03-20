@@ -60,7 +60,7 @@ public class BlackjackGame {
 					// System.out.println("Dealer gets a card");
 				}
 			} while (true);
-//			this.printPlayerHands();
+			this.printPlayerHands();
 			this.finishGameRound();
 //			this.printGameScore();
 //			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
