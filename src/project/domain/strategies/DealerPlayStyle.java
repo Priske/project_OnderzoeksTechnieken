@@ -6,6 +6,7 @@
 package project.domain.strategies;
 
 import java.util.ArrayList;
+import java.util.List;
 import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
@@ -16,8 +17,8 @@ import project.domain.players.Player;
  */
 public class DealerPlayStyle {
 
-	public Action play(Dealer dealer, ArrayList<Player> players) {
-		ArrayList<Player> clean = new ArrayList<>();
+	public Action play(Dealer dealer, List<Player> players) {
+		List<Player> clean = new ArrayList<>();
 		for (Player player : players) {
 			if(player.getValue() <= 21) {
 				clean.add(player);

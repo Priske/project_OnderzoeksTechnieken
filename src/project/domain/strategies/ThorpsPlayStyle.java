@@ -5,7 +5,7 @@
  */
 package project.domain.strategies;
 
-import java.util.ArrayList;
+import java.util.List;
 import project.domain.Action;
 import project.domain.Card;
 import project.domain.CardFace;
@@ -17,15 +17,6 @@ import project.domain.players.Player;
  @author Ben
  */
 public class ThorpsPlayStyle implements PlayStyle {
-
-	private Card getNonAceCard(ArrayList<Card> hand) {
-		for (Card card : hand) {
-			if(card.getFace() != CardFace.ACE) {
-				return card;
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public Action play(Player player, Dealer dealer) {
@@ -163,5 +154,14 @@ public class ThorpsPlayStyle implements PlayStyle {
 			default:
 				return null;
 		}
+	}
+
+	private Card getNonAceCard(List<Card> hand) {
+		for (Card card : hand) {
+			if(card.getFace() != CardFace.ACE) {
+				return card;
+			}
+		}
+		return null;
 	}
 }

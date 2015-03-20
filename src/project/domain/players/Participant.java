@@ -1,6 +1,7 @@
 package project.domain.players;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import project.domain.Card;
 import project.domain.CardFace;
@@ -11,11 +12,13 @@ public abstract class Participant {
 	private int wins = 0;
 	private int burned = 0;
 
-	public void clearHand() {
+	public final List<Card> emptyHand() {
+		List<Card> cards = new ArrayList<>(this.hand);
 		this.hand.clear();
+		return cards;
 	}
 
-	public void burned() {
+	public final void burned() {
 		this.burned++;
 	}
 
@@ -23,7 +26,7 @@ public abstract class Participant {
 		return this.hand.stream().filter(c -> (c.getFace() == CardFace.ACE)).mapToInt(c -> 1).sum();
 	}
 
-	public ArrayList<Card> getHand() {
+	public List<Card> getHand() {
 		return this.hand;
 	}
 

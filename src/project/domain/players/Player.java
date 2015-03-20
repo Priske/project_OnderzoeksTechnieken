@@ -24,11 +24,11 @@ public class Player extends Participant {
 	}
 
 	public void done() {
-		done = true;
+		this.done = true;
 	}
 
 	public boolean isDone() {
-		return done;
+		return this.done;
 	}
 
 	public String getName() {
