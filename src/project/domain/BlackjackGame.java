@@ -33,14 +33,9 @@ public class BlackjackGame {
 				Iterator<Player> iter = tempPlayers.iterator();
 				while (iter.hasNext()) {
 					Player player = iter.next();
-//					try {
 					if(player.play(this.dealer) != Action.HIT) {
 						iter.remove();
 					}
-//					} catch (Exception e) {
-//						this.printParticipantHand(player);
-//						iter.remove();
-//					}
 				}
 			} while (!tempPlayers.isEmpty());
 //			ArrayList<Player> donePlaying = new ArrayList<>();
@@ -113,7 +108,7 @@ public class BlackjackGame {
 		System.out.println("Game Summary: ");
 		System.out.println("\tGames played: " + this.gamesPlayed);
 		this.players.stream().forEach(player -> this.printPlayerScore(player));
-		System.out.println("\t" + this.dealer.getName() + ": \n\t\tWins: " + this.dealer.getWins() + "/" + this.gamesPlayed * 4 + " -> " + ((double)this.dealer.getWins() / (this.gamesPlayed * 4)) * 100 + "%");
+		System.out.println("\t" + this.dealer.getName() + ": \n\t\tWins: " + this.dealer.getWins() + "/" + (this.gamesPlayed * 4) + " -> " + ((double)this.dealer.getWins() / (this.gamesPlayed * 4)) * 100 + "%");
 	}
 
 	private void printParticipantHand(Participant p) {
