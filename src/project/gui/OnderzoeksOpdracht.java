@@ -25,8 +25,10 @@ public class OnderzoeksOpdracht extends Application {
 		players.add(new Player("Maxim", new ThorpsPlayStyle()));
 //		Player p = new Player("TestPlayer", null, Arrays.asList(new Card(CardSuit.CLUBS, CardFace.ACE), new Card(CardSuit.DIAMONDS, CardFace.ACE), new Card(CardSuit.HEARTS, CardFace.ACE), new Card(CardSuit.CLUBS, CardFace.FOUR)));
 //		System.out.println(p.getValue());
-		BlackjackGame game = new BlackjackGame(new Dealer(8, new DealerPlayStyle()), players, new Rules());
-		game.play(10000);
+		BlackjackGame game = new BlackjackGame();
+		game.setDealer(new Dealer(game.getIntegerProperty("rules.number_decks"), new DealerPlayStyle()));
+		game.setPlayers(players);
+		game.play(game.getIntegerProperty("rules.number_games_played"));
 		System.exit(0);
 	}
 }
