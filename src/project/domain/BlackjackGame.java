@@ -50,9 +50,7 @@ public class BlackjackGame implements SettingsManager {
 		long start = System.currentTimeMillis();
 		do {
 			this.gamesPlayed++;
-//			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 			this.initiateGameRound();
-//			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			List<Player> tempPlayers = new ArrayList<>(this.players);
 			do {
 				Iterator<Player> iter = tempPlayers.iterator();
@@ -63,33 +61,12 @@ public class BlackjackGame implements SettingsManager {
 					}
 				}
 			} while (!tempPlayers.isEmpty());
-//			ArrayList<Player> donePlaying = new ArrayList<>();
-//			do {
-//				this.players.stream().forEach(player -> {
-//					if(player.play(this.dealer) != Action.HIT) {
-//						donePlaying.add(player);
-//						player.done();
-////						System.out.println(player.getName() + ": stays");
-//					} else {
-////						System.out.println(player.getName() + ": gets a card");
-//					}
-//				});
-//			} while (this.players.size() > donePlaying.size());
-//			if(this.players.stream().filter(p -> !p.isDone()).count() > 0) {
-//				System.out.println("PLAYERS ARE NOT DONE PLAYING YET, YOU EVIL BASTARD");
-//			}
-			do {
+			while (true) {
 				if(this.dealer.play(this.players) != Action.HIT) {
 					break;
-					// System.out.println("Dealer Stays");
-				} else {
-					// System.out.println("Dealer gets a card");
 				}
-			} while (true);
-//			this.printPlayerHands();
+			}
 			this.finishGameRound();
-//			this.printGameScore();
-//			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
 		this.printGameSummary();
 		System.out.println("Game batch took: " + (System.currentTimeMillis() - start) + "ms");
@@ -134,15 +111,18 @@ public class BlackjackGame implements SettingsManager {
 	}
 
 	private void finishGameRound() {
+//		this.printPlayerHands();
 		this.checkWinner(this.dealer, this.players);
 		this.dealer.collectCards(this.players);
+//		this.printGameSummary();
+//		System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 	}
 
 	private Properties getDefaultProperties() {
 		Properties props = new Properties();
 		props.setProperty("rules.number_decks", "8");
 		props.setProperty("rules.number_players", "4");
-		props.setProperty("rules.number_cards_played_before_shoufle", "0");
+		props.setProperty("rules.number_cards_played_before_shuffle", "0");
 		props.setProperty("rules.number_games_played", "1000");
 		return props;
 	}
@@ -152,10 +132,12 @@ public class BlackjackGame implements SettingsManager {
 	}
 
 	private void initiateGameRound() {
+//		System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 		IntStream.range(0, 2).forEach(i -> {
 			this.players.forEach(p -> p.addCard(this.dealer.deal()));
 			this.dealer.takeCard();
 		});
+//		System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 	}
 
 	private void printGameSummary() {

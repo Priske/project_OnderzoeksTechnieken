@@ -3,4 +3,4 @@
 rules.number_players=4
 rules.number_games_played=1000
 rules.number_decks=8
-rules.number_cards_played_before_shoufle=0
+rules.number_cards_played_before_shuffle=0
