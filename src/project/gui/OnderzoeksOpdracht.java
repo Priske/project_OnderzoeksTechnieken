@@ -24,7 +24,8 @@ public class OnderzoeksOpdracht extends Application {
 		this.game = new BlackjackGame();
 		this.game.setDealer(this.createDealer());
 		this.game.setPlayers(this.createPlayers());
-		this.game.play(this.game.getIntegerProperty("rules.number_games_played"));
+//		this.game.play(this.game.getIntegerProperty("rules.number_games_played"));
+		this.game.play(1000);
 		System.exit(0);
 	}
 
