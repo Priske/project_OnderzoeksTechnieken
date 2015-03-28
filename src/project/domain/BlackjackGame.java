@@ -93,9 +93,9 @@ public class BlackjackGame implements SettingsManager {
 	}
 
 	private void checkWinner(Dealer dealer, List<Player> players) {
-		int dealerValue = dealer.getValue();
+		int dealerValue = dealer.getScore();
 		players.stream().forEach(player -> {
-			int playerValue = player.getValue();
+			int playerValue = player.getScore();
 			if(playerValue > 21 || playerValue <= dealerValue && dealerValue <= 21) {
 				if(playerValue > 21) {
 					player.burned();
@@ -148,7 +148,7 @@ public class BlackjackGame implements SettingsManager {
 	}
 
 	private void printParticipantHand(Participant p) {
-		System.out.println("\t" + p.getName() + ":\n\t\t" + p.toString() + "\n\t\tValue: " + p.getValue());
+		System.out.println("\t" + p.getName() + ":\n\t\t" + p.toString() + "\n\t\tValue: " + p.getScore());
 	}
 
 	private void printPlayerHands() {

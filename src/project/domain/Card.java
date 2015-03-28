@@ -1,15 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.domain;
 
-/**
+import java.util.List;
 
- @author Ben
- */
 public class Card {
+
+	public static final int getScore(List<Card> cards) {
+		int valueOutput = cards.stream().mapToInt(c -> c.getValue()).sum();
+		if(valueOutput > 21) {
+			for (Card c : cards) {
+				if(valueOutput <= 21) {
+					break;
+				}
+				if(c.getFace() == CardFace.ACE) {
+					valueOutput -= 10;
+				}
+			}
+		}
+		return valueOutput;
+	}
 
 	private final CardFace face;
 	private final CardSuit suit;
@@ -31,4 +39,5 @@ public class Card {
 	public String toString() {
 		return this.face + " of " + this.suit;
 	}
+
 }

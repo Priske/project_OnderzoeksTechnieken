@@ -12,7 +12,7 @@ public class NeverBustPlaystyle implements PlayStyle {
 
 	@Override
 	public Action play(Player player, Dealer dealer) {
-		if(player.getValue() > 10) {
+		if(player.getScore() > 10) {
 			return Action.STAY;
 		}
 		return Action.HIT;

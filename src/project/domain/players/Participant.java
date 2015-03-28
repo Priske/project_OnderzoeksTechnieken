@@ -39,19 +39,8 @@ public abstract class Participant {
 		return this.name;
 	}
 
-	public int getValue() {
-		int valueOutput = this.hand.stream().mapToInt(c -> c.getValue()).sum();
-		if(valueOutput > 21) {
-			for (Card c : this.hand) {
-				if(valueOutput <= 21) {
-					break;
-				}
-				if(c.getFace() == CardFace.ACE) {
-					valueOutput -= 10;
-				}
-			}
-		}
-		return valueOutput;
+	public int getScore() {
+		return Card.getScore(this.hand);
 	}
 
 	public int getWins() {
