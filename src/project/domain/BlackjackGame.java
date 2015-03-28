@@ -22,23 +22,23 @@ public class BlackjackGame implements SettingsManager {
 		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
 	}
 
-	public void setDealer(Dealer dealer) {
-		this.dealer = dealer;
-	}
-
-	public void setPlayers(List<Player> players) {
-		this.players.clear();
-		this.players.addAll(players);
-	}
-
 	@Override
 	public boolean getBoolProperty(String key) {
 		return this.settingsMgr.getBoolProperty(key);
 	}
 
+	public void setDealer(Dealer dealer) {
+		this.dealer = dealer;
+	}
+
 	@Override
 	public int getIntegerProperty(String key) {
 		return this.settingsMgr.getIntegerProperty(key);
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players.clear();
+		this.players.addAll(players);
 	}
 
 	@Override
