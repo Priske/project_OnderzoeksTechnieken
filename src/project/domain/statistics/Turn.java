@@ -9,18 +9,18 @@ import project.domain.players.Player;
 public class Turn {
 
 	private final Action action;
-	private final List<Card> hand = new ArrayList<>();
+	private final List<Card> cards = new ArrayList<>();
 	private final Card lastCard;
 	private final Player player;
 
-	public Turn(Player player, Action action, List<Card> hand) {
-		this(player, action, hand, null);
+	public Turn(Player player, Action action, List<Card> cards) {
+		this(player, action, cards, null);
 	}
 
-	public Turn(Player player, Action action, List<Card> hand, Card lastCard) {
+	public Turn(Player player, Action action, List<Card> cards, Card lastCard) {
 		this.player = player;
 		this.action = action;
-		this.hand.addAll(hand);
+		this.cards.addAll(cards);
 		this.lastCard = lastCard;
 	}
 
@@ -29,7 +29,7 @@ public class Turn {
 	}
 
 	public List<Card> getHand() {
-		return this.hand;
+		return this.cards;
 	}
 
 	public Card getLastCard() {
@@ -40,8 +40,12 @@ public class Turn {
 		return this.player;
 	}
 
+	public int getScore() {
+		return Card.getScore(this.cards);
+	}
+
 	@Override
 	public String toString() {
-		return "Turn: " + this.action + "\n\tLast card: " + this.lastCard + "\n\tHand: " + this.hand;
+		return "Turn: " + this.action + "\n\tLast card: " + this.lastCard + "\n\tHand: " + this.cards;
 	}
 }
