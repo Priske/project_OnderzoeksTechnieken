@@ -20,6 +20,7 @@ public class BlackjackGame implements SettingsManager {
 
 	public BlackjackGame() {
 		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
+		this.restoreDefault();
 	}
 
 	@Override
