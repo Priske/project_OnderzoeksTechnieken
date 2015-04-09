@@ -3,7 +3,7 @@ package project.domain.statistics;
 import java.util.ArrayList;
 import java.util.List;
 import project.domain.Action;
-import project.domain.Card;
+import project.domain.card.Card;
 import project.domain.players.Player;
 
 public class Turn {

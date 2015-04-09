@@ -1,4 +1,4 @@
-package project.domain;
+package project.domain.card;
 
 public enum CardFace {
 

@@ -2,7 +2,7 @@ package project.domain.players;
 
 import java.util.List;
 import project.domain.Action;
-import project.domain.Card;
+import project.domain.card.Card;
 import project.domain.CardDeck;
 import project.domain.strategies.DealerPlayStyle;
 

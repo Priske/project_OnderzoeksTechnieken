@@ -2,8 +2,8 @@ package project.domain.strategies;
 
 import java.util.List;
 import project.domain.Action;
-import project.domain.Card;
-import project.domain.CardFace;
+import project.domain.card.Card;
+import project.domain.card.CardFace;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 

@@ -1,7 +1,5 @@
 package project.domain;
 
-import be.mrtus.common.domain.SettingsManager;
-import be.mrtus.common.domain.SettingsManagerDefault;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

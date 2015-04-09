@@ -3,8 +3,8 @@ package project.domain.players;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import project.domain.Card;
-import project.domain.CardFace;
+import project.domain.card.Card;
+import project.domain.card.CardFace;
 
 public abstract class Participant {
 

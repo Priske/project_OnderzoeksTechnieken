@@ -3,7 +3,7 @@ package project.domain.players;
 import java.util.Collections;
 import java.util.List;
 import project.domain.Action;
-import project.domain.Card;
+import project.domain.card.Card;
 import project.domain.statistics.StatisticsCollector;
 import project.domain.statistics.Turn;
 import project.domain.strategies.PlayStyle;
