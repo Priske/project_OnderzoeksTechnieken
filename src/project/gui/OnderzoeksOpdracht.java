@@ -13,11 +13,11 @@ import project.domain.strategies.ThorpsPlayStyle;
 
 public class OnderzoeksOpdracht extends Application {
 
-	private BlackjackGame game;
-
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	private BlackjackGame game;
 
 	@Override
 	public void start(Stage stage) {
@@ -29,6 +29,10 @@ public class OnderzoeksOpdracht extends Application {
 		System.exit(0);
 	}
 
+	private Dealer createDealer() {
+		return new Dealer(this.game.getIntegerProperty("rules.number_decks"), new DealerPlayStyle());
+	}
+
 	private List<Player> createPlayers() {
 		List<Player> players = new ArrayList<>();
 		players.add(new Player("Ben", new MimicDealerPlaystyle()));
@@ -36,9 +40,5 @@ public class OnderzoeksOpdracht extends Application {
 		players.add(new Player("Siel", new ThorpsPlayStyle()));
 		players.add(new Player("Maxim", new ThorpsPlayStyle()));
 		return players;
-	}
-
-	private Dealer createDealer() {
-		return new Dealer(this.game.getIntegerProperty("rules.number_decks"), new DealerPlayStyle());
 	}
 }
