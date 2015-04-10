@@ -10,6 +10,9 @@ import java.util.stream.IntStream;
 import project.domain.players.Dealer;
 import project.domain.players.Participant;
 import project.domain.players.Player;
+import project.domain.strategies.DealerPlayStyle;
+import project.domain.strategies.MimicDealerPlaystyle;
+import project.domain.strategies.ThorpsPlayStyle;
 
 public class BlackjackGame implements SettingsManager {
 
@@ -21,6 +24,11 @@ public class BlackjackGame implements SettingsManager {
 	public BlackjackGame() {
 		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
 		this.restoreDefault();
+
+		this.setDealer(this.createDealer());
+		this.setPlayers(this.createPlayers());
+//		this.play(this.game.getIntegerProperty("rules.number_games_played"));
+		this.play(10);
 	}
 
 	@Override
@@ -109,6 +117,19 @@ public class BlackjackGame implements SettingsManager {
 				player.won();
 			}
 		});
+	}
+
+	private Dealer createDealer() {
+		return new Dealer(this.getIntegerProperty("rules.number_decks"), new DealerPlayStyle());
+	}
+
+	private List<Player> createPlayers() {
+		List<Player> players = new ArrayList<>();
+		players.add(new Player("Ben", new MimicDealerPlaystyle()));
+		players.add(new Player("Michiel", new MimicDealerPlaystyle()));
+		players.add(new Player("Siel", new ThorpsPlayStyle()));
+		players.add(new Player("Maxim", new ThorpsPlayStyle()));
+		return players;
 	}
 
 	private void finishGameRound() {
