@@ -13,14 +13,14 @@ import project.domain.players.Player;
 public class DealerPlayStyle {
 
 	public Action play(Dealer dealer, List<Player> players) {
-		List<Player> filteredList = players.stream().filter(player -> player.getValue() <= 21).collect(Collectors.toList());
+		List<Player> filteredList = players.stream().filter(player -> player.getScore() <= 21).collect(Collectors.toList());
 		if(filteredList.size() == 1) {
 			Player player = filteredList.get(0);
-			if(player.getValue() > dealer.getValue()) {
+			if(player.getScore() > dealer.getScore()) {
 				return Action.HIT;
 			}
 			return Action.STAY;
-		} else if(dealer.getValue() <= 16) {
+		} else if(dealer.getScore() <= 16) {
 			return Action.HIT;
 		}
 		return Action.STAY;

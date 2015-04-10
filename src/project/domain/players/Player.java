@@ -1,24 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.domain.players;
 
 import java.util.Collections;
 import java.util.List;
 import project.domain.Action;
-import project.domain.Card;
+import project.domain.card.Card;
+import project.domain.statistics.StatisticsCollector;
+import project.domain.statistics.Turn;
 import project.domain.strategies.PlayStyle;
 
-/**
-
- @author Ben
- */
 public class Player extends Participant {
 
-	private boolean done = false;
 	private final PlayStyle playStyle;
+	private StatisticsCollector collector;
 
 	public Player(String name, PlayStyle playStyle) {
 		super(name);
@@ -30,27 +23,27 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
-	public void done() {
-		this.done = true;
-	}
-
 	public List<Card> getHand() {
 		return Collections.unmodifiableList(this.hand);
 	}
 
-	public boolean isDone() {
-		return this.done;
-	}
-
 	public Action play(Dealer dealer) {
 		Action action = this.playStyle.play(this, dealer);
+		Turn turn;
 		if(action == Action.HIT) {
-			this.requestCard(dealer);
+			turn = new Turn(this, action, this.hand, this.requestCard(dealer));
+		} else {
+			turn = new Turn(this, action, this.hand);
+		}
+		if(this.collector != null) {
+			this.collector.addTurn(turn);
 		}
 		return action;
 	}
 
-	private void requestCard(Dealer dealer) {
-		this.addCard(dealer.deal());
+	private Card requestCard(Dealer dealer) {
+		Card card = dealer.deal();
+		this.addCard(card);
+		return card;
 	}
 }

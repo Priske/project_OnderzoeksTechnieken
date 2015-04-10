@@ -1,33 +1,65 @@
 package project.domain;
 
+import be.mrtus.common.domain.SettingsManager;
+import be.mrtus.common.domain.SettingsManagerDefault;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.IntStream;
 import project.domain.players.Dealer;
 import project.domain.players.Participant;
 import project.domain.players.Player;
+import project.domain.strategies.DealerPlayStyle;
+import project.domain.strategies.MimicDealerPlaystyle;
+import project.domain.strategies.ThorpsPlayStyle;
 
-public class BlackjackGame {
+public class BlackjackGame implements SettingsManager {
 
-	private final Dealer dealer;
+	private Dealer dealer;
 	private int gamesPlayed;
-	private final List<Player> players;
-	private final Rules rules;
+	private final List<Player> players = new ArrayList<>();
+	private final SettingsManager settingsMgr;
 
-	public BlackjackGame(Dealer dealer, List<Player> players, Rules rules) {
+	public BlackjackGame() {
+		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
+		this.restoreDefault();
+
+		this.setDealer(this.createDealer());
+		this.setPlayers(this.createPlayers());
+//		this.play(this.game.getIntegerProperty("rules.number_games_played"));
+		this.play(10);
+	}
+
+	@Override
+	public boolean getBoolProperty(String key) {
+		return this.settingsMgr.getBoolProperty(key);
+	}
+
+	public void setDealer(Dealer dealer) {
 		this.dealer = dealer;
-		this.players = players;
-		this.rules = rules;
+	}
+
+	@Override
+	public int getIntegerProperty(String key) {
+		return this.settingsMgr.getIntegerProperty(key);
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players.clear();
+		this.players.addAll(players);
+	}
+
+	@Override
+	public String getProperty(String key) {
+		return this.settingsMgr.getProperty(key);
 	}
 
 	public void play(int times) {
 		long start = System.currentTimeMillis();
 		do {
 			this.gamesPlayed++;
-//			System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 			this.initiateGameRound();
-//			System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 			List<Player> tempPlayers = new ArrayList<>(this.players);
 			do {
 				Iterator<Player> iter = tempPlayers.iterator();
@@ -38,42 +70,41 @@ public class BlackjackGame {
 					}
 				}
 			} while (!tempPlayers.isEmpty());
-//			ArrayList<Player> donePlaying = new ArrayList<>();
-//			do {
-//				this.players.stream().forEach(player -> {
-//					if(player.play(this.dealer) != Action.HIT) {
-//						donePlaying.add(player);
-//						player.done();
-////						System.out.println(player.getName() + ": stays");
-//					} else {
-////						System.out.println(player.getName() + ": gets a card");
-//					}
-//				});
-//			} while (this.players.size() > donePlaying.size());
-//			if(this.players.stream().filter(p -> !p.isDone()).count() > 0) {
-//				System.out.println("PLAYERS ARE NOT DONE PLAYING YET, YOU EVIL BASTARD");
-//			}
-			do {
+			while (true) {
 				if(this.dealer.play(this.players) != Action.HIT) {
 					break;
-					// System.out.println("Dealer Stays");
-				} else {
-					// System.out.println("Dealer gets a card");
 				}
-			} while (true);
-//			this.printPlayerHands();
+			}
 			this.finishGameRound();
-//			this.printGameScore();
-//			System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
 		} while (times > this.gamesPlayed);
 		this.printGameSummary();
 		System.out.println("Game batch took: " + (System.currentTimeMillis() - start) + "ms");
 	}
 
+	@Override
+	public void restoreDefault() {
+		this.settingsMgr.restoreDefault();
+	}
+
+	@Override
+	public void setProperty(String key, boolean value) {
+		this.settingsMgr.setProperty(key, key);
+	}
+
+	@Override
+	public void setProperty(String key, int value) {
+		this.settingsMgr.setProperty(key, value);
+	}
+
+	@Override
+	public void setProperty(String key, String value) {
+		this.settingsMgr.setProperty(key, value);
+	}
+
 	private void checkWinner(Dealer dealer, List<Player> players) {
-		int dealerValue = dealer.getValue();
+		int dealerValue = dealer.getScore();
 		players.stream().forEach(player -> {
-			int playerValue = player.getValue();
+			int playerValue = player.getScore();
 			if(playerValue > 21 || playerValue <= dealerValue && dealerValue <= 21) {
 				if(playerValue > 21) {
 					player.burned();
@@ -88,9 +119,34 @@ public class BlackjackGame {
 		});
 	}
 
+	private Dealer createDealer() {
+		return new Dealer(this.getIntegerProperty("rules.number_decks"), new DealerPlayStyle());
+	}
+
+	private List<Player> createPlayers() {
+		List<Player> players = new ArrayList<>();
+		players.add(new Player("Ben", new MimicDealerPlaystyle()));
+		players.add(new Player("Michiel", new MimicDealerPlaystyle()));
+		players.add(new Player("Siel", new ThorpsPlayStyle()));
+		players.add(new Player("Maxim", new ThorpsPlayStyle()));
+		return players;
+	}
+
 	private void finishGameRound() {
+//		this.printPlayerHands();
 		this.checkWinner(this.dealer, this.players);
 		this.dealer.collectCards(this.players);
+//		this.printGameSummary();
+//		System.out.println("*** Game " + (this.gamesPlayed) + " ended ***\n\n\n");
+	}
+
+	private Properties getDefaultProperties() {
+		Properties props = new Properties();
+		props.setProperty("rules.number_decks", "8");
+		props.setProperty("rules.number_players", "4");
+		props.setProperty("rules.number_cards_played_before_shuffle", "0");
+		props.setProperty("rules.number_games_played", "1000");
+		return props;
 	}
 
 	private double getWinPercentage(double value) {
@@ -98,10 +154,12 @@ public class BlackjackGame {
 	}
 
 	private void initiateGameRound() {
+//		System.out.println("*** Game " + (this.gamesPlayed + 1) + " started ***");
 		IntStream.range(0, 2).forEach(i -> {
 			this.players.forEach(p -> p.addCard(this.dealer.deal()));
 			this.dealer.takeCard();
 		});
+//		System.out.println("Dealer top card:\n\t" + this.dealer.showTopCard());
 	}
 
 	private void printGameSummary() {
@@ -112,7 +170,7 @@ public class BlackjackGame {
 	}
 
 	private void printParticipantHand(Participant p) {
-		System.out.println("\t" + p.getName() + ":\n\t\t" + p.toString() + "\n\t\tValue: " + p.getValue());
+		System.out.println("\t" + p.getName() + ":\n\t\t" + p.toString() + "\n\t\tValue: " + p.getScore());
 	}
 
 	private void printPlayerHands() {

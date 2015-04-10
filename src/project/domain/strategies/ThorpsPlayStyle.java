@@ -2,8 +2,8 @@ package project.domain.strategies;
 
 import java.util.List;
 import project.domain.Action;
-import project.domain.Card;
-import project.domain.CardFace;
+import project.domain.card.Card;
+import project.domain.card.CardFace;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -15,17 +15,17 @@ public class ThorpsPlayStyle implements PlayStyle {
 
 	@Override
 	public Action play(Player player, Dealer dealer) {
-		if(player.countAces() == 1 && player.getValue() < 16) {
+		if(player.countAces() == 1 && player.getScore() < 16) {
 			return this.acePlay(dealer.showTopCard(), this.getNonAceCard(player.getHand()));
 		} else if(player.countAces() == 2) {
-			if(player.getValue() < 17) {
+			if(player.getScore() < 17) {
 				return Action.HIT;
 			}
 			return Action.STAY;
 		} else {
 			switch (dealer.showTopCard().getFace()) {
 				case ACE:
-					if(player.getValue() < 17) {
+					if(player.getScore() < 17) {
 						return Action.HIT;
 					}
 					return Action.STAY;
@@ -35,14 +35,14 @@ public class ThorpsPlayStyle implements PlayStyle {
 //					}
 //					return Action.STAY;
 				case THREE:
-					if(player.getValue() < 13) {
+					if(player.getScore() < 13) {
 						return Action.HIT;
 					}
 					return Action.STAY;
 				case FOUR:
 				case FIVE:
 				case SIX:
-					if(player.getValue() < 12) {
+					if(player.getScore() < 12) {
 						return Action.HIT;
 					}
 					return Action.STAY;
@@ -53,7 +53,7 @@ public class ThorpsPlayStyle implements PlayStyle {
 				case JACK:
 				case QUEEN:
 				case KING:
-					if(player.getValue() < 17) {
+					if(player.getScore() < 17) {
 						return Action.HIT;
 					}
 					return Action.STAY;

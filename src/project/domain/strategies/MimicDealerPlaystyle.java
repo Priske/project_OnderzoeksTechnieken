@@ -17,7 +17,7 @@ public class MimicDealerPlaystyle implements PlayStyle {
 
 	@Override
 	public Action play(Player player, Dealer dealer) {
-		int playerValue = player.getValue();
+		int playerValue = player.getScore();
 		if(playerValue < 17) {
 			return Action.HIT;
 		}

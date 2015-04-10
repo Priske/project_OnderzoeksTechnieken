@@ -3,8 +3,8 @@ package project.domain.players;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import project.domain.Card;
-import project.domain.CardFace;
+import project.domain.card.Card;
+import project.domain.card.CardFace;
 
 public abstract class Participant {
 
@@ -39,19 +39,8 @@ public abstract class Participant {
 		return this.name;
 	}
 
-	public int getValue() {
-		int valueOutput = this.hand.stream().mapToInt(c -> c.getValue()).sum();
-		if(valueOutput > 21) {
-			for (Card c : this.hand) {
-				if(valueOutput <= 21) {
-					break;
-				}
-				if(c.getFace() == CardFace.ACE) {
-					valueOutput -= 10;
-				}
-			}
-		}
-		return valueOutput;
+	public int getScore() {
+		return Card.getScore(this.hand);
 	}
 
 	public int getWins() {
