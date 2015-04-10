@@ -10,7 +10,11 @@ import project.domain.strategy.dealer.DealerPlayStyleDefault;
 public class Dealer extends Participant {
 
 	private final CardDeck deck;
-	private final DealerPlayStyle playStyle;
+	private DealerPlayStyle playStyle;
+
+	public Dealer() {
+		this(8, new DealerPlayStyleDefault());
+	}
 
 	public Dealer(int numberOfDecks, DealerPlayStyleDefault ps) {
 		super("Dealer");
@@ -30,6 +34,10 @@ public class Dealer extends Participant {
 
 	public DealerPlayStyle getStrategy() {
 		return this.playStyle;
+	}
+
+	public void setStrategy(DealerPlayStyle strategy) {
+		this.playStyle = strategy;
 	}
 
 	public Action play(List<Player> players) {

@@ -11,9 +11,9 @@ import project.domain.card.CardFace;
 public abstract class Participant {
 
 	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
-	private int burned = 0;
+	private double burned = 0;
 	private final String name;
-	private int wins = 0;
+	private double wins = 0;
 
 	public Participant(String name) {
 		this.name = name;
@@ -49,7 +49,7 @@ public abstract class Participant {
 		return Card.getScore(this.hand);
 	}
 
-	public int getWins() {
+	public double getWins() {
 		return this.wins;
 	}
 

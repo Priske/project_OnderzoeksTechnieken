@@ -7,10 +7,6 @@ import project.domain.card.Card;
 import project.domain.card.CardFace;
 import project.domain.card.CardSuit;
 
-/**
-
- @author Ben
- */
 public class CardDeck {
 
 	private final int aantalDecks;
