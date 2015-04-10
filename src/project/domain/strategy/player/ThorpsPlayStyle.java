@@ -4,6 +4,7 @@ import java.util.List;
 import project.domain.Action;
 import project.domain.card.Card;
 import project.domain.card.CardFace;
+import project.domain.exceptions.NonAceCardNotFoundException;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 import project.domain.strategy.PlayerPlayStyle;
@@ -83,7 +84,7 @@ public class ThorpsPlayStyle implements PlayerPlayStyle {
 	}
 
 	private Card getNonAceCard(List<Card> hand) {
-//		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElseThrow(new NonAceCardNotFoundException());
-		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElse(null);
+		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElseThrow(() -> new NonAceCardNotFoundException());
+//		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElse(null);
 	}
 }

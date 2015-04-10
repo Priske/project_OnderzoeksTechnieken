@@ -22,7 +22,7 @@ public class BlackjackGame implements SettingsManager {
 
 	public BlackjackGame() {
 		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
-		this.restoreDefault();
+//		this.restoreDefault();
 
 		this.participantMgr = new ParticipantManager();
 		this.setPlayers(this.createPlayers());

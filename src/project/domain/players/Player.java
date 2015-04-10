@@ -9,11 +9,14 @@ import project.domain.strategy.PlayerPlayStyle;
 
 public class Player extends Participant {
 
+	private static int _id;
 	private StatisticsCollector collector;
-	private final PlayerPlayStyle playStyle;
+	private final int id;
+	private PlayerPlayStyle playStyle;
 
 	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
+		this.id = _id++;
 		this.playStyle = playStyle;
 	}
 
@@ -22,8 +25,16 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
+	public boolean equalsId(int id) {
+		return this.id == id;
+	}
+
 	public PlayerPlayStyle getStrategy() {
 		return this.playStyle;
+	}
+
+	public void setStrategy(PlayerPlayStyle strategy) {
+		this.playStyle = strategy;
 	}
 
 	public Action play(Dealer dealer) {
