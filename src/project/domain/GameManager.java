@@ -27,6 +27,10 @@ public class GameManager {
 		});
 	}
 
+	public void setNumberGamesToPlay(int gamesToPlay) {
+		this.gamesToPlay.set(gamesToPlay);
+	}
+
 	public SimpleDoubleProperty gamesPlayedProperty() {
 		return this.gamesPlayed;
 	}

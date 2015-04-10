@@ -10,15 +10,14 @@ import project.domain.players.Dealer;
 import project.domain.players.Participant;
 import project.domain.players.ParticipantManager;
 import project.domain.players.Player;
-import project.domain.strategy.dealer.DealerPlayStyleDefault;
 import project.domain.strategy.player.MimicDealerPlaystyle;
 import project.domain.strategy.player.ThorpsPlayStyle;
 
 public class BlackjackGame implements SettingsManager {
 
-	private final SettingsManager settingsMgr;
-	private final ParticipantManager participantMgr;
 	private final GameManager gameMgr;
+	private final ParticipantManager participantMgr;
+	private final SettingsManager settingsMgr;
 
 	public BlackjackGame() {
 		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
@@ -28,6 +27,8 @@ public class BlackjackGame implements SettingsManager {
 		this.setPlayers(this.createPlayers());
 
 		this.gameMgr = new GameManager(this);
+
+		this.loadSettings();
 
 //		this.play();
 	}
@@ -54,6 +55,29 @@ public class BlackjackGame implements SettingsManager {
 	@Override
 	public int getIntegerProperty(String key) {
 		return this.settingsMgr.getIntegerProperty(key);
+	}
+
+	public int getNumberDecks() {
+		return this.participantMgr.getNumberDecks();
+	}
+
+	public void setNumberDecks(int numberDecks) {
+		this.participantMgr.setNumberDecks(numberDecks);
+		this.setProperty("rules.number_decks", numberDecks);
+	}
+
+	public void setNumberGamesToPlay(int gamesToPlay) {
+		this.gameMgr.setNumberGamesToPlay(gamesToPlay);
+		this.setProperty("rules.number_games_to_play", gamesToPlay);
+	}
+
+	public int getNumberPlayers() {
+		return this.participantMgr.getNumberPlayers();
+	}
+
+	public void setNumberPlayers(int numberPlayers) {
+		this.participantMgr.setNumberPlayers(numberPlayers);
+		this.setProperty("rules.number_players", numberPlayers);
 	}
 
 	public ObservableList<Player> getPlayers() {
@@ -96,10 +120,6 @@ public class BlackjackGame implements SettingsManager {
 		this.settingsMgr.setProperty(key, value);
 	}
 
-	private Dealer createDealer() {
-		return new Dealer(this.getIntegerProperty("rules.number_decks"), new DealerPlayStyleDefault());
-	}
-
 	private List<Player> createPlayers() {
 		List<Player> list = new ArrayList<>();
 		list.add(new Player("Ben", new MimicDealerPlaystyle()));
@@ -120,6 +140,11 @@ public class BlackjackGame implements SettingsManager {
 
 	private double getWinPercentage(double value, double gamesPlayed) {
 		return (value / gamesPlayed) * 100;
+	}
+
+	private void loadSettings() {
+		this.participantMgr.setNumberDecks(this.getIntegerProperty("rules.number_decks"));
+		this.participantMgr.setNumberPlayers(this.getIntegerProperty("rules.number_players"));
 	}
 
 	private void printGameSummary() {

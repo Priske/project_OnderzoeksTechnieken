@@ -1,11 +1,13 @@
 package project;
 
-import be.mrtus.common.gui.StyleChoiceBox;
 import be.mrtus.common.gui.UnCollapsibleAccordionListener;
+import be.mrtus.common.gui.control.NumericField;
+import be.mrtus.common.gui.control.StyleChoiceBox;
 import java.util.Properties;
 import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -60,7 +62,46 @@ public class OnderzoeksOpdracht extends Application {
 			{
 				VBox vBox = new VBox();
 				{
-
+					vBox.setFillWidth(true);
+					vBox.setSpacing(10);
+					HBox hBoxNumberOfDecks = new HBox();
+					{
+						hBoxNumberOfDecks.setFillHeight(true);
+						hBoxNumberOfDecks.setSpacing(10);
+						hBoxNumberOfDecks.getChildren().add(new Label("Number decks"));
+						NumericField numericField = new NumericField();
+						{
+							numericField.setAlignment(Pos.CENTER_RIGHT);
+							numericField.setPrefWidth(50);
+							numericField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+								if(newValue.matches("[0-9]+")) {
+									this.game.setNumberDecks(Integer.parseInt(newValue));
+								}
+							});
+							numericField.setText(this.game.getNumberDecks() + "");
+						}
+						hBoxNumberOfDecks.getChildren().add(numericField);
+					}
+					vBox.getChildren().add(hBoxNumberOfDecks);
+					HBox hBoxNumberPlayers = new HBox();
+					{
+						hBoxNumberPlayers.setFillHeight(true);
+						hBoxNumberPlayers.setSpacing(10);
+						hBoxNumberPlayers.getChildren().add(new Label("Number players"));
+						NumericField numericField = new NumericField();
+						{
+							numericField.setAlignment(Pos.CENTER_RIGHT);
+							numericField.setPrefWidth(50);
+							numericField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+								if(newValue.matches("[0-9]+")) {
+									this.game.setNumberPlayers(Integer.parseInt(newValue));
+								}
+							});
+							numericField.setText(this.game.getNumberPlayers() + "");
+						}
+						hBoxNumberPlayers.getChildren().add(numericField);
+					}
+					vBox.getChildren().add(hBoxNumberPlayers);
 				}
 				borderPane.setCenter(vBox);
 			}

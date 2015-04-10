@@ -22,6 +22,14 @@ public class Dealer extends Participant {
 		this.playStyle = ps;
 	}
 
+	public int getNumberDecks() {
+		return this.deck.getNumberDecks();
+	}
+
+	public void setNumberDecks(int numberDecks) {
+		this.deck.setNumberDecks(numberDecks);
+	}
+
 	public void collectCards(List<Player> players) {
 		this.deck.addCards(this.emptyHand());
 		players.stream().forEach(p -> this.deck.addCards(p.emptyHand()));

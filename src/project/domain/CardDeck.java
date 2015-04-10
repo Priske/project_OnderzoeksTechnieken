@@ -9,12 +9,21 @@ import project.domain.card.CardSuit;
 
 public class CardDeck {
 
-	private final int aantalDecks;
+	private int aantalDecks;
 	private final Queue<Card> cards = new ArrayDeque<>();
 
 	public CardDeck(int decks) {
 		this.aantalDecks = decks;
-		this.createDeck();
+		this.reset();
+	}
+
+	public int getNumberDecks() {
+		return this.aantalDecks;
+	}
+
+	public void setNumberDecks(int numberDecks) {
+		this.aantalDecks = numberDecks;
+		this.reset();
 	}
 
 	public int getSize() {

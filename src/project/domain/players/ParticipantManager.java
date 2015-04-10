@@ -2,6 +2,7 @@ package project.domain.players;
 
 import java.util.List;
 import java.util.Optional;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import project.domain.exceptions.PlayerNotFoundException;
@@ -12,6 +13,7 @@ public class ParticipantManager {
 
 	private final Dealer dealer;
 	private final ObservableList<Player> players = FXCollections.observableArrayList();
+	private final SimpleIntegerProperty numberOfPlayers = new SimpleIntegerProperty();
 
 	public ParticipantManager() {
 		this.dealer = new Dealer();
@@ -28,8 +30,28 @@ public class ParticipantManager {
 		return this.dealer;
 	}
 
+	public SimpleIntegerProperty numberPlayersProperty() {
+		return this.numberOfPlayers;
+	}
+
+	public int getNumberPlayers() {
+		return this.numberOfPlayers.get();
+	}
+
+	public void setNumberPlayers(int numberPlayers) {
+		this.numberOfPlayers.set(numberPlayers);
+	}
+
 	public void setDealerStrategy(DealerPlayStyle strategy) {
 		this.dealer.setStrategy(strategy);
+	}
+
+	public int getNumberDecks() {
+		return this.dealer.getNumberDecks();
+	}
+
+	public void setNumberDecks(int numberDecks) {
+		this.dealer.setNumberDecks(numberDecks);
 	}
 
 	public ObservableList<Player> getPlayers() {
