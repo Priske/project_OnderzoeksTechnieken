@@ -32,6 +32,11 @@ public class BlackjackGame implements SettingsManager {
 	}
 
 	@Override
+	public void addDefaultProperties(Properties properties) {
+		this.settingsMgr.addDefaultProperties(properties);
+	}
+
+	@Override
 	public boolean getBoolProperty(String key) {
 		return this.settingsMgr.getBoolProperty(key);
 	}
