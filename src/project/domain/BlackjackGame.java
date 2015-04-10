@@ -32,6 +32,11 @@ public class BlackjackGame implements SettingsManager {
 //		this.play();
 	}
 
+	public BlackjackGame(Properties props) {
+		this();
+		this.addDefaultProperties(props);
+	}
+
 	@Override
 	public void addDefaultProperties(Properties properties) {
 		this.settingsMgr.addDefaultProperties(properties);
