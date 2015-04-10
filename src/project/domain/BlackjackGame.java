@@ -83,7 +83,7 @@ public class BlackjackGame implements SettingsManager {
 
 	@Override
 	public void setProperty(String key, boolean value) {
-		this.settingsMgr.setProperty(key, key);
+		this.settingsMgr.setProperty(key, value);
 	}
 
 	@Override
