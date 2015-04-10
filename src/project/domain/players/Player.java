@@ -34,10 +34,16 @@ public class Player extends Participant {
 	}
 
 	public void setStrategy(PlayerPlayStyle strategy) {
+		if(strategy == null) {
+			throw new IllegalArgumentException("Strategy cannot be null.");
+		}
 		this.playStyle = strategy;
 	}
 
 	public Action play(Dealer dealer) {
+		if(dealer == null) {
+			throw new IllegalArgumentException("Dealer cannnot be null.");
+		}
 		Action action = this.playStyle.play(this, dealer);
 		Turn turn;
 		if(action == Action.HIT) {
@@ -52,6 +58,9 @@ public class Player extends Participant {
 	}
 
 	private Card requestCard(Dealer dealer) {
+		if(dealer == null) {
+			throw new IllegalArgumentException("Dealer cannnot be null.");
+		}
 		Card card = dealer.deal();
 		this.addCard(card);
 		return card;

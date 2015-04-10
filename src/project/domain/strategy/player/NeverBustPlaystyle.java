@@ -14,6 +14,12 @@ public class NeverBustPlaystyle implements PlayerPlayStyle {
 
 	@Override
 	public Action play(Player player, Dealer dealer) {
+		if(dealer == null) {
+			throw new IllegalArgumentException("Dealer cannnot be null.");
+		}
+		if(player == null) {
+			throw new IllegalArgumentException("Player cannot be null.");
+		}
 		if(player.getScore() > 10) {
 			return Action.STAY;
 		}

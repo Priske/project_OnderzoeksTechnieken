@@ -45,6 +45,9 @@ public class Dealer extends Participant {
 	}
 
 	public void setStrategy(DealerPlayStyle strategy) {
+		if(strategy == null) {
+			throw new IllegalArgumentException("Strategy cannot be null.");
+		}
 		this.playStyle = strategy;
 	}
 

@@ -145,6 +145,7 @@ public class BlackjackGame implements SettingsManager {
 	private void loadSettings() {
 		this.participantMgr.setNumberDecks(this.getIntegerProperty("rules.number_decks"));
 		this.participantMgr.setNumberPlayers(this.getIntegerProperty("rules.number_players"));
+		this.gameMgr.setNumberGamesToPlay(this.getIntegerProperty("rules.number_games_to_play"));
 	}
 
 	private void printGameSummary() {

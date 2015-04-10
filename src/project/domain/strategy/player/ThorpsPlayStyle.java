@@ -18,6 +18,12 @@ public class ThorpsPlayStyle implements PlayerPlayStyle {
 
 	@Override
 	public Action play(Player player, Dealer dealer) {
+		if(dealer == null) {
+			throw new IllegalArgumentException("Dealer cannnot be null.");
+		}
+		if(player == null) {
+			throw new IllegalArgumentException("Player cannot be null.");
+		}
 		if(player.countAces() == 1 && player.getScore() < 16) {
 			return this.acePlay(dealer.showTopCard(), this.getNonAceCard(player.getHand()));
 		} else if(player.countAces() == 2) {
@@ -63,6 +69,12 @@ public class ThorpsPlayStyle implements PlayerPlayStyle {
 	}
 
 	private Action acePlay(Card dealerCard, Card playerCard) {
+		if(dealerCard == null) {
+			throw new IllegalArgumentException("Dealer card cannot be null.");
+		}
+		if(playerCard == null) {
+			throw new IllegalArgumentException("Player card cannot be null.");
+		}
 		switch (playerCard.getFace()) {
 			case DEUCE:
 			case THREE:
@@ -84,6 +96,9 @@ public class ThorpsPlayStyle implements PlayerPlayStyle {
 	}
 
 	private Card getNonAceCard(List<Card> hand) {
+		if(hand == null) {
+			throw new IllegalArgumentException("Card list cannot be null.");
+		}
 		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElseThrow(() -> new NonAceCardNotFoundException());
 //		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElse(null);
 	}

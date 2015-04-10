@@ -28,6 +28,9 @@ public class GameManager {
 	}
 
 	public void setNumberGamesToPlay(int gamesToPlay) {
+		if(gamesToPlay < 1) {
+			throw new IllegalArgumentException("Games to play cannot be smaller then 1.");
+		}
 		this.gamesToPlay.set(gamesToPlay);
 	}
 
@@ -49,7 +52,7 @@ public class GameManager {
 
 	public void play() {
 		do {
-			this.gamesPlayed.set(this.gamesPlayed.add(1).get());
+			this.gamesPlayed.set(this.gamesPlayed.get() + 1);
 			this.playRound();
 		} while (this.gamesToPlay.get() > this.gamesPlayed.get());
 	}

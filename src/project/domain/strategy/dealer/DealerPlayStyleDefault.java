@@ -16,6 +16,12 @@ public class DealerPlayStyleDefault implements DealerPlayStyle {
 
 	@Override
 	public Action play(Dealer dealer, List<Player> players) {
+		if(dealer == null) {
+			throw new IllegalArgumentException("Dealer cannnot be null.");
+		}
+		if(players == null) {
+			throw new IllegalArgumentException("Player list cannot be null.");
+		}
 		List<Player> filteredList = players.stream().filter(player -> player.getScore() <= 21).collect(Collectors.toList());
 		if(filteredList.size() == 1) {
 			Player player = filteredList.get(0);

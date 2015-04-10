@@ -39,6 +39,9 @@ public class ParticipantManager {
 	}
 
 	public void setNumberPlayers(int numberPlayers) {
+		if(numberPlayers < 1) {
+			throw new IllegalArgumentException("Number of players cannot be smaller then 1.");
+		}
 		this.numberOfPlayers.set(numberPlayers);
 	}
 
@@ -59,6 +62,9 @@ public class ParticipantManager {
 	}
 
 	public void setPlayers(List<Player> players) {
+		if(players == null) {
+			throw new IllegalArgumentException("Player list cannot be null.");
+		}
 		this.players.clear();
 		this.players.addAll(players);
 	}

@@ -22,6 +22,9 @@ public class CardDeck {
 	}
 
 	public void setNumberDecks(int numberDecks) {
+		if(numberDecks < 1) {
+			throw new IllegalArgumentException("Number of decks cannot be smaller then 1.");
+		}
 		this.aantalDecks = numberDecks;
 		this.reset();
 	}
