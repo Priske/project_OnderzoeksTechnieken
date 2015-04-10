@@ -8,10 +8,6 @@ import project.domain.statistics.StatisticsCollector;
 import project.domain.statistics.Turn;
 import project.domain.strategies.PlayStyle;
 
-/**
-
- @author Ben
- */
 public class Player extends Participant {
 
 	private final PlayStyle playStyle;
@@ -35,9 +31,9 @@ public class Player extends Participant {
 		Action action = this.playStyle.play(this, dealer);
 		Turn turn;
 		if(action == Action.HIT) {
-			turn = new Turn(this, action, hand, this.requestCard(dealer));
+			turn = new Turn(this, action, this.hand, this.requestCard(dealer));
 		} else {
-			turn = new Turn(this, action, hand);
+			turn = new Turn(this, action, this.hand);
 		}
 		if(this.collector != null) {
 			this.collector.addTurn(turn);
