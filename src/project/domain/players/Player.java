@@ -1,30 +1,29 @@
 package project.domain.players;
 
-import java.util.Collections;
 import java.util.List;
 import project.domain.Action;
 import project.domain.card.Card;
 import project.domain.statistics.StatisticsCollector;
 import project.domain.statistics.Turn;
-import project.domain.strategies.PlayStyle;
+import project.domain.strategy.PlayerPlayStyle;
 
 public class Player extends Participant {
 
-	private final PlayStyle playStyle;
 	private StatisticsCollector collector;
+	private final PlayerPlayStyle playStyle;
 
-	public Player(String name, PlayStyle playStyle) {
+	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
 		this.playStyle = playStyle;
 	}
 
-	public Player(String name, PlayStyle playStyle, List<Card> cards) {
+	public Player(String name, PlayerPlayStyle playStyle, List<Card> cards) {
 		this(name, playStyle);
 		this.hand.addAll(cards);
 	}
 
-	public List<Card> getHand() {
-		return Collections.unmodifiableList(this.hand);
+	public PlayerPlayStyle getStrategy() {
+		return this.playStyle;
 	}
 
 	public Action play(Dealer dealer) {

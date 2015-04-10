@@ -2,16 +2,17 @@ package project.domain.players;
 
 import java.util.List;
 import project.domain.Action;
-import project.domain.card.Card;
 import project.domain.CardDeck;
-import project.domain.strategies.DealerPlayStyle;
+import project.domain.card.Card;
+import project.domain.strategy.DealerPlayStyle;
+import project.domain.strategy.dealer.DealerPlayStyleDefault;
 
 public class Dealer extends Participant {
 
 	private final CardDeck deck;
 	private final DealerPlayStyle playStyle;
 
-	public Dealer(int numberOfDecks, DealerPlayStyle ps) {
+	public Dealer(int numberOfDecks, DealerPlayStyleDefault ps) {
 		super("Dealer");
 		this.deck = new CardDeck(numberOfDecks);
 		this.playStyle = ps;
@@ -25,6 +26,10 @@ public class Dealer extends Participant {
 
 	public Card deal() {
 		return this.deck.getNewCard();
+	}
+
+	public DealerPlayStyle getStrategy() {
+		return this.playStyle;
 	}
 
 	public Action play(List<Player> players) {

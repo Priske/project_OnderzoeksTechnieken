@@ -1,14 +1,16 @@
-package project.domain.strategies;
+package project.domain.strategy.player;
 
 import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
+import project.domain.strategy.PlayerPlayStyle;
 
-/**
+public class NeverBustPlaystyle implements PlayerPlayStyle {
 
- @author Ben
- */
-public class NeverBustPlaystyle implements PlayStyle {
+	@Override
+	public String getName() {
+		return "Never bust";
+	}
 
 	@Override
 	public Action play(Player player, Dealer dealer) {

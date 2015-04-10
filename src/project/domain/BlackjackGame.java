@@ -7,19 +7,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.IntStream;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 import project.domain.players.Dealer;
 import project.domain.players.Participant;
 import project.domain.players.Player;
-import project.domain.strategies.DealerPlayStyle;
-import project.domain.strategies.MimicDealerPlaystyle;
-import project.domain.strategies.ThorpsPlayStyle;
+import project.domain.strategy.dealer.DealerPlayStyleDefault;
+import project.domain.strategy.player.MimicDealerPlaystyle;
+import project.domain.strategy.player.ThorpsPlayStyle;
 
 public class BlackjackGame implements SettingsManager {
 
 	private Dealer dealer;
-	private int gamesPlayed;
+	private final SimpleIntegerProperty gamesPlayed = new SimpleIntegerProperty();
 	private final List<Player> players = new ArrayList<>();
 	private final SettingsManager settingsMgr;
+	private final SimpleIntegerProperty gamesToPlay = new SimpleIntegerProperty();
 
 	public BlackjackGame() {
 		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
@@ -27,8 +30,13 @@ public class BlackjackGame implements SettingsManager {
 
 		this.setDealer(this.createDealer());
 		this.setPlayers(this.createPlayers());
-//		this.play(this.game.getIntegerProperty("rules.number_games_played"));
-		this.play(10);
+
+		this.gamesToPlay.set(this.getIntegerProperty("rules.number_games_to_play"));
+		this.gamesToPlay.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+			this.setProperty("rules.number_games_to_play", (int)newValue);
+		});
+
+//		this.play();
 	}
 
 	@Override
@@ -60,10 +68,10 @@ public class BlackjackGame implements SettingsManager {
 		return this.settingsMgr.getProperty(key);
 	}
 
-	public void play(int times) {
+	public void play() {
 		long start = System.currentTimeMillis();
 		do {
-			this.gamesPlayed++;
+			this.gamesPlayed.set(this.gamesPlayed.add(1).get());
 			this.initiateGameRound();
 			List<Player> tempPlayers = new ArrayList<>(this.players);
 			do {
@@ -81,7 +89,7 @@ public class BlackjackGame implements SettingsManager {
 				}
 			}
 			this.finishGameRound();
-		} while (times > this.gamesPlayed);
+		} while (this.gamesToPlay.get() > this.gamesPlayed.get());
 		this.printGameSummary();
 		System.out.println("Game batch took: " + (System.currentTimeMillis() - start) + "ms");
 	}
@@ -125,16 +133,16 @@ public class BlackjackGame implements SettingsManager {
 	}
 
 	private Dealer createDealer() {
-		return new Dealer(this.getIntegerProperty("rules.number_decks"), new DealerPlayStyle());
+		return new Dealer(this.getIntegerProperty("rules.number_decks"), new DealerPlayStyleDefault());
 	}
 
 	private List<Player> createPlayers() {
-		List<Player> players = new ArrayList<>();
-		players.add(new Player("Ben", new MimicDealerPlaystyle()));
-		players.add(new Player("Michiel", new MimicDealerPlaystyle()));
-		players.add(new Player("Siel", new ThorpsPlayStyle()));
-		players.add(new Player("Maxim", new ThorpsPlayStyle()));
-		return players;
+		List<Player> list = new ArrayList<>();
+		list.add(new Player("Ben", new MimicDealerPlaystyle()));
+		list.add(new Player("Michiel", new MimicDealerPlaystyle()));
+		list.add(new Player("Siel", new ThorpsPlayStyle()));
+		list.add(new Player("Maxim", new ThorpsPlayStyle()));
+		return list;
 	}
 
 	private void finishGameRound() {
@@ -150,12 +158,12 @@ public class BlackjackGame implements SettingsManager {
 		props.setProperty("rules.number_decks", "8");
 		props.setProperty("rules.number_players", "4");
 		props.setProperty("rules.number_cards_played_before_shuffle", "0");
-		props.setProperty("rules.number_games_played", "1000");
+		props.setProperty("rules.number_games_to_play", "1000");
 		return props;
 	}
 
 	private double getWinPercentage(double value) {
-		return (value / this.gamesPlayed) * 100;
+		return (value / this.gamesPlayed.get()) * 100;
 	}
 
 	private void initiateGameRound() {
@@ -171,7 +179,7 @@ public class BlackjackGame implements SettingsManager {
 		System.out.println("Game Summary: ");
 		System.out.println("\tGames played: " + this.gamesPlayed);
 		this.players.stream().forEach(player -> this.printPlayerScore(player));
-		System.out.println("\t" + this.dealer.getName() + ": \n\t\tWins: " + this.dealer.getWins() + "/" + (this.gamesPlayed * 4) + " -> " + ((double)this.dealer.getWins() / (this.gamesPlayed * 4)) * 100 + "%");
+		System.out.println("\t" + this.dealer.getName() + ": \n\t\tWins: " + this.dealer.getWins() + "/" + (this.gamesPlayed.get() * 4) + " -> " + ((double)this.dealer.getWins() / (this.gamesPlayed.get() * 4)) * 100 + "%");
 	}
 
 	private void printParticipantHand(Participant p) {

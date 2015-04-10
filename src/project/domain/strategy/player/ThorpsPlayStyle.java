@@ -1,4 +1,4 @@
-package project.domain.strategies;
+package project.domain.strategy.player;
 
 import java.util.List;
 import project.domain.Action;
@@ -6,12 +6,14 @@ import project.domain.card.Card;
 import project.domain.card.CardFace;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
+import project.domain.strategy.PlayerPlayStyle;
 
-/**
+public class ThorpsPlayStyle implements PlayerPlayStyle {
 
- @author Ben
- */
-public class ThorpsPlayStyle implements PlayStyle {
+	@Override
+	public String getName() {
+		return "Thorps";
+	}
 
 	@Override
 	public Action play(Player player, Dealer dealer) {
@@ -30,10 +32,6 @@ public class ThorpsPlayStyle implements PlayStyle {
 					}
 					return Action.STAY;
 				case DEUCE:
-//					if(player.getValue() < 13) {
-//						return Action.HIT;
-//					}
-//					return Action.STAY;
 				case THREE:
 					if(player.getScore() < 13) {
 						return Action.HIT;
@@ -85,7 +83,7 @@ public class ThorpsPlayStyle implements PlayStyle {
 	}
 
 	private Card getNonAceCard(List<Card> hand) {
-//		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElseThrow(new NoNonAceCardFoundException());
+//		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElseThrow(new NonAceCardNotFoundException());
 		return hand.stream().filter(c -> c.getFace() != CardFace.ACE).findFirst().orElse(null);
 	}
 }

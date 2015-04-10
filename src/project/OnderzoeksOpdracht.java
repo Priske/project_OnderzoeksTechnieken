@@ -1,9 +1,11 @@
-package project.gui;
+package project;
 
 import java.util.Properties;
 import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import project.domain.*;
 
@@ -29,9 +31,17 @@ public class OnderzoeksOpdracht extends Application {
 	@Override
 	public void start(Stage stage) {
 		Application.setUserAgentStylesheet(this.game.getProperty("gui.style"));
-		stage.setScene(null);
+		stage.setScene(this.buildScene());
 		stage.setTitle("BlackJack - Analystics");
 		stage.show();
+	}
+
+	private Scene buildScene() {
+		BorderPane borderPane = new BorderPane();
+		{
+
+		}
+		return new Scene(borderPane, 800, 600);
 	}
 
 	private Properties getDefaultProperties() {

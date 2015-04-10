@@ -3,12 +3,14 @@ package project.domain.players;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import project.domain.card.Card;
 import project.domain.card.CardFace;
 
 public abstract class Participant {
 
-	protected final List<Card> hand = new ArrayList<>();
+	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
 	private int burned = 0;
 	private final String name;
 	private int wins = 0;
@@ -33,6 +35,10 @@ public abstract class Participant {
 		List<Card> cards = new ArrayList<>(this.hand);
 		this.hand.clear();
 		return cards;
+	}
+
+	public ObservableList<Card> getHand() {
+		return this.hand;
 	}
 
 	public String getName() {
