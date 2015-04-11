@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import project.domain.players.Dealer;
@@ -14,7 +14,7 @@ public class GameManager {
 
 	private final BlackjackGame controller;
 	private final Dealer dealer;
-	private final SimpleDoubleProperty gamesPlayed = new SimpleDoubleProperty();
+	private final SimpleIntegerProperty gamesPlayed = new SimpleIntegerProperty();
 	private final SimpleIntegerProperty gamesToPlay = new SimpleIntegerProperty();
 	private final List<Player> players;
 
@@ -28,11 +28,11 @@ public class GameManager {
 		});
 	}
 
-	public SimpleDoubleProperty gamesPlayedProperty() {
+	public ReadOnlyIntegerProperty gamesPlayedProperty() {
 		return this.gamesPlayed;
 	}
 
-	public SimpleIntegerProperty gamesToPlayerProperty() {
+	public ReadOnlyIntegerProperty gamesToPlayerProperty() {
 		return this.gamesToPlay;
 	}
 
@@ -56,6 +56,7 @@ public class GameManager {
 			this.gamesPlayed.set(this.gamesPlayed.get() + 1);
 			this.playRound();
 		} while (this.gamesToPlay.get() > this.gamesPlayed.get());
+		this.resetGame();
 	}
 
 	private void checkWinner() {
@@ -114,5 +115,9 @@ public class GameManager {
 		this.playDealer();
 		this.playPlayers();
 		this.finishGameRound();
+	}
+
+	private void resetGame() {
+		this.gamesPlayed.set(0);
 	}
 }

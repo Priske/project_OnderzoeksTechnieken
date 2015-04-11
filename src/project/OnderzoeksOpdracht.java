@@ -69,7 +69,7 @@ public class OnderzoeksOpdracht extends Application {
 				TableColumn strategy = new TableColumn("Strategy");
 				{
 					strategy.setPrefWidth(75);
-					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(game.getPlayerStrategies()));
+					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getPlayerStrategies()));
 				}
 				table.getColumns().add(strategy);
 				table.setItems(this.game.getPlayers());
@@ -185,7 +185,7 @@ public class OnderzoeksOpdracht extends Application {
 				tabPane.getTabs().add(this.createPlayerTab());
 			}
 			borderPane.setCenter(tabPane);
-			borderPane.setBottom(ButtonUtil.createButton("Play", (ActionEvent event) -> new Thread(() -> this.game.play()).start()));
+			borderPane.setBottom(ButtonUtil.createButton("Play", (ActionEvent event) -> this.play()));
 		}
 		return new Scene(borderPane, 800, 600);
 	}
@@ -243,5 +243,12 @@ public class OnderzoeksOpdracht extends Application {
 		props.setProperty("gui.style", Application.STYLESHEET_MODENA);
 		props.setProperty("gui.animated", "true");
 		return props;
+	}
+
+	private void play() {
+		new Thread(() -> {
+			this.game.play();
+			System.out.println("Done playing.");
+		}).start();
 	}
 }

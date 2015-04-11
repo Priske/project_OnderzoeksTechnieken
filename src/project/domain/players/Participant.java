@@ -3,7 +3,8 @@ package project.domain.players;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import project.domain.card.Card;
@@ -12,9 +13,9 @@ import project.domain.card.CardFace;
 public abstract class Participant {
 
 	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
-	private final SimpleDoubleProperty burned = new SimpleDoubleProperty(0);
+	private final SimpleIntegerProperty burned = new SimpleIntegerProperty();
 	private final String name;
-	private final SimpleDoubleProperty wins = new SimpleDoubleProperty(0);
+	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
 
 	public Participant(String name) {
 		this.name = name;
@@ -24,20 +25,12 @@ public abstract class Participant {
 		this.hand.add(card);
 	}
 
-	public SimpleDoubleProperty burnedProperty() {
+	public synchronized void burned() {
+		this.burned.set(this.burned.get() + 1);
+	}
+
+	public ReadOnlyIntegerProperty burnedProperty() {
 		return this.burned;
-	}
-
-	public SimpleDoubleProperty winsProperty() {
-		return this.wins;
-	}
-
-	public final void burned() {
-		this.burned.set(this.burned.add(1).get());
-	}
-
-	public double getBurned() {
-		return this.burned.get();
 	}
 
 	public long countAces() {
@@ -48,6 +41,10 @@ public abstract class Participant {
 		List<Card> cards = new ArrayList<>(this.hand);
 		this.hand.clear();
 		return cards;
+	}
+
+	public int getBurned() {
+		return this.burned.get();
 	}
 
 	public ObservableList<Card> getHand() {
@@ -62,7 +59,7 @@ public abstract class Participant {
 		return Card.getScore(this.hand);
 	}
 
-	public double getWins() {
+	public int getWins() {
 		return this.wins.get();
 	}
 
@@ -71,7 +68,11 @@ public abstract class Participant {
 		return this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
 	}
 
-	public void won() {
-		this.wins.set(this.wins.add(1).get());
+	public ReadOnlyIntegerProperty winsProperty() {
+		return this.wins;
+	}
+
+	public synchronized void won() {
+		this.wins.set(this.wins.get() + 1);
 	}
 }
