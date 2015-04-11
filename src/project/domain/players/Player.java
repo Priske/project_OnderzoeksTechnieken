@@ -1,6 +1,7 @@
 package project.domain.players;
 
 import java.util.List;
+import javafx.beans.property.SimpleObjectProperty;
 import project.domain.Action;
 import project.domain.card.Card;
 import project.domain.statistics.StatisticsCollector;
@@ -12,12 +13,12 @@ public class Player extends Participant {
 	private static int _id;
 	private StatisticsCollector collector;
 	private final int id;
-	private PlayerPlayStyle strategy;
+	private SimpleObjectProperty<PlayerPlayStyle> strategy;
 
 	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
 		this.id = _id++;
-		this.strategy = playStyle;
+		this.strategy = new SimpleObjectProperty<>(playStyle);
 	}
 
 	public Player(String name, PlayerPlayStyle playStyle, List<Card> cards) {
@@ -34,22 +35,21 @@ public class Player extends Participant {
 	}
 
 	public PlayerPlayStyle getStrategy() {
-		System.out.println("strategy get " + this.strategy);
-		return this.strategy;
+		return this.strategy.get();
 	}
 
 	public void setStrategy(PlayerPlayStyle strategy) {
 		if(strategy == null) {
 			throw new IllegalArgumentException("Strategy cannot be null.");
 		}
-		this.strategy = strategy;
+		this.strategy.set(strategy);
 	}
 
 	public Action play(Dealer dealer) {
 		if(dealer == null) {
 			throw new IllegalArgumentException("Dealer cannnot be null.");
 		}
-		Action action = this.strategy.play(this, dealer);
+		Action action = this.strategy.get().play(this, dealer);
 		Turn turn;
 		if(action == Action.HIT) {
 			turn = new Turn(this, action, this.hand, this.requestCard(dealer));
@@ -60,6 +60,10 @@ public class Player extends Participant {
 			this.collector.addTurn(turn);
 		}
 		return action;
+	}
+
+	public SimpleObjectProperty strategyProperty() {
+		return this.strategy;
 	}
 
 	private Card requestCard(Dealer dealer) {
