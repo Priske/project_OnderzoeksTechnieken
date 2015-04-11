@@ -25,6 +25,10 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
+	public int getId() {
+		return this.id;
+	}
+
 	public boolean equalsId(int id) {
 		return this.id == id;
 	}

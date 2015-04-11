@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
@@ -14,7 +15,7 @@ public class GameManager {
 	private final BlackjackGame controller;
 	private final Dealer dealer;
 	private final SimpleDoubleProperty gamesPlayed = new SimpleDoubleProperty();
-	private final SimpleDoubleProperty gamesToPlay = new SimpleDoubleProperty();
+	private final SimpleIntegerProperty gamesToPlay = new SimpleIntegerProperty();
 	private final List<Player> players;
 
 	public GameManager(BlackjackGame controller) {
@@ -27,18 +28,11 @@ public class GameManager {
 		});
 	}
 
-	public void setNumberGamesToPlay(int gamesToPlay) {
-		if(gamesToPlay < 1) {
-			throw new IllegalArgumentException("Games to play cannot be smaller then 1.");
-		}
-		this.gamesToPlay.set(gamesToPlay);
-	}
-
 	public SimpleDoubleProperty gamesPlayedProperty() {
 		return this.gamesPlayed;
 	}
 
-	public SimpleDoubleProperty gamesToPlayerProperty() {
+	public SimpleIntegerProperty gamesToPlayerProperty() {
 		return this.gamesToPlay;
 	}
 
@@ -48,6 +42,13 @@ public class GameManager {
 
 	public double getGamesToPlay() {
 		return this.gamesToPlay.get();
+	}
+
+	public void setNumberGamesToPlay(int gamesToPlay) {
+		if(gamesToPlay < 0) {
+			throw new IllegalArgumentException("Games to play cannot be smaller then 1.");
+		}
+		this.gamesToPlay.set(gamesToPlay);
 	}
 
 	public void play() {

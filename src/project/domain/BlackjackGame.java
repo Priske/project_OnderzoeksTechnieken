@@ -10,6 +10,8 @@ import project.domain.players.Dealer;
 import project.domain.players.Participant;
 import project.domain.players.ParticipantManager;
 import project.domain.players.Player;
+import project.domain.strategy.PlayerPlayStyle;
+import project.domain.strategy.StrategyManager;
 import project.domain.strategy.player.MimicDealerPlaystyle;
 import project.domain.strategy.player.ThorpsPlayStyle;
 
@@ -18,11 +20,13 @@ public class BlackjackGame implements SettingsManager {
 	private final GameManager gameMgr;
 	private final ParticipantManager participantMgr;
 	private final SettingsManager settingsMgr;
+	private final StrategyManager strategyMgr;
 
 	public BlackjackGame() {
 		this.settingsMgr = new SettingsManagerDefault("BlackJackGame", this.getDefaultProperties());
 //		this.restoreDefault();
 
+		this.strategyMgr = new StrategyManager();
 		this.participantMgr = new ParticipantManager();
 		this.setPlayers(this.createPlayers());
 
@@ -50,6 +54,10 @@ public class BlackjackGame implements SettingsManager {
 
 	public Dealer getDealer() {
 		return this.participantMgr.getDealer();
+	}
+
+	public double getGamesToPlay() {
+		return this.gameMgr.getGamesToPlay();
 	}
 
 	@Override
@@ -80,6 +88,10 @@ public class BlackjackGame implements SettingsManager {
 		this.setProperty("rules.number_players", numberPlayers);
 	}
 
+	public ObservableList<PlayerPlayStyle> getPlayerStrategies() {
+		return this.strategyMgr.getPlayerStrategies();
+	}
+
 	public ObservableList<Player> getPlayers() {
 		return this.participantMgr.getPlayers();
 	}
@@ -93,7 +105,7 @@ public class BlackjackGame implements SettingsManager {
 		return this.settingsMgr.getProperty(key);
 	}
 
-	public void play() {
+	public synchronized void play() {
 		long start = System.currentTimeMillis();
 		this.gameMgr.play();
 		this.printGameSummary();

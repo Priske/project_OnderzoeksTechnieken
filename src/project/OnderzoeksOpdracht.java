@@ -3,18 +3,23 @@ package project;
 import be.mrtus.common.gui.UnCollapsibleAccordionListener;
 import be.mrtus.common.gui.control.NumericField;
 import be.mrtus.common.gui.control.StyleChoiceBox;
+import be.mrtus.common.gui.util.ButtonUtil;
 import java.util.Properties;
 import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import project.domain.*;
+import project.domain.players.Player;
 
 public class OnderzoeksOpdracht extends Application {
 
@@ -31,6 +36,47 @@ public class OnderzoeksOpdracht extends Application {
 		this.animatedUI.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			this.game.setProperty("gui.animated", newValue);
 		});
+	}
+
+	public Tab createPlayerTab() {
+		Tab tab = new Tab("Player config");
+		{
+			TableView<Player> table = new TableView();
+			{
+				TableColumn id = new TableColumn("Id");
+				{
+					id.setCellValueFactory(new PropertyValueFactory("id"));
+				}
+				table.getColumns().add(id);
+				TableColumn name = new TableColumn("Name");
+				{
+					name.setPrefWidth(75);
+					name.setCellValueFactory(new PropertyValueFactory("name"));
+				}
+				table.getColumns().add(name);
+				TableColumn wins = new TableColumn("Wins");
+				{
+					wins.setPrefWidth(75);
+					wins.setCellValueFactory(new PropertyValueFactory("wins"));
+				}
+				table.getColumns().add(wins);
+				TableColumn burns = new TableColumn("Burns");
+				{
+					burns.setPrefWidth(75);
+					burns.setCellValueFactory(new PropertyValueFactory("burned"));
+				}
+				table.getColumns().add(burns);
+				TableColumn strategy = new TableColumn("Strategy");
+				{
+					strategy.setPrefWidth(75);
+					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(game.getPlayerStrategies()));
+				}
+				table.getColumns().add(strategy);
+				table.setItems(this.game.getPlayers());
+			}
+			tab.setContent(table);
+		}
+		return tab;
 	}
 
 	@Override
@@ -64,6 +110,25 @@ public class OnderzoeksOpdracht extends Application {
 				{
 					vBox.setFillWidth(true);
 					vBox.setSpacing(10);
+					HBox hBoxNumberGamesToPlay = new HBox();
+					{
+						hBoxNumberGamesToPlay.setFillHeight(true);
+						hBoxNumberGamesToPlay.setSpacing(10);
+						hBoxNumberGamesToPlay.getChildren().add(new Label("Games to play"));
+						NumericField numericField = new NumericField();
+						{
+							numericField.setAlignment(Pos.CENTER_RIGHT);
+							numericField.setPrefWidth(50);
+							numericField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+								if(newValue.matches("[0-9]+")) {
+									this.game.setNumberGamesToPlay(Integer.parseInt(newValue));
+								}
+							});
+							numericField.setText((int)this.game.getGamesToPlay() + "");
+						}
+						hBoxNumberGamesToPlay.getChildren().add(numericField);
+					}
+					vBox.getChildren().add(hBoxNumberGamesToPlay);
 					HBox hBoxNumberOfDecks = new HBox();
 					{
 						hBoxNumberOfDecks.setFillHeight(true);
@@ -117,8 +182,10 @@ public class OnderzoeksOpdracht extends Application {
 			TabPane tabPane = new TabPane();
 			{
 				tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+				tabPane.getTabs().add(this.createPlayerTab());
 			}
 			borderPane.setCenter(tabPane);
+			borderPane.setBottom(ButtonUtil.createButton("Play", (ActionEvent event) -> new Thread(() -> this.game.play()).start()));
 		}
 		return new Scene(borderPane, 800, 600);
 	}
