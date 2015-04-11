@@ -3,13 +3,11 @@ package project.domain.strategy.player;
 import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
-import project.domain.strategy.PlayerPlayStyle;
 
-public class NeverBustPlaystyle implements PlayerPlayStyle {
+public class NeverBustPlaystyle extends PlayerStrategyWrapper {
 
-	@Override
-	public String getName() {
-		return "Never bust";
+	public NeverBustPlaystyle() {
+		super("Never bust");
 	}
 
 	@Override

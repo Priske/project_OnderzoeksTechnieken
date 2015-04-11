@@ -12,12 +12,12 @@ public class Player extends Participant {
 	private static int _id;
 	private StatisticsCollector collector;
 	private final int id;
-	private PlayerPlayStyle playStyle;
+	private PlayerPlayStyle strategy;
 
 	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
 		this.id = _id++;
-		this.playStyle = playStyle;
+		this.strategy = playStyle;
 	}
 
 	public Player(String name, PlayerPlayStyle playStyle, List<Card> cards) {
@@ -25,30 +25,31 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
-	public int getId() {
-		return this.id;
-	}
-
 	public boolean equalsId(int id) {
 		return this.id == id;
 	}
 
+	public int getId() {
+		return this.id;
+	}
+
 	public PlayerPlayStyle getStrategy() {
-		return this.playStyle;
+		System.out.println("strategy get " + this.strategy);
+		return this.strategy;
 	}
 
 	public void setStrategy(PlayerPlayStyle strategy) {
 		if(strategy == null) {
 			throw new IllegalArgumentException("Strategy cannot be null.");
 		}
-		this.playStyle = strategy;
+		this.strategy = strategy;
 	}
 
 	public Action play(Dealer dealer) {
 		if(dealer == null) {
 			throw new IllegalArgumentException("Dealer cannnot be null.");
 		}
-		Action action = this.playStyle.play(this, dealer);
+		Action action = this.strategy.play(this, dealer);
 		Turn turn;
 		if(action == Action.HIT) {
 			turn = new Turn(this, action, this.hand, this.requestCard(dealer));

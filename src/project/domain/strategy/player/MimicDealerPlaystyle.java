@@ -3,13 +3,11 @@ package project.domain.strategy.player;
 import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
-import project.domain.strategy.PlayerPlayStyle;
 
-public class MimicDealerPlaystyle implements PlayerPlayStyle {
+public class MimicDealerPlaystyle extends PlayerStrategyWrapper {
 
-	@Override
-	public String getName() {
-		return "Mimic dealer";
+	public MimicDealerPlaystyle() {
+		super("Mimic dealer");
 	}
 
 	@Override

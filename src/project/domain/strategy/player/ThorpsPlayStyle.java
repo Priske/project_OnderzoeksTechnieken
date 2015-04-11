@@ -7,13 +7,11 @@ import project.domain.card.CardFace;
 import project.domain.exceptions.NonAceCardNotFoundException;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
-import project.domain.strategy.PlayerPlayStyle;
 
-public class ThorpsPlayStyle implements PlayerPlayStyle {
+public class ThorpsPlayStyle extends PlayerStrategyWrapper {
 
-	@Override
-	public String getName() {
-		return "Thorps";
+	public ThorpsPlayStyle() {
+		super("Thorps");
 	}
 
 	@Override

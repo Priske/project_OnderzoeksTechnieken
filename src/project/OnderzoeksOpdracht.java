@@ -43,6 +43,7 @@ public class OnderzoeksOpdracht extends Application {
 		{
 			TableView<Player> table = new TableView();
 			{
+				table.setEditable(true);
 				TableColumn id = new TableColumn("Id");
 				{
 					id.setCellValueFactory(new PropertyValueFactory("id"));
@@ -69,6 +70,7 @@ public class OnderzoeksOpdracht extends Application {
 				TableColumn strategy = new TableColumn("Strategy");
 				{
 					strategy.setPrefWidth(75);
+					strategy.setCellValueFactory(new PropertyValueFactory("strategy"));
 					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getPlayerStrategies()));
 				}
 				table.getColumns().add(strategy);
@@ -246,9 +248,6 @@ public class OnderzoeksOpdracht extends Application {
 	}
 
 	private void play() {
-		new Thread(() -> {
-			this.game.play();
-			System.out.println("Done playing.");
-		}).start();
+		new Thread(() -> this.game.play()).start();
 	}
 }
