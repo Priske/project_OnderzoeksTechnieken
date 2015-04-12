@@ -1,18 +1,27 @@
-package project.domain.strategies;
+package project.domain.strategy.dealer;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
+import project.domain.strategy.DealerPlayStyle;
 
-/**
+public class DealerPlayStyleDefault implements DealerPlayStyle {
 
- @author Ben
- */
-public class DealerPlayStyle {
+	@Override
+	public String getName() {
+		return "Default";
+	}
 
+	@Override
 	public Action play(Dealer dealer, List<Player> players) {
+		if(dealer == null) {
+			throw new IllegalArgumentException("Dealer cannnot be null.");
+		}
+		if(players == null) {
+			throw new IllegalArgumentException("Player list cannot be null.");
+		}
 		List<Player> filteredList = players.stream().filter(player -> player.getScore() <= 21).collect(Collectors.toList());
 		if(filteredList.size() == 1) {
 			Player player = filteredList.get(0);

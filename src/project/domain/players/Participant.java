@@ -3,15 +3,19 @@ package project.domain.players;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import project.domain.card.Card;
 import project.domain.card.CardFace;
 
 public abstract class Participant {
 
-	protected final List<Card> hand = new ArrayList<>();
-	private int burned = 0;
+	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
+	private final SimpleIntegerProperty burned = new SimpleIntegerProperty();
 	private final String name;
-	private int wins = 0;
+	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
 
 	public Participant(String name) {
 		this.name = name;
@@ -21,8 +25,12 @@ public abstract class Participant {
 		this.hand.add(card);
 	}
 
-	public final void burned() {
-		this.burned++;
+	public synchronized void burned() {
+		this.burned.set(this.burned.get() + 1);
+	}
+
+	public ReadOnlyIntegerProperty burnedProperty() {
+		return this.burned;
 	}
 
 	public long countAces() {
@@ -35,6 +43,14 @@ public abstract class Participant {
 		return cards;
 	}
 
+	public int getBurned() {
+		return this.burned.get();
+	}
+
+	public ObservableList<Card> getHand() {
+		return this.hand;
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -44,7 +60,7 @@ public abstract class Participant {
 	}
 
 	public int getWins() {
-		return this.wins;
+		return this.wins.get();
 	}
 
 	@Override
@@ -52,7 +68,11 @@ public abstract class Participant {
 		return this.hand.stream().map(card -> card.toString()).collect(Collectors.joining(", "));
 	}
 
-	public void won() {
-		this.wins++;
+	public ReadOnlyIntegerProperty winsProperty() {
+		return this.wins;
+	}
+
+	public synchronized void won() {
+		this.wins.set(this.wins.get() + 1);
 	}
 }

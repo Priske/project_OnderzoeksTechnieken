@@ -5,6 +5,9 @@ import java.util.List;
 public class Card {
 
 	public static final int getScore(List<Card> cards) {
+		if(cards == null) {
+			throw new IllegalArgumentException("Card list cannot be null.");
+		}
 		int valueOutput = cards.stream().mapToInt(c -> c.getValue()).sum();
 		if(valueOutput > 21) {
 			for (Card c : cards) {
@@ -23,6 +26,12 @@ public class Card {
 	private final CardSuit suit;
 
 	public Card(CardSuit suit, CardFace face) {
+		if(suit == null) {
+			throw new IllegalArgumentException("Suit cannot be null.");
+		}
+		if(face == null) {
+			throw new IllegalArgumentException("Face cannot be null.");
+		}
 		this.suit = suit;
 		this.face = face;
 	}

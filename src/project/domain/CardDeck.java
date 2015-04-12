@@ -7,18 +7,26 @@ import project.domain.card.Card;
 import project.domain.card.CardFace;
 import project.domain.card.CardSuit;
 
-/**
-
- @author Ben
- */
 public class CardDeck {
 
-	private final int aantalDecks;
+	private int aantalDecks;
 	private final Queue<Card> cards = new ArrayDeque<>();
 
 	public CardDeck(int decks) {
 		this.aantalDecks = decks;
-		this.createDeck();
+		this.reset();
+	}
+
+	public int getNumberDecks() {
+		return this.aantalDecks;
+	}
+
+	public void setNumberDecks(int numberDecks) {
+		if(numberDecks < 1) {
+			throw new IllegalArgumentException("Number of decks cannot be smaller then 1.");
+		}
+		this.aantalDecks = numberDecks;
+		this.reset();
 	}
 
 	public int getSize() {
