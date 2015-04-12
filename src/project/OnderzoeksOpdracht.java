@@ -83,11 +83,10 @@ public class OnderzoeksOpdracht extends Application {
 
 	@Override
 	public void start(Stage stage) {
-//		Application.setUserAgentStylesheet(this.game.getProperty("gui.style"));
-//		stage.setScene(this.buildScene());
-//		stage.setTitle("BlackJack - Analystics");
-//		stage.show();
-		System.exit(0);
+		Application.setUserAgentStylesheet(this.game.getProperty("gui.style"));
+		stage.setScene(this.buildScene());
+		stage.setTitle("BlackJack - Analystics");
+		stage.show();
 	}
 
 	private Accordion buildAccordion() {

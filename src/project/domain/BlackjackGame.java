@@ -33,7 +33,6 @@ public class BlackjackGame implements SettingsManager {
 		this.gameMgr = new GameManager(this);
 
 		this.loadSettings();
-		this.play();
 	}
 
 	public BlackjackGame(Properties props) {
