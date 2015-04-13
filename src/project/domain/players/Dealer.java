@@ -4,7 +4,7 @@ import java.util.List;
 import project.domain.Action;
 import project.domain.CardDeck;
 import project.domain.card.Card;
-import project.domain.strategy.DealerPlayStyle;
+import project.domain.strategy.dealer.DealerPlayStyle;
 import project.domain.strategy.dealer.DealerPlayStyleDefault;
 
 public class Dealer extends Participant {

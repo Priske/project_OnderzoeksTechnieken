@@ -12,9 +12,10 @@ import project.domain.players.Dealer;
 import project.domain.players.Participant;
 import project.domain.players.ParticipantManager;
 import project.domain.players.Player;
-import project.domain.strategy.PlayerPlayStyle;
 import project.domain.strategy.StrategyManager;
+import project.domain.strategy.dealer.DealerPlayStyle;
 import project.domain.strategy.player.MimicDealerPlaystyle;
+import project.domain.strategy.player.PlayerPlayStyle;
 import project.domain.strategy.player.ThorpsPlayStyle;
 
 public class BlackjackGame implements SettingsManager {
@@ -102,6 +103,10 @@ public class BlackjackGame implements SettingsManager {
 	public void setNumberPlayers(int numberPlayers) {
 		this.participantMgr.setNumberPlayers(numberPlayers);
 		this.setProperty("rules.number_players", numberPlayers);
+	}
+
+	public ObservableList<DealerPlayStyle> getDealerStrategies() {
+		return this.strategyMgr.getDealerStrategies();
 	}
 
 	public ObservableList<PlayerPlayStyle> getPlayerStrategies() {

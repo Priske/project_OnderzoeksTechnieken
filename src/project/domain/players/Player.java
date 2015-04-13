@@ -6,7 +6,7 @@ import project.domain.Action;
 import project.domain.card.Card;
 import project.domain.statistics.StatisticsCollector;
 import project.domain.statistics.Turn;
-import project.domain.strategy.PlayerPlayStyle;
+import project.domain.strategy.player.PlayerPlayStyle;
 
 public class Player extends Participant {
 

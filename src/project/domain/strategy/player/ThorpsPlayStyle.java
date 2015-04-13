@@ -8,7 +8,7 @@ import project.domain.exceptions.NonAceCardNotFoundException;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
-public class ThorpsPlayStyle extends PlayerStrategyWrapper {
+public class ThorpsPlayStyle extends PlayerPlayStyle {
 
 	public ThorpsPlayStyle() {
 		super("Thorps");
