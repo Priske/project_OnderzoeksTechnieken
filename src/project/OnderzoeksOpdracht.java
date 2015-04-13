@@ -109,7 +109,7 @@ public class OnderzoeksOpdracht extends Application {
 		BorderPane borderPane = new BorderPane();
 		{
 			borderPane.setPadding(new Insets(10));
-			borderPane.setLeft(ButtonUtil.createButton("Play", (ActionEvent event) -> this.play()));
+			borderPane.setLeft(ButtonUtil.createButton("Play", (ActionEvent event) -> this.play(), 150, 50));
 			borderPane.setCenter(this.buildSummaryPanel());
 		}
 		return borderPane;
