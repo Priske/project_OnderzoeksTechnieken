@@ -6,10 +6,14 @@ import be.mrtus.common.gui.control.StyleChoiceBox;
 import be.mrtus.common.gui.util.ButtonUtil;
 import java.util.Properties;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -69,7 +73,7 @@ public class OnderzoeksOpdracht extends Application {
 				table.getColumns().add(burns);
 				TableColumn strategy = new TableColumn("Strategy");
 				{
-					strategy.setPrefWidth(75);
+					strategy.setPrefWidth(150);
 					strategy.setCellValueFactory(new PropertyValueFactory("strategy"));
 					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getPlayerStrategies()));
 				}
@@ -83,11 +87,10 @@ public class OnderzoeksOpdracht extends Application {
 
 	@Override
 	public void start(Stage stage) {
-//		Application.setUserAgentStylesheet(this.game.getProperty("gui.style"));
-//		stage.setScene(this.buildScene());
-//		stage.setTitle("BlackJack - Analystics");
-//		stage.show();
-		System.exit(0);
+		Application.setUserAgentStylesheet(this.game.getProperty("gui.style"));
+		stage.setScene(this.buildScene());
+		stage.setTitle("BlackJack - Analystics");
+		stage.show();
 	}
 
 	private Accordion buildAccordion() {
@@ -100,6 +103,16 @@ public class OnderzoeksOpdracht extends Application {
 			accordion.getPanes().add(this.buildSettingsTitledPane());
 		}
 		return accordion;
+	}
+
+	private Node buildBottomPanel() {
+		BorderPane borderPane = new BorderPane();
+		{
+			borderPane.setPadding(new Insets(10));
+			borderPane.setLeft(ButtonUtil.createButton("Play", (ActionEvent event) -> this.play(), 150, 50));
+			borderPane.setCenter(this.buildSummaryPanel());
+		}
+		return borderPane;
 	}
 
 	private TitledPane buildGameSettingsTitledPane() {
@@ -127,7 +140,7 @@ public class OnderzoeksOpdracht extends Application {
 									this.game.setNumberGamesToPlay(Integer.parseInt(newValue));
 								}
 							});
-							numericField.setText((int)this.game.getGamesToPlay() + "");
+							numericField.setText(this.game.getGamesToPlay() + "");
 						}
 						hBoxNumberGamesToPlay.getChildren().add(numericField);
 					}
@@ -188,7 +201,7 @@ public class OnderzoeksOpdracht extends Application {
 				tabPane.getTabs().add(this.createPlayerTab());
 			}
 			borderPane.setCenter(tabPane);
-			borderPane.setBottom(ButtonUtil.createButton("Play", (ActionEvent event) -> this.play()));
+			borderPane.setBottom(this.buildBottomPanel());
 		}
 		return new Scene(borderPane, 800, 600);
 	}
@@ -239,6 +252,42 @@ public class OnderzoeksOpdracht extends Application {
 			pane.setContent(borderPane);
 		}
 		return pane;
+	}
+
+	private Node buildSummaryPanel() {
+		HBox hBox = new HBox();
+		{
+			hBox.setPadding(new Insets(10));
+			hBox.setFillHeight(true);
+			hBox.setSpacing(20);
+			VBox gamesPlayedVBox = new VBox();
+			{
+				gamesPlayedVBox.getChildren().add(new Label("Simulating game:"));
+				Label gamesPlayedLabel = new Label(this.game.getGamesPlayed() + "/" + this.game.getGamesToPlay());
+				{
+					ChangeListener<Number> listener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+						Platform.runLater(() -> gamesPlayedLabel.setText(this.game.getGamesPlayed() + "/" + this.game.getGamesToPlay()));
+					};
+					this.game.gamesPlayedProperty().addListener(listener);
+					this.game.gamesToPlayProperty().addListener(listener);
+				}
+				gamesPlayedVBox.getChildren().add(gamesPlayedLabel);
+			}
+			hBox.getChildren().add(gamesPlayedVBox);
+			VBox batchTimeVBox = new VBox();
+			{
+				batchTimeVBox.getChildren().add(new Label("Batch took: "));
+				Label timeLabel = new Label();
+				{
+					this.game.batchTimeProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+						Platform.runLater(() -> timeLabel.setText(newValue + "ms"));
+					});
+				}
+				batchTimeVBox.getChildren().add(timeLabel);
+			}
+			hBox.getChildren().add(batchTimeVBox);
+		}
+		return hBox;
 	}
 
 	private Properties getDefaultProperties() {

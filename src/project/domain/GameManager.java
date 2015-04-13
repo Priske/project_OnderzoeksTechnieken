@@ -5,13 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyLongProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ObservableValue;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
 public class GameManager {
 
+	private final SimpleLongProperty batchTime = new SimpleLongProperty();
 	private final BlackjackGame controller;
 	private final Dealer dealer;
 	private final SimpleIntegerProperty gamesPlayed = new SimpleIntegerProperty();
@@ -28,19 +31,23 @@ public class GameManager {
 		});
 	}
 
+	public ReadOnlyLongProperty batchTimeProperty() {
+		return this.batchTime;
+	}
+
 	public ReadOnlyIntegerProperty gamesPlayedProperty() {
 		return this.gamesPlayed;
 	}
 
-	public ReadOnlyIntegerProperty gamesToPlayerProperty() {
+	public ReadOnlyIntegerProperty gamesToPlayProperty() {
 		return this.gamesToPlay;
 	}
 
-	public double getGamesPlayed() {
+	public int getGamesPlayed() {
 		return this.gamesPlayed.get();
 	}
 
-	public double getGamesToPlay() {
+	public int getGamesToPlay() {
 		return this.gamesToPlay.get();
 	}
 
@@ -52,11 +59,13 @@ public class GameManager {
 	}
 
 	public void play() {
+		long start = System.currentTimeMillis();
+		this.resetGame();
 		do {
 			this.gamesPlayed.set(this.gamesPlayed.get() + 1);
 			this.playRound();
 		} while (this.gamesToPlay.get() > this.gamesPlayed.get());
-		this.resetGame();
+		this.batchTime.set(System.currentTimeMillis() - start);
 	}
 
 	private void checkWinner() {
