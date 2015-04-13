@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import project.domain.card.Card;
@@ -14,11 +15,11 @@ public abstract class Participant {
 
 	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
 	private final SimpleIntegerProperty burned = new SimpleIntegerProperty();
-	private final String name;
+	private final SimpleStringProperty name;
 	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
 
 	public Participant(String name) {
-		this.name = name;
+		this.name = new SimpleStringProperty(name);
 	}
 
 	public void addCard(Card card) {
@@ -52,7 +53,7 @@ public abstract class Participant {
 	}
 
 	public String getName() {
-		return this.name;
+		return this.name.get();
 	}
 
 	public int getScore() {
@@ -61,6 +62,10 @@ public abstract class Participant {
 
 	public int getWins() {
 		return this.wins.get();
+	}
+
+	public SimpleStringProperty nameProperty() {
+		return this.name;
 	}
 
 	@Override

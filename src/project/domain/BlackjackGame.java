@@ -5,6 +5,8 @@ import be.mrtus.common.domain.SettingsManagerDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyLongProperty;
 import javafx.collections.ObservableList;
 import project.domain.players.Dealer;
 import project.domain.players.Participant;
@@ -45,6 +47,18 @@ public class BlackjackGame implements SettingsManager {
 		this.settingsMgr.addDefaultProperties(properties);
 	}
 
+	public ReadOnlyLongProperty batchTimeProperty() {
+		return this.gameMgr.batchTimeProperty();
+	}
+
+	public ReadOnlyIntegerProperty gamesPlayedProperty() {
+		return this.gameMgr.gamesPlayedProperty();
+	}
+
+	public ReadOnlyIntegerProperty gamesToPlayProperty() {
+		return this.gameMgr.gamesToPlayProperty();
+	}
+
 	@Override
 	public boolean getBoolProperty(String key) {
 		return this.settingsMgr.getBoolProperty(key);
@@ -54,7 +68,11 @@ public class BlackjackGame implements SettingsManager {
 		return this.participantMgr.getDealer();
 	}
 
-	public double getGamesToPlay() {
+	public int getGamesPlayed() {
+		return this.gameMgr.getGamesPlayed();
+	}
+
+	public int getGamesToPlay() {
 		return this.gameMgr.getGamesToPlay();
 	}
 
@@ -104,10 +122,8 @@ public class BlackjackGame implements SettingsManager {
 	}
 
 	public synchronized void play() {
-		long start = System.currentTimeMillis();
 		this.gameMgr.play();
-		this.printGameSummary();
-		System.out.println("Game batch took: " + (System.currentTimeMillis() - start) + "ms");
+//		this.printGameSummary();
 	}
 
 	@Override
