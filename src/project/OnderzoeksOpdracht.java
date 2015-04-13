@@ -67,6 +67,18 @@ public class OnderzoeksOpdracht extends Application {
 					burns.setCellValueFactory(new PropertyValueFactory("burned"));
 				}
 				table.getColumns().add(burns);
+				TableColumn draws = new TableColumn("Draws");
+				{
+					draws.setPrefWidth(75);
+					draws.setCellValueFactory(new PropertyValueFactory("draw"));
+				}
+				table.getColumns().add(draws);
+				TableColumn blackJack = new TableColumn("BlackJack");
+				{
+					blackJack.setPrefWidth(75);
+					blackJack.setCellValueFactory(new PropertyValueFactory("blackJack"));
+				}
+				table.getColumns().add(blackJack);
 				TableColumn strategy = new TableColumn("Strategy");
 				{
 					strategy.setPrefWidth(150);
@@ -110,6 +122,18 @@ public class OnderzoeksOpdracht extends Application {
 					burns.setCellValueFactory(new PropertyValueFactory("burned"));
 				}
 				table.getColumns().add(burns);
+				TableColumn draws = new TableColumn("Draws");
+				{
+					draws.setPrefWidth(75);
+					draws.setCellValueFactory(new PropertyValueFactory("draw"));
+				}
+				table.getColumns().add(draws);
+				TableColumn blackJack = new TableColumn("BlackJack");
+				{
+					blackJack.setPrefWidth(75);
+					blackJack.setCellValueFactory(new PropertyValueFactory("blackJack"));
+				}
+				table.getColumns().add(blackJack);
 				TableColumn strategy = new TableColumn("Strategy");
 				{
 					strategy.setPrefWidth(150);

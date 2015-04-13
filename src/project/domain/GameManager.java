@@ -76,10 +76,21 @@ public class GameManager {
 				if(playerValue > 21) {
 					player.burned();
 				}
+				if(playerValue == 21 && dealerValue == 21) {
+					player.draw();
+					this.dealer.draw();
+					return;
+				}
+				if(dealerValue==21){
+					this.dealer.blackJack();
+				}
 				this.dealer.won();
 			} else {
 				if(dealerValue > 21) {
 					this.dealer.burned();
+				}
+				if(playerValue == 21) {
+					player.blackJack();
 				}
 				player.won();
 			}
@@ -128,5 +139,7 @@ public class GameManager {
 
 	private void resetGame() {
 		this.gamesPlayed.set(0);
+		this.dealer.reset();
+		this.players.stream().forEach(p -> p.reset());
 	}
 }

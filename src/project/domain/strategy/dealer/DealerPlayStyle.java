@@ -19,4 +19,8 @@ public abstract class DealerPlayStyle {
 
 	public abstract Action play(Dealer dealer, List<Player> players);
 
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

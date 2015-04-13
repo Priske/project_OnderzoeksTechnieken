@@ -1,8 +1,8 @@
 #BlackJackGame settings
-#Mon Apr 13 15:00:03 CEST 2015
+#Mon Apr 13 15:57:23 CEST 2015
 rules.number_players=4
-rules.number_games_to_play=10000
 rules.number_decks=8
+rules.number_games_to_play=10000
 gui.animated=true
 rules.number_cards_played_before_shuffle=0
 gui.style=MODENA
