@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import project.domain.CardCounter;
 import project.domain.card.Card;
 import project.domain.card.CardFace;
 
@@ -36,6 +37,7 @@ public abstract class Participant {
 	}
 
 	public void addCard(Card card) {
+		CardCounter.usedCard(card);
 		this.hand.add(card);
 	}
 
