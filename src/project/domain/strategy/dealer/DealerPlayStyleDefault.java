@@ -5,13 +5,11 @@ import java.util.stream.Collectors;
 import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
-import project.domain.strategy.DealerPlayStyle;
 
-public class DealerPlayStyleDefault implements DealerPlayStyle {
+public class DealerPlayStyleDefault extends DealerPlayStyle {
 
-	@Override
-	public String getName() {
-		return "Default";
+	public DealerPlayStyleDefault() {
+		super("Default");
 	}
 
 	@Override

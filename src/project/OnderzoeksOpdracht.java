@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import project.domain.*;
+import project.domain.players.Dealer;
 import project.domain.players.Player;
 
 public class OnderzoeksOpdracht extends Application {
@@ -42,7 +44,56 @@ public class OnderzoeksOpdracht extends Application {
 		});
 	}
 
-	public Tab createPlayerTab() {
+	public Tab buildDealerTab() {
+		Tab tab = new Tab("Dealer config");
+		{
+			TableView<Dealer> table = new TableView();
+			{
+				table.setEditable(true);
+				TableColumn name = new TableColumn("Name");
+				{
+					name.setCellValueFactory(new PropertyValueFactory("name"));
+				}
+				table.getColumns().add(name);
+				TableColumn wins = new TableColumn("Wins");
+				{
+					wins.setPrefWidth(75);
+					wins.setCellValueFactory(new PropertyValueFactory("wins"));
+				}
+				table.getColumns().add(wins);
+				TableColumn burns = new TableColumn("Burns");
+				{
+					burns.setPrefWidth(75);
+					burns.setCellValueFactory(new PropertyValueFactory("burned"));
+				}
+				table.getColumns().add(burns);
+				TableColumn draws = new TableColumn("Draws");
+				{
+					draws.setPrefWidth(75);
+					draws.setCellValueFactory(new PropertyValueFactory("draw"));
+				}
+				table.getColumns().add(draws);
+				TableColumn blackJack = new TableColumn("BlackJack");
+				{
+					blackJack.setPrefWidth(75);
+					blackJack.setCellValueFactory(new PropertyValueFactory("blackJack"));
+				}
+				table.getColumns().add(blackJack);
+				TableColumn strategy = new TableColumn("Strategy");
+				{
+					strategy.setPrefWidth(150);
+					strategy.setCellValueFactory(new PropertyValueFactory("strategy"));
+					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getDealerStrategies()));
+				}
+				table.getColumns().add(strategy);
+				table.setItems(FXCollections.observableArrayList(this.game.getDealer()));
+			}
+			tab.setContent(table);
+		}
+		return tab;
+	}
+
+	public Tab buildPlayerTab() {
 		Tab tab = new Tab("Player config");
 		{
 			TableView<Player> table = new TableView();
@@ -71,6 +122,18 @@ public class OnderzoeksOpdracht extends Application {
 					burns.setCellValueFactory(new PropertyValueFactory("burned"));
 				}
 				table.getColumns().add(burns);
+				TableColumn draws = new TableColumn("Draws");
+				{
+					draws.setPrefWidth(75);
+					draws.setCellValueFactory(new PropertyValueFactory("draw"));
+				}
+				table.getColumns().add(draws);
+				TableColumn blackJack = new TableColumn("BlackJack");
+				{
+					blackJack.setPrefWidth(75);
+					blackJack.setCellValueFactory(new PropertyValueFactory("blackJack"));
+				}
+				table.getColumns().add(blackJack);
 				TableColumn strategy = new TableColumn("Strategy");
 				{
 					strategy.setPrefWidth(150);
@@ -198,7 +261,8 @@ public class OnderzoeksOpdracht extends Application {
 			TabPane tabPane = new TabPane();
 			{
 				tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-				tabPane.getTabs().add(this.createPlayerTab());
+				tabPane.getTabs().add(this.buildPlayerTab());
+				tabPane.getTabs().add(this.buildDealerTab());
 			}
 			borderPane.setCenter(tabPane);
 			borderPane.setBottom(this.buildBottomPanel());

@@ -14,7 +14,9 @@ import project.domain.card.CardFace;
 public abstract class Participant {
 
 	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
+	private final SimpleIntegerProperty twentyOne = new SimpleIntegerProperty();
 	private final SimpleIntegerProperty burned = new SimpleIntegerProperty();
+	private final SimpleIntegerProperty draw = new SimpleIntegerProperty();
 	private final SimpleStringProperty name;
 	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
 
@@ -24,6 +26,14 @@ public abstract class Participant {
 
 	public void addCard(Card card) {
 		this.hand.add(card);
+	}
+
+	public synchronized void blackJack() {
+		this.twentyOne.set(this.twentyOne.get() + 1);
+	}
+
+	public ReadOnlyIntegerProperty blackJackProperty() {
+		return this.twentyOne;
 	}
 
 	public synchronized void burned() {
@@ -36,6 +46,14 @@ public abstract class Participant {
 
 	public long countAces() {
 		return this.hand.stream().filter(c -> c.getFace() == CardFace.ACE).count();
+	}
+
+	public synchronized void draw() {
+		this.draw.set(this.draw.get() + 1);
+	}
+
+	public ReadOnlyIntegerProperty drawProperty() {
+		return this.draw;
 	}
 
 	public final List<Card> emptyHand() {
@@ -66,6 +84,13 @@ public abstract class Participant {
 
 	public SimpleStringProperty nameProperty() {
 		return this.name;
+	}
+
+	public void reset() {
+		this.burned.set(0);
+		this.wins.set(0);
+		this.draw.set(0);
+		this.twentyOne.set(0);
 	}
 
 	@Override

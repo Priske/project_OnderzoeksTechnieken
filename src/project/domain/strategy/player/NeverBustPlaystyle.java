@@ -4,7 +4,7 @@ import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
-public class NeverBustPlaystyle extends PlayerStrategyWrapper {
+public class NeverBustPlaystyle extends PlayerPlayStyle {
 
 	public NeverBustPlaystyle() {
 		super("Never bust");

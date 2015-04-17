@@ -6,8 +6,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import project.domain.exceptions.PlayerNotFoundException;
-import project.domain.strategy.DealerPlayStyle;
-import project.domain.strategy.PlayerPlayStyle;
+import project.domain.strategy.dealer.DealerPlayStyle;
+import project.domain.strategy.player.PlayerPlayStyle;
 
 public class ParticipantManager {
 

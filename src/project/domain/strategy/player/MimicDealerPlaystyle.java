@@ -4,7 +4,7 @@ import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
-public class MimicDealerPlaystyle extends PlayerStrategyWrapper {
+public class MimicDealerPlaystyle extends PlayerPlayStyle {
 
 	public MimicDealerPlaystyle() {
 		super("Mimic dealer");
