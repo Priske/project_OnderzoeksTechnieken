@@ -81,7 +81,7 @@ public class GameManager {
 					this.dealer.draw();
 					return;
 				}
-				if(dealerValue==21){
+				if(dealerValue == 21) {
 					this.dealer.blackJack();
 				}
 				this.dealer.won();
