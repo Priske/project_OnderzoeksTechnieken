@@ -1,5 +1,5 @@
 #BlackJackGame settings
-#Mon Apr 13 16:39:57 CEST 2015
+#Fri Apr 17 11:11:14 CEST 2015
 rules.number_players=4
 rules.number_games_to_play=10000
 rules.number_decks=8

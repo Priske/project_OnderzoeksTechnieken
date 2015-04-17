@@ -19,9 +19,20 @@ public abstract class Participant {
 	private final SimpleIntegerProperty draw = new SimpleIntegerProperty();
 	private final SimpleStringProperty name;
 	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
+	private final int id;
+	private static int _id;
 
 	public Participant(String name) {
 		this.name = new SimpleStringProperty(name);
+		this.id = _id++;
+	}
+
+	public boolean equalsId(int id) {
+		return this.id == id;
+	}
+
+	public int getId() {
+		return this.id;
 	}
 
 	public void addCard(Card card) {

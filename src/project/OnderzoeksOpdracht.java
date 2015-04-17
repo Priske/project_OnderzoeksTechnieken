@@ -134,6 +134,18 @@ public class OnderzoeksOpdracht extends Application {
 					blackJack.setCellValueFactory(new PropertyValueFactory("blackJack"));
 				}
 				table.getColumns().add(blackJack);
+				TableColumn money = new TableColumn("Money");
+				{
+					money.setPrefWidth(75);
+					money.setCellValueFactory(new PropertyValueFactory("money"));
+				}
+				table.getColumns().add(money);
+				TableColumn bet = new TableColumn("Bet");
+				{
+					bet.setPrefWidth(75);
+					bet.setCellValueFactory(new PropertyValueFactory("betValue"));
+				}
+				table.getColumns().add(bet);
 				TableColumn strategy = new TableColumn("Strategy");
 				{
 					strategy.setPrefWidth(150);
@@ -267,7 +279,7 @@ public class OnderzoeksOpdracht extends Application {
 			borderPane.setCenter(tabPane);
 			borderPane.setBottom(this.buildBottomPanel());
 		}
-		return new Scene(borderPane, 800, 600);
+		return new Scene(borderPane, 900, 600);
 	}
 
 	private TitledPane buildSettingsTitledPane() {
