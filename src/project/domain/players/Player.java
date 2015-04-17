@@ -1,8 +1,12 @@
 package project.domain.players;
 
 import java.util.List;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import project.domain.Action;
+import project.domain.Bet;
 import project.domain.card.Card;
 import project.domain.statistics.StatisticsCollector;
 import project.domain.statistics.Turn;
@@ -10,15 +14,16 @@ import project.domain.strategy.player.PlayerPlayStyle;
 
 public class Player extends Participant {
 
-	private static int _id;
-	private StatisticsCollector collector;
-	private final int id;
-	private SimpleObjectProperty<PlayerPlayStyle> strategy;
+	private final StatisticsCollector collector;
+	private final SimpleObjectProperty<PlayerPlayStyle> strategy;
+	private final SimpleDoubleProperty money = new SimpleDoubleProperty(1000);
+	private Bet bet;
 
 	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
-		this.id = _id++;
 		this.strategy = new SimpleObjectProperty<>(playStyle);
+		this.collector = new StatisticsCollector();
+		this.bet = new Bet(1000);
 	}
 
 	public Player(String name, PlayerPlayStyle playStyle, List<Card> cards) {
@@ -26,12 +31,12 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
-	public boolean equalsId(int id) {
-		return this.id == id;
+	public ReadOnlyDoubleProperty moneyProperty() {
+		return this.money;
 	}
 
-	public int getId() {
-		return this.id;
+	public ReadOnlyIntegerProperty betValueProperty() {
+		return this.bet.valueProperty();
 	}
 
 	public PlayerPlayStyle getStrategy() {
@@ -49,7 +54,7 @@ public class Player extends Participant {
 		if(dealer == null) {
 			throw new IllegalArgumentException("Dealer cannnot be null.");
 		}
-		Action action = this.strategy.get().play(this, dealer);
+		Action action = this.strategy.get().play(this, dealer, this.bet);
 		Turn turn;
 		if(action == Action.HIT) {
 			turn = new Turn(this, action, this.hand, this.requestCard(dealer));
