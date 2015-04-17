@@ -2,7 +2,7 @@ package project.domain;
 
 import project.domain.card.Card;
 
-public class CartCounter {
+public class CardCounter {
 
 	public static void usedCard(Card card) {
 		if(card.getValue() < 7) {
