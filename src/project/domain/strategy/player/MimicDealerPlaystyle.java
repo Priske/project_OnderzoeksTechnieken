@@ -1,7 +1,6 @@
 package project.domain.strategy.player;
 
 import project.domain.Action;
-import project.domain.Bet;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -12,7 +11,7 @@ public class MimicDealerPlaystyle extends PlayerPlayStyle {
 	}
 
 	@Override
-	public Action play(Player player, Dealer dealer, Bet bet) {
+	public Action play(Player player, Dealer dealer) {
 		if(dealer == null) {
 			throw new IllegalArgumentException("Dealer cannnot be null.");
 		}

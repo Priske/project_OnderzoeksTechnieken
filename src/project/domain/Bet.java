@@ -1,27 +1,35 @@
 package project.domain;
 
-import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 public class Bet {
 
-	private final ReadOnlyIntegerProperty initialValue;
-	private final SimpleIntegerProperty value;
+	private final ReadOnlyDoubleProperty initialValue;
+	private final SimpleDoubleProperty value;
 
-	public Bet(int value) {
-		this.initialValue = new SimpleIntegerProperty(value);
-		this.value = new SimpleIntegerProperty(value);
+	public Bet(double value) {
+		this.initialValue = new SimpleDoubleProperty(value);
+		this.value = new SimpleDoubleProperty(value);
 	}
 
-	public void add(int value) {
-		this.value.set(this.value.add(value).get());
+	public void setBet(double value) {
+		this.value.set(value);
 	}
 
-	public ReadOnlyIntegerProperty valueProperty() {
+	public ReadOnlyDoubleProperty initialValueProperty() {
+		return this.initialValue;
+	}
+
+	public ReadOnlyDoubleProperty valueProperty() {
 		return this.value;
 	}
 
-	public ReadOnlyIntegerProperty initialValueProperty() {
-		return this.initialValue;
+	public void add(double value) {
+		this.value.set(this.value.add(value).get());
+	}
+
+	public double getValue() {
+		return this.value.get();
 	}
 }

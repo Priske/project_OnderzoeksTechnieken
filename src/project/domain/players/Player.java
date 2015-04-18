@@ -2,22 +2,22 @@ package project.domain.players;
 
 import java.util.List;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import project.domain.Action;
 import project.domain.Bet;
 import project.domain.card.Card;
+import project.domain.exceptions.NotEnoughMoneyException;
 import project.domain.statistics.StatisticsCollector;
 import project.domain.statistics.Turn;
 import project.domain.strategy.player.PlayerPlayStyle;
 
 public class Player extends Participant {
 
-	private final StatisticsCollector collector;
-	private final SimpleObjectProperty<PlayerPlayStyle> strategy;
-	private final SimpleDoubleProperty money = new SimpleDoubleProperty(1000);
 	private Bet bet;
+	private final StatisticsCollector collector;
+	private final SimpleDoubleProperty money = new SimpleDoubleProperty(1000);
+	private final SimpleObjectProperty<PlayerPlayStyle> strategy;
 
 	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
@@ -31,12 +31,12 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
-	public ReadOnlyDoubleProperty moneyProperty() {
-		return this.money;
+	public ReadOnlyDoubleProperty betValueProperty() {
+		return this.bet.valueProperty();
 	}
 
-	public ReadOnlyIntegerProperty betValueProperty() {
-		return this.bet.valueProperty();
+	public Bet getBet() {
+		return this.bet;
 	}
 
 	public PlayerPlayStyle getStrategy() {
@@ -50,11 +50,15 @@ public class Player extends Participant {
 		this.strategy.set(strategy);
 	}
 
+	public ReadOnlyDoubleProperty moneyProperty() {
+		return this.money;
+	}
+
 	public Action play(Dealer dealer) {
 		if(dealer == null) {
 			throw new IllegalArgumentException("Dealer cannnot be null.");
 		}
-		Action action = this.strategy.get().play(this, dealer, this.bet);
+		Action action = this.strategy.get().play(this, dealer);
 		Turn turn;
 		if(action == Action.HIT) {
 			turn = new Turn(this, action, this.hand, this.requestCard(dealer));
@@ -71,6 +75,16 @@ public class Player extends Participant {
 		return this.strategy;
 	}
 
+	private Bet makeBet() {
+		return this.makeBet(10);
+	}
+
+	private Bet makeBet(double value) {
+		this.checkMoney(value);
+		this.money.set(this.money.subtract(value).get());
+		return new Bet(value);
+	}
+
 	private Card requestCard(Dealer dealer) {
 		if(dealer == null) {
 			throw new IllegalArgumentException("Dealer cannnot be null.");
@@ -78,5 +92,23 @@ public class Player extends Participant {
 		Card card = dealer.deal();
 		this.addCard(card);
 		return card;
+	}
+
+	public void addBet(double value) {
+		this.checkMoney(value);
+		this.money.set(this.money.subtract(value).get());
+		this.bet.add(value);
+	}
+
+	public void multiplyBet(double value) {
+		double multiply = this.bet.getValue() * value;
+		this.checkMoney(multiply);
+		this.money.set(this.money.subtract(multiply).get());
+	}
+
+	public void checkMoney(double value) {
+		if(value > this.money.get()) {
+			throw new NotEnoughMoneyException();
+		}
 	}
 }

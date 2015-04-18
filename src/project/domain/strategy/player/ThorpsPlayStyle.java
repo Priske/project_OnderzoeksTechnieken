@@ -2,7 +2,6 @@ package project.domain.strategy.player;
 
 import java.util.List;
 import project.domain.Action;
-import project.domain.Bet;
 import project.domain.card.Card;
 import project.domain.card.CardFace;
 import project.domain.exceptions.NonAceCardNotFoundException;
@@ -16,7 +15,7 @@ public class ThorpsPlayStyle extends PlayerPlayStyle {
 	}
 
 	@Override
-	public Action play(Player player, Dealer dealer, Bet bet) {
+	public Action play(Player player, Dealer dealer) {
 		if(dealer == null) {
 			throw new IllegalArgumentException("Dealer cannnot be null.");
 		}
