@@ -21,6 +21,10 @@ public class Bet {
 		return this.initialValue;
 	}
 
+	public void multiplyBet(double value) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
 	public ReadOnlyDoubleProperty valueProperty() {
 		return this.value;
 	}

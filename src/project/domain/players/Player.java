@@ -104,6 +104,7 @@ public class Player extends Participant {
 		double multiply = this.bet.getValue() * value;
 		this.checkMoney(multiply);
 		this.money.set(this.money.subtract(multiply).get());
+		this.bet.multiplyBet(value);
 	}
 
 	public void checkMoney(double value) {
