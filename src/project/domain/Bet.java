@@ -16,11 +16,7 @@ public class Bet implements Serializable {
 	}
 
 	public void add(double value) {
-		this.value.set(this.value.add(value).get());
-	}
-
-	public void setBet(double value) {
-		this.value.set(value);
+		this.value.set(this.value.get() + value);
 	}
 
 	public double getValue() {
@@ -28,7 +24,11 @@ public class Bet implements Serializable {
 	}
 
 	public void multiplyBet(double value) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		this.value.set(this.value.get() * value);
+	}
+
+	public void reset() {
+		this.value.set(this.initialValue);
 	}
 
 	public ReadOnlyDoubleProperty valueProperty() {

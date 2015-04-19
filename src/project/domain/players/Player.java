@@ -3,6 +3,7 @@ package project.domain.players;
 import java.util.List;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import project.domain.Action;
 import project.domain.Bet;
@@ -41,13 +42,12 @@ public class Player extends Participant {
 	}
 
 	public void addBet(double value) {
-		this.checkMoney(value);
-		this.money.set(this.money.subtract(value).get());
+		this.checkMoney(this.bet.getValue() + value);
 		this.bet.add(value);
 	}
 
 	public void addCardCountValue(double value) {
-		this.cardCounterValue.set(this.cardCounterValue.add(value).get());
+		this.cardCounterValue.set(this.cardCounterValue.get() + value);
 	}
 
 	public ReadOnlyDoubleProperty betValueProperty() {
@@ -57,17 +57,21 @@ public class Player extends Participant {
 	@Override
 	public void blackJack() {
 		super.blackJack();
-		this.addMoney(this.bet.getValue() * 1.5);
+		this.processBet(this.bet.getValue() * 1.5);
 	}
 
 	@Override
 	public void burned() {
 		super.burned();
-		this.addMoney(-this.bet.getValue());
+		this.processBet(-this.bet.getValue());
 	}
 
-	public SimpleObjectProperty<CardCounter> cardCounterProperty() {
+	public ReadOnlyObjectProperty<CardCounter> cardCounterProperty() {
 		return this.cardCounter;
+	}
+
+	public ReadOnlyDoubleProperty cardCounterValueProperty() {
+		return this.cardCounterValue;
 	}
 
 	public void checkMoney(double value) {
@@ -95,7 +99,7 @@ public class Player extends Participant {
 	@Override
 	public void loss() {
 		super.loss();
-		this.addMoney(-this.bet.getValue());
+		this.processBet(-this.bet.getValue());
 	}
 
 	public DoubleProperty moneyProperty() {
@@ -103,9 +107,7 @@ public class Player extends Participant {
 	}
 
 	public void multiplyBet(double value) {
-		double multiply = this.bet.getValue() * value;
-		this.checkMoney(multiply);
-		this.money.set(this.money.get() - multiply);
+		this.checkMoney(this.bet.getValue() * value);
 		this.bet.multiplyBet(value);
 	}
 
@@ -129,7 +131,7 @@ public class Player extends Participant {
 	@Override
 	public void reset() {
 		super.reset();
-		this.money.set(this.DEFAULT_MONEY - this.bet.getValue());
+		this.money.set(this.DEFAULT_MONEY);
 	}
 
 	public void resetCardCounter() {
@@ -143,11 +145,7 @@ public class Player extends Participant {
 	@Override
 	public void won() {
 		super.won();
-		this.addMoney(this.bet.getValue());
-	}
-
-	private void addMoney(double value) {
-		this.money.set(this.money.get() + value);
+		this.processBet(this.bet.getValue());
 	}
 
 	private Bet makeBet() {
@@ -156,8 +154,12 @@ public class Player extends Participant {
 
 	private Bet makeBet(double value) {
 		this.checkMoney(value);
-		this.money.set(this.money.subtract(value).get());
 		return new Bet(value);
+	}
+
+	private void processBet(double value) {
+		this.money.set(this.money.get() + value);
+		this.bet.reset();
 	}
 
 	private Card requestCard(Dealer dealer) {

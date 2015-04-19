@@ -37,6 +37,7 @@ public class OnderzoeksOpdracht extends Application {
 
 	private final SimpleBooleanProperty animatedUI = new SimpleBooleanProperty();
 	private final BlackjackGame game;
+	private boolean play = false;
 
 	public OnderzoeksOpdracht() {
 		this.game = new BlackjackGame(this.getDefaultProperties());
@@ -174,6 +175,13 @@ public class OnderzoeksOpdracht extends Application {
 					cardCounter.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getCardCounters()));
 				}
 				table.getColumns().add(cardCounter);
+
+				TableColumn cardCounterValue = new TableColumn("Card counter value");
+				{
+					cardCounterValue.setPrefWidth(150);
+					cardCounterValue.setCellValueFactory(new PropertyValueFactory("cardCounterValue"));
+				}
+				table.getColumns().add(cardCounterValue);
 				table.setItems(this.game.getPlayers());
 			}
 			tab.setContent(table);
@@ -438,8 +446,6 @@ public class OnderzoeksOpdracht extends Application {
 			JOptionPane.showMessageDialog(null, "No file selected to load.");
 		}
 	}
-
-	private boolean play = false;
 
 	private void play() {
 		if(!this.play) {
