@@ -24,6 +24,7 @@ public class GameManager {
 	private final SimpleIntegerProperty gamesPlayed = new SimpleIntegerProperty();
 	private final SimpleIntegerProperty gamesToPlay = new SimpleIntegerProperty();
 	private final List<Player> players;
+	private boolean dataWasLoaded = false;
 
 	public GameManager(BlackjackGame controller) {
 		this.controller = controller;
@@ -107,9 +108,14 @@ public class GameManager {
 				Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
+		this.dataWasLoaded = true;
 	}
 
 	public void play() {
+		if(this.dataWasLoaded){
+			this.dataWasLoaded = false;
+			this.controller.resetPlayers();
+		}
 		long start = System.currentTimeMillis();
 		this.resetGame();
 		int i = 0;
