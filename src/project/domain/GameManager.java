@@ -1,14 +1,18 @@
 package project.domain;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyLongProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ObservableValue;
+import project.domain.card.Card;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -29,10 +33,19 @@ public class GameManager {
 		this.gamesToPlay.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			this.controller.setProperty("rules.number_games_to_play", (int)newValue);
 		});
+		this.gamesPlayed.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+			if((int)newValue == 100) {
+				this.shuffleGame();
+			}
+		});
 	}
 
 	public ReadOnlyLongProperty batchTimeProperty() {
 		return this.batchTime;
+	}
+
+	public void countCard(Card card) {
+		this.players.forEach(p -> p.countCard(card));
 	}
 
 	public ReadOnlyIntegerProperty gamesPlayedProperty() {
@@ -56,6 +69,44 @@ public class GameManager {
 			throw new IllegalArgumentException("Games to play cannot be smaller then 1.");
 		}
 		this.gamesToPlay.set(gamesToPlay);
+	}
+
+	public void saveDataFile(File file) {
+		if(file == null) {
+			throw new IllegalArgumentException("File cannot be null");
+		}
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(file));
+			oos.writeObject(new DataFile(this.dealer, this.players));
+		} catch (IOException ex) {
+			Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			try {
+				oos.close();
+			} catch (IOException ex) {
+				Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+	}
+
+	public void loadDataFile(File file) {
+		if(file == null) {
+			throw new IllegalArgumentException("File cannot be null");
+		}
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(file));
+			this.setData((DataFile)ois.readObject());
+		} catch (IOException | ClassNotFoundException ex) {
+			Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			try {
+				ois.close();
+			} catch (IOException ex) {
+				Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
 	}
 
 	public void play() {
@@ -102,6 +153,12 @@ public class GameManager {
 		this.dealer.collectCards(this.players);
 	}
 
+	private void setData(DataFile dataFile) {
+		this.players.clear();
+		this.players.addAll(dataFile.getPlayers());
+		this.dealer.set(dataFile.getDealer());
+	}
+
 	private void initiateGameRound() {
 		IntStream.range(0, 2).forEach(i -> {
 			this.players.forEach(p -> p.addCard(this.dealer.deal()));
@@ -141,5 +198,14 @@ public class GameManager {
 		this.gamesPlayed.set(0);
 		this.dealer.reset();
 		this.players.stream().forEach(p -> p.reset());
+	}
+
+	private void resetPlayers() {
+		this.players.forEach(p -> p.resetCardCounter());
+	}
+
+	private void shuffleGame() {
+		this.dealer.shuffleCards();
+		this.resetPlayers();
 	}
 }

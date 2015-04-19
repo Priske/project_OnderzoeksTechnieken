@@ -1,13 +1,10 @@
 package project.domain.players;
 
 import java.util.List;
-import java.util.Optional;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import project.domain.exceptions.PlayerNotFoundException;
 import project.domain.strategy.dealer.DealerPlayStyle;
-import project.domain.strategy.player.PlayerPlayStyle;
 
 public class ParticipantManager {
 
@@ -67,11 +64,5 @@ public class ParticipantManager {
 		}
 		this.players.clear();
 		this.players.addAll(players);
-	}
-
-	public void setPlayerStrategy(int id, PlayerPlayStyle strategy) {
-		Optional<Player> opt = this.players.stream().filter(p -> p.equalsId(id)).findFirst();
-		opt.orElseThrow(() -> new PlayerNotFoundException("Player for id '" + id + "' not found."));
-		opt.get().setStrategy(strategy);
 	}
 }

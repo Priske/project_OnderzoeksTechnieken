@@ -22,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import project.domain.*;
 import project.domain.players.Dealer;
@@ -153,6 +154,13 @@ public class OnderzoeksOpdracht extends Application {
 					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getPlayerStrategies()));
 				}
 				table.getColumns().add(strategy);
+				TableColumn cardCounter = new TableColumn("Card counter");
+				{
+					cardCounter.setPrefWidth(150);
+					cardCounter.setCellValueFactory(new PropertyValueFactory("cardCounter"));
+					cardCounter.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getCardCounters()));
+				}
+				table.getColumns().add(cardCounter);
 				table.setItems(this.game.getPlayers());
 			}
 			tab.setContent(table);
@@ -166,6 +174,12 @@ public class OnderzoeksOpdracht extends Application {
 		stage.setScene(this.buildScene());
 		stage.setTitle("BlackJack - Analystics");
 		stage.show();
+	}
+
+	@Override
+	public void stop() throws Exception {
+		super.stop();
+		System.exit(0);
 	}
 
 	private Accordion buildAccordion() {
@@ -266,9 +280,35 @@ public class OnderzoeksOpdracht extends Application {
 		return pane;
 	}
 
+	private Node buildMenuBar() {
+		MenuBar bar = new MenuBar();
+		{
+			Menu data = new Menu("Data");
+			{
+				MenuItem loadData = new MenuItem("Load data");
+				{
+					loadData.setOnAction((ActionEvent event) -> {
+						this.game.loadDataFile(new FileChooser().showOpenDialog(null));
+					});
+				}
+				data.getItems().add(loadData);
+				MenuItem saveData = new MenuItem("Save data");
+				{
+					saveData.setOnAction((ActionEvent event) -> {
+						this.game.saveDataFile(new FileChooser().showSaveDialog(null));
+					});
+				}
+				data.getItems().add(saveData);
+			}
+			bar.getMenus().add(data);
+		}
+		return bar;
+	}
+
 	private Scene buildScene() {
 		BorderPane borderPane = new BorderPane();
 		{
+			borderPane.setTop(this.buildMenuBar());
 			borderPane.setLeft(this.buildAccordion());
 			TabPane tabPane = new TabPane();
 			{

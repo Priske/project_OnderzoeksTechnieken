@@ -1,11 +1,13 @@
 package project.domain.strategy.player;
 
+import java.io.Serializable;
 import project.domain.Action;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
-public abstract class PlayerPlayStyle {
+public abstract class PlayerPlayStyle implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private final String name;
 
 	public PlayerPlayStyle(String name) {
