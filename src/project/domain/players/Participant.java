@@ -116,6 +116,7 @@ public abstract class Participant implements Serializable {
 		this.wins.set(0);
 		this.draw.set(0);
 		this.blackJack.set(0);
+		this.loss.set(0);
 	}
 
 	@Override

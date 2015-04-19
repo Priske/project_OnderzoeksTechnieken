@@ -1,6 +1,7 @@
 package project.domain.players;
 
 import java.util.List;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import project.domain.Action;
@@ -97,14 +98,14 @@ public class Player extends Participant {
 		this.addMoney(-this.bet.getValue());
 	}
 
-	public ReadOnlyDoubleProperty moneyProperty() {
+	public DoubleProperty moneyProperty() {
 		return this.money;
 	}
 
 	public void multiplyBet(double value) {
 		double multiply = this.bet.getValue() * value;
 		this.checkMoney(multiply);
-		this.money.set(this.money.subtract(multiply).get());
+		this.money.set(this.money.get() - multiply);
 		this.bet.multiplyBet(value);
 	}
 
@@ -146,7 +147,7 @@ public class Player extends Participant {
 	}
 
 	private void addMoney(double value) {
-		this.money.set(this.money.add(value).get());
+		this.money.set(this.money.get() + value);
 	}
 
 	private Bet makeBet() {

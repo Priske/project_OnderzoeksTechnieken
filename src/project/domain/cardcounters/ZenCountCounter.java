@@ -2,12 +2,12 @@ package project.domain.cardcounters;
 
 import project.domain.card.Card;
 
-public class ZedCountCounter extends CardCounter {
+public class ZenCountCounter extends CardCounter {
 
 	private static final long serialVersionUID = 1L;
 
-	public ZedCountCounter() {
-		super("Zed Count");
+	public ZenCountCounter() {
+		super("Zen Count");
 	}
 
 	@Override

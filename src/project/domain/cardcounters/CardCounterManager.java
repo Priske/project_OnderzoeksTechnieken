@@ -14,7 +14,7 @@ public class CardCounterManager {
 		this.cardCounters.add(new KOCounter());
 		this.cardCounters.add(new Omega2Counter());
 		this.cardCounters.add(new Red7Counter());
-		this.cardCounters.add(new ZedCountCounter());
+		this.cardCounters.add(new ZenCountCounter());
 	}
 
 	public ObservableList<CardCounter> getCardCounters() {

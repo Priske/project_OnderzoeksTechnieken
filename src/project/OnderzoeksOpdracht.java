@@ -4,11 +4,11 @@ import be.mrtus.common.gui.UnCollapsibleAccordionListener;
 import be.mrtus.common.gui.control.NumericField;
 import be.mrtus.common.gui.control.StyleChoiceBox;
 import be.mrtus.common.gui.util.ButtonUtil;
+import java.io.File;
 import java.util.Properties;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 import project.domain.*;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
@@ -299,16 +300,12 @@ public class OnderzoeksOpdracht extends Application {
 			{
 				MenuItem loadData = new MenuItem("Load data");
 				{
-					loadData.setOnAction((ActionEvent event) -> {
-						this.game.loadDataFile(new FileChooser().showOpenDialog(null));
-					});
+					loadData.setOnAction((ActionEvent event) -> this.loadData());
 				}
 				data.getItems().add(loadData);
 				MenuItem saveData = new MenuItem("Save data");
 				{
-					saveData.setOnAction((ActionEvent event) -> {
-						this.game.saveDataFile(new FileChooser().showSaveDialog(null));
-					});
+					saveData.setOnAction((ActionEvent event) -> this.saveData());
 				}
 				data.getItems().add(saveData);
 			}
@@ -388,24 +385,24 @@ public class OnderzoeksOpdracht extends Application {
 			hBox.setPadding(new Insets(10));
 			hBox.setFillHeight(true);
 			hBox.setSpacing(20);
-			VBox gamesPlayedVBox = new VBox();
-			{
-				gamesPlayedVBox.getChildren().add(new Label("Simulating game:"));
-				Label gamesPlayedLabel = new Label(this.game.getGamesPlayed() + "/" + this.game.getGamesToPlay());
-				{
-					ChangeListener<Number> listener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-						Platform.runLater(() -> gamesPlayedLabel.setText(this.game.getGamesPlayed() + "/" + this.game.getGamesToPlay()));
-					};
-					this.game.gamesPlayedProperty().addListener(listener);
-					this.game.gamesToPlayProperty().addListener(listener);
-				}
-				gamesPlayedVBox.getChildren().add(gamesPlayedLabel);
-			}
+//			VBox gamesPlayedVBox = new VBox();
+//			{
+//				gamesPlayedVBox.getChildren().add(new Label("Simulating game:"));
+//				Label gamesPlayedLabel = new Label(this.game.getGamesPlayed() + "/" + this.game.getGamesToPlay());
+//				{
+//					ChangeListener<Number> listener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+//						Platform.runLater(() -> gamesPlayedLabel.setText(this.game.getGamesPlayed() + "/" + this.game.getGamesToPlay()));
+//					};
+//					this.game.gamesPlayedProperty().addListener(listener);
+//					this.game.gamesToPlayProperty().addListener(listener);
+//				}
+//				gamesPlayedVBox.getChildren().add(gamesPlayedLabel);
+//			}
+//			hBox.getChildren().add(gamesPlayedVBox);
 			ProgressIndicator indicator = new ProgressIndicator();
 			{
 				this.game.gamesPlayedProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-//					System.out.println(this.game.gamesPlayedProperty().divide(this.game.gamesToPlayProperty()).doubleValue());
-//					Platform.runLater(() -> indicator.setProgress(this.game.gamesPlayedProperty().divide(this.game.gamesToPlayProperty()).doubleValue()));
+					Platform.runLater(() -> indicator.setProgress((int)newValue / (this.game.getGamesToPlay() * 1.0)));
 				});
 			}
 			hBox.getChildren().add(indicator);
@@ -433,7 +430,33 @@ public class OnderzoeksOpdracht extends Application {
 		return props;
 	}
 
+	private void loadData() {
+		File file = new FileChooser().showOpenDialog(null);
+		if(file != null) {
+			this.game.loadDataFile(file);
+		} else {
+			JOptionPane.showMessageDialog(null, "No file selected to load.");
+		}
+	}
+
+	private boolean play = false;
+
 	private void play() {
-		new Thread(() -> this.game.play()).start();
+		if(!this.play) {
+			this.play = true;
+			new Thread(() -> {
+				this.game.play();
+				this.play = false;
+			}).start();
+		}
+	}
+
+	private void saveData() {
+		File file = new FileChooser().showSaveDialog(null);
+		if(file != null) {
+			this.game.saveDataFile(file);
+		} else {
+			JOptionPane.showMessageDialog(null, "No file selected to save.");
+		}
 	}
 }

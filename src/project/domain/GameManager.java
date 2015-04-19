@@ -112,16 +112,26 @@ public class GameManager {
 	public void play() {
 		long start = System.currentTimeMillis();
 		this.resetGame();
+		int i = 0;
 		do {
-			this.gamesPlayed.set(this.gamesPlayed.add(1).get());
+			this.gamesPlayed.set(this.gamesPlayed.get() + 1);
 			this.playRound();
+			if(i % 10 == 0) {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException ex) {
+					Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+				}
+
+			}
+			i++;
 		} while (this.gamesToPlay.get() > this.gamesPlayed.get());
 		this.batchTime.set(System.currentTimeMillis() - start);
 	}
 
 	private void checkWinner() {
 		int dealerValue = this.dealer.getScore();
-		this.players.stream().forEach(player -> {
+		this.players.forEach(player -> {
 			int playerValue = player.getScore();
 			if(playerValue > 21 || playerValue <= dealerValue && dealerValue <= 21) {
 				if(playerValue == 21 && dealerValue == 21) {

@@ -10,6 +10,8 @@ import project.domain.players.Player;
 
 public class ThorpsPlayStyle extends PlayerPlayStyle {
 
+	private static final long serialVersionUID = 1L;
+
 	public ThorpsPlayStyle() {
 		super("Thorps");
 	}
