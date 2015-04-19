@@ -62,6 +62,12 @@ public class OnderzoeksOpdracht extends Application {
 					wins.setCellValueFactory(new PropertyValueFactory("wins"));
 				}
 				table.getColumns().add(wins);
+				TableColumn loss = new TableColumn("Loss");
+				{
+					loss.setPrefWidth(75);
+					loss.setCellValueFactory(new PropertyValueFactory("loss"));
+				}
+				table.getColumns().add(loss);
 				TableColumn burns = new TableColumn("Burns");
 				{
 					burns.setPrefWidth(75);
@@ -117,6 +123,12 @@ public class OnderzoeksOpdracht extends Application {
 					wins.setCellValueFactory(new PropertyValueFactory("wins"));
 				}
 				table.getColumns().add(wins);
+				TableColumn loss = new TableColumn("Loss");
+				{
+					loss.setPrefWidth(75);
+					loss.setCellValueFactory(new PropertyValueFactory("loss"));
+				}
+				table.getColumns().add(loss);
 				TableColumn burns = new TableColumn("Burns");
 				{
 					burns.setPrefWidth(75);

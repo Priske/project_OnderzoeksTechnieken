@@ -17,12 +17,13 @@ import project.domain.strategy.player.PlayerPlayStyle;
 
 public class Player extends Participant {
 
+	private final int DEFAULT_MONEY = 10000;
 	private static final long serialVersionUID = 1L;
 	private Bet bet;
 	private final SerialObjectProperty<CardCounter> cardCounter;
 	private final SerialDoubleProperty cardCounterValue = new SerialDoubleProperty(0);
 	private transient final StatisticsCollector collector;
-	private final SerialDoubleProperty money = new SerialDoubleProperty(1000);
+	private final SerialDoubleProperty money = new SerialDoubleProperty(this.DEFAULT_MONEY);
 	private final SerialObjectProperty<PlayerPlayStyle> strategy;
 
 	public Player(String name, PlayerPlayStyle playStyle) {
@@ -30,7 +31,42 @@ public class Player extends Participant {
 		this.strategy = new SerialObjectProperty<>(playStyle);
 		this.cardCounter = new SerialObjectProperty<>(new DefaultCardCounter());
 		this.collector = new StatisticsCollector();
-		this.bet = new Bet(1000);
+		this.bet = this.makeBet();
+	}
+
+	@Override
+	public void blackJack() {
+		super.blackJack();
+		this.addMoney(this.bet.getValue() * 1.5);
+	}
+
+	@Override
+	public void won() {
+		super.won();
+		this.addMoney(this.bet.getValue());
+	}
+
+	@Override
+	public void burned() {
+		super.burned();
+		this.addMoney(-this.bet.getValue());
+	}
+
+	@Override
+	public void loss() {
+		super.loss();
+		this.addMoney(-this.bet.getValue());
+	}
+
+	@Override
+	public void reset() {
+		super.reset();
+		this.money.set(this.DEFAULT_MONEY - this.bet.getValue());
+	}
+
+	private void addMoney(double value) {
+		this.money.set(this.money.add(value).get());
+
 	}
 
 	public Player(String name, PlayerPlayStyle playStyle, List<Card> cards) {

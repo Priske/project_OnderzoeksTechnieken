@@ -34,4 +34,8 @@ public class Bet implements Serializable {
 	public ReadOnlyDoubleProperty valueProperty() {
 		return this.value;
 	}
+
+	public double getInitialBetValue() {
+		return this.initialValue;
+	}
 }

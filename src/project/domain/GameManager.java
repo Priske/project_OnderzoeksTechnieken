@@ -136,6 +136,7 @@ public class GameManager {
 					this.dealer.blackJack();
 				}
 				this.dealer.won();
+				player.loss();
 			} else {
 				if(dealerValue > 21) {
 					this.dealer.burned();
@@ -144,6 +145,7 @@ public class GameManager {
 					player.blackJack();
 				}
 				player.won();
+				this.dealer.loss();
 			}
 		});
 	}

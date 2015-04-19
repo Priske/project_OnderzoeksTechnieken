@@ -23,6 +23,7 @@ public abstract class Participant implements Serializable {
 	protected final SerialIntegerProperty draw = new SerialIntegerProperty();
 	protected transient final ObservableList<Card> hand = FXCollections.observableArrayList();
 	protected final SerialIntegerProperty wins = new SerialIntegerProperty();
+	protected final SerialIntegerProperty loss = new SerialIntegerProperty();
 	private final int id;
 	private final SerialStringProperty name;
 
@@ -36,7 +37,15 @@ public abstract class Participant implements Serializable {
 		this.hand.add(card);
 	}
 
-	public synchronized void blackJack() {
+	public ReadOnlyIntegerProperty lossProperty() {
+		return this.loss;
+	}
+
+	public void loss() {
+		this.loss.set(this.loss.get() + 1);
+	}
+
+	public void blackJack() {
 		this.blackJack.set(this.blackJack.get() + 1);
 	}
 
@@ -44,7 +53,7 @@ public abstract class Participant implements Serializable {
 		return this.blackJack;
 	}
 
-	public synchronized void burned() {
+	public void burned() {
 		this.burned.set(this.burned.get() + 1);
 	}
 
@@ -56,7 +65,7 @@ public abstract class Participant implements Serializable {
 		return this.hand.stream().filter(c -> c.getFace() == CardFace.ACE).count();
 	}
 
-	public synchronized void draw() {
+	public void draw() {
 		this.draw.set(this.draw.get() + 1);
 	}
 
@@ -118,7 +127,7 @@ public abstract class Participant implements Serializable {
 		return this.wins;
 	}
 
-	public synchronized void won() {
+	public void won() {
 		this.wins.set(this.wins.get() + 1);
 	}
 }

@@ -6,6 +6,8 @@ import project.domain.players.Player;
 
 public class MimicDealerPlaystyle extends PlayerPlayStyle {
 
+	private static final long serialVersionUID = 1L;
+
 	public MimicDealerPlaystyle() {
 		super("Mimic dealer");
 	}
