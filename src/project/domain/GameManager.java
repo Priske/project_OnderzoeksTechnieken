@@ -113,7 +113,7 @@ public class GameManager {
 		long start = System.currentTimeMillis();
 		this.resetGame();
 		do {
-			this.gamesPlayed.set(this.gamesPlayed.get() + 1);
+			this.gamesPlayed.set(this.gamesPlayed.add(1).get());
 			this.playRound();
 		} while (this.gamesToPlay.get() > this.gamesPlayed.get());
 		this.batchTime.set(System.currentTimeMillis() - start);
@@ -124,28 +124,32 @@ public class GameManager {
 		this.players.stream().forEach(player -> {
 			int playerValue = player.getScore();
 			if(playerValue > 21 || playerValue <= dealerValue && dealerValue <= 21) {
-				if(playerValue > 21) {
-					player.burned();
-				}
 				if(playerValue == 21 && dealerValue == 21) {
 					player.draw();
 					this.dealer.draw();
 					return;
 				}
-				if(dealerValue == 21) {
+				if(dealerValue == 21 && this.dealer.getHandSize() == 2) {
 					this.dealer.blackJack();
+				} else {
+					this.dealer.won();
 				}
-				this.dealer.won();
-				player.loss();
+				if(playerValue > 21) {
+					player.burned();
+				} else {
+					player.loss();
+				}
 			} else {
+				if(playerValue == 21 && player.getHandSize() == 2) {
+					player.blackJack();
+				} else {
+					player.won();
+				}
 				if(dealerValue > 21) {
 					this.dealer.burned();
+				} else {
+					this.dealer.loss();
 				}
-				if(playerValue == 21) {
-					player.blackJack();
-				}
-				player.won();
-				this.dealer.loss();
 			}
 		});
 	}

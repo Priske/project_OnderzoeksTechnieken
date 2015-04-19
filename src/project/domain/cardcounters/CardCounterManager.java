@@ -8,7 +8,7 @@ public class CardCounterManager {
 	private final ObservableList<CardCounter> cardCounters = FXCollections.observableArrayList();
 
 	public CardCounterManager() {
-		this.cardCounters.add(new DefaultCardCounter());
+		this.cardCounters.add(new HiLoCounter());
 		this.cardCounters.add(new HiOpt1Counter());
 		this.cardCounters.add(new HiOpt2Counter());
 		this.cardCounters.add(new KOCounter());

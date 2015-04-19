@@ -130,4 +130,8 @@ public abstract class Participant implements Serializable {
 	public void won() {
 		this.wins.set(this.wins.get() + 1);
 	}
+
+	public int getHandSize() {
+		return this.hand.size();
+	}
 }

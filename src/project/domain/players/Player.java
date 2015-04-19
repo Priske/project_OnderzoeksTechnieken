@@ -17,8 +17,8 @@ import project.domain.strategy.player.PlayerPlayStyle;
 
 public class Player extends Participant {
 
-	private final int DEFAULT_MONEY = 10000;
 	private static final long serialVersionUID = 1L;
+	private final int DEFAULT_MONEY = 10000;
 	private Bet bet;
 	private final SerialObjectProperty<CardCounter> cardCounter;
 	private final SerialDoubleProperty cardCounterValue = new SerialDoubleProperty(0);
@@ -32,41 +32,6 @@ public class Player extends Participant {
 		this.cardCounter = new SerialObjectProperty<>(new DefaultCardCounter());
 		this.collector = new StatisticsCollector();
 		this.bet = this.makeBet();
-	}
-
-	@Override
-	public void blackJack() {
-		super.blackJack();
-		this.addMoney(this.bet.getValue() * 1.5);
-	}
-
-	@Override
-	public void won() {
-		super.won();
-		this.addMoney(this.bet.getValue());
-	}
-
-	@Override
-	public void burned() {
-		super.burned();
-		this.addMoney(-this.bet.getValue());
-	}
-
-	@Override
-	public void loss() {
-		super.loss();
-		this.addMoney(-this.bet.getValue());
-	}
-
-	@Override
-	public void reset() {
-		super.reset();
-		this.money.set(this.DEFAULT_MONEY - this.bet.getValue());
-	}
-
-	private void addMoney(double value) {
-		this.money.set(this.money.add(value).get());
-
 	}
 
 	public Player(String name, PlayerPlayStyle playStyle, List<Card> cards) {
@@ -86,6 +51,18 @@ public class Player extends Participant {
 
 	public ReadOnlyDoubleProperty betValueProperty() {
 		return this.bet.valueProperty();
+	}
+
+	@Override
+	public void blackJack() {
+		super.blackJack();
+		this.addMoney(this.bet.getValue() * 1.5);
+	}
+
+	@Override
+	public void burned() {
+		super.burned();
+		this.addMoney(-this.bet.getValue());
 	}
 
 	public SimpleObjectProperty<CardCounter> cardCounterProperty() {
@@ -112,6 +89,12 @@ public class Player extends Participant {
 
 	public PlayerPlayStyle getStrategy() {
 		return this.strategy.get();
+	}
+
+	@Override
+	public void loss() {
+		super.loss();
+		this.addMoney(-this.bet.getValue());
 	}
 
 	public ReadOnlyDoubleProperty moneyProperty() {
@@ -142,12 +125,28 @@ public class Player extends Participant {
 		return action;
 	}
 
+	@Override
+	public void reset() {
+		super.reset();
+		this.money.set(this.DEFAULT_MONEY - this.bet.getValue());
+	}
+
 	public void resetCardCounter() {
 		this.cardCounterValue.set(0);
 	}
 
 	public SimpleObjectProperty strategyProperty() {
 		return this.strategy;
+	}
+
+	@Override
+	public void won() {
+		super.won();
+		this.addMoney(this.bet.getValue());
+	}
+
+	private void addMoney(double value) {
+		this.money.set(this.money.add(value).get());
 	}
 
 	private Bet makeBet() {

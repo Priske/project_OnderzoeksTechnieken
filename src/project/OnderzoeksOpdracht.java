@@ -401,7 +401,15 @@ public class OnderzoeksOpdracht extends Application {
 				}
 				gamesPlayedVBox.getChildren().add(gamesPlayedLabel);
 			}
-			hBox.getChildren().add(gamesPlayedVBox);
+			ProgressIndicator indicator = new ProgressIndicator();
+			{
+				this.game.gamesPlayedProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+//					System.out.println(this.game.gamesPlayedProperty().divide(this.game.gamesToPlayProperty()).doubleValue());
+//					Platform.runLater(() -> indicator.setProgress(this.game.gamesPlayedProperty().divide(this.game.gamesToPlayProperty()).doubleValue()));
+				});
+			}
+			hBox.getChildren().add(indicator);
+
 			VBox batchTimeVBox = new VBox();
 			{
 				batchTimeVBox.getChildren().add(new Label("Batch took: "));
