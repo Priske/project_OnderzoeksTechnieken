@@ -157,7 +157,7 @@ public class OnderzoeksOpdracht extends Application {
 				{
 					cardCounter.setPrefWidth(150);
 					cardCounter.setCellValueFactory(new PropertyValueFactory("cardCounter"));
-//					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getCardCounters()));
+					cardCounter.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getCardCounters()));
 				}
 				table.getColumns().add(cardCounter);
 				table.setItems(this.game.getPlayers());
