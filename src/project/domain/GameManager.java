@@ -9,6 +9,7 @@ import javafx.beans.property.ReadOnlyLongProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ObservableValue;
+import project.domain.card.Card;
 import project.domain.players.Dealer;
 import project.domain.players.Player;
 
@@ -29,6 +30,16 @@ public class GameManager {
 		this.gamesToPlay.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			this.controller.setProperty("rules.number_games_to_play", (int)newValue);
 		});
+		this.gamesPlayed.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+			if((int)newValue == 100) {
+				this.shuffleGame();
+				System.out.println("Resetting deck");
+			}
+		});
+	}
+
+	public void countCard(Card card) {
+		this.players.forEach(p -> p.countCard(card));
 	}
 
 	public ReadOnlyLongProperty batchTimeProperty() {
@@ -141,5 +152,14 @@ public class GameManager {
 		this.gamesPlayed.set(0);
 		this.dealer.reset();
 		this.players.stream().forEach(p -> p.reset());
+	}
+
+	private void resetPlayers() {
+		this.players.forEach(p -> p.resetCardCounter());
+	}
+
+	private void shuffleGame() {
+		this.dealer.shuffleCards();
+		this.resetPlayers();
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Properties;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyLongProperty;
 import javafx.collections.ObservableList;
+import project.domain.cardcounters.GlobalCardCounter;
 import project.domain.players.Dealer;
 import project.domain.players.Participant;
 import project.domain.players.ParticipantManager;
@@ -34,6 +35,7 @@ public class BlackjackGame implements SettingsManager {
 		this.setPlayers(this.createPlayers());
 
 		this.gameMgr = new GameManager(this);
+		GlobalCardCounter.getInstance().setParticipantManager(this.gameMgr);
 
 		this.loadSettings();
 	}
@@ -67,6 +69,10 @@ public class BlackjackGame implements SettingsManager {
 
 	public Dealer getDealer() {
 		return this.participantMgr.getDealer();
+	}
+
+	public ObservableList<DealerPlayStyle> getDealerStrategies() {
+		return this.strategyMgr.getDealerStrategies();
 	}
 
 	public int getGamesPlayed() {
@@ -103,10 +109,6 @@ public class BlackjackGame implements SettingsManager {
 	public void setNumberPlayers(int numberPlayers) {
 		this.participantMgr.setNumberPlayers(numberPlayers);
 		this.setProperty("rules.number_players", numberPlayers);
-	}
-
-	public ObservableList<DealerPlayStyle> getDealerStrategies() {
-		return this.strategyMgr.getDealerStrategies();
 	}
 
 	public ObservableList<PlayerPlayStyle> getPlayerStrategies() {

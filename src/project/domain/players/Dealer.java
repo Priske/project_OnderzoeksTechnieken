@@ -9,6 +9,7 @@ import project.domain.strategy.dealer.DealerPlayStyleDefault;
 
 public class Dealer extends Participant {
 
+	private static final long serialVersionUID = 1L;
 	private final CardDeck deck;
 	private DealerPlayStyle playStyle;
 
@@ -67,7 +68,7 @@ public class Dealer extends Participant {
 		this.addCard(this.deck.getNewCard());
 	}
 
-	private void resetDeck() {
-		this.deck.reset();
+	public void shuffleCards() {
+		this.deck.shuffleCards();
 	}
 }

@@ -66,7 +66,14 @@ public class CardDeck {
 		this.cards.addAll(newCards);
 	}
 
-	private void shuffleCards(List<Card> cards) {
+	public void shuffleCards() {
+		List<Card> shuffleCards = new ArrayList<>(this.cards);
+		this.shuffleCards(shuffleCards);
+		this.cards.clear();
+		this.cards.addAll(shuffleCards);
+	}
+
+	public void shuffleCards(List<Card> cards) {
 		IntStream.range(0, this.aantalDecks * 4).forEach(i -> Collections.shuffle(cards));
 	}
 

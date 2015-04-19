@@ -153,6 +153,13 @@ public class OnderzoeksOpdracht extends Application {
 					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getPlayerStrategies()));
 				}
 				table.getColumns().add(strategy);
+				TableColumn cardCounter = new TableColumn("Card counter");
+				{
+					cardCounter.setPrefWidth(150);
+					cardCounter.setCellValueFactory(new PropertyValueFactory("cardCounter"));
+//					strategy.setCellFactory(ComboBoxTableCell.forTableColumn(this.game.getCardCounters()));
+				}
+				table.getColumns().add(cardCounter);
 				table.setItems(this.game.getPlayers());
 			}
 			tab.setContent(table);
@@ -166,6 +173,12 @@ public class OnderzoeksOpdracht extends Application {
 		stage.setScene(this.buildScene());
 		stage.setTitle("BlackJack - Analystics");
 		stage.show();
+	}
+
+	@Override
+	public void stop() throws Exception {
+		super.stop();
+		System.exit(0);
 	}
 
 	private Accordion buildAccordion() {

@@ -1,5 +1,6 @@
 package project.domain.players;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,36 +9,30 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import project.domain.CardCounter;
+import project.domain.cardcounters.GlobalCardCounter;
 import project.domain.card.Card;
 import project.domain.card.CardFace;
 
-public abstract class Participant {
+public abstract class Participant implements Serializable {
 
+	private static int _id;
+
+	private static final long serialVersionUID = 1L;
 	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
-	private final SimpleIntegerProperty twentyOne = new SimpleIntegerProperty();
 	private final SimpleIntegerProperty burned = new SimpleIntegerProperty();
 	private final SimpleIntegerProperty draw = new SimpleIntegerProperty();
-	private final SimpleStringProperty name;
-	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
 	private final int id;
-	private static int _id;
+	private final SimpleStringProperty name;
+	private final SimpleIntegerProperty twentyOne = new SimpleIntegerProperty();
+	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
 
 	public Participant(String name) {
 		this.name = new SimpleStringProperty(name);
 		this.id = _id++;
 	}
 
-	public boolean equalsId(int id) {
-		return this.id == id;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
 	public void addCard(Card card) {
-		CardCounter.usedCard(card);
+		GlobalCardCounter.getInstance().usedCard(card);
 		this.hand.add(card);
 	}
 
@@ -75,12 +70,20 @@ public abstract class Participant {
 		return cards;
 	}
 
+	public boolean equalsId(int id) {
+		return this.id == id;
+	}
+
 	public int getBurned() {
 		return this.burned.get();
 	}
 
 	public ObservableList<Card> getHand() {
 		return this.hand;
+	}
+
+	public int getId() {
+		return this.id;
 	}
 
 	public String getName() {
