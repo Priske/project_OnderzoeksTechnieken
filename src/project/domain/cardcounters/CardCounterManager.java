@@ -12,7 +12,6 @@ public class CardCounterManager {
 		this.cardCounters.add(new HiLoCounter());
 		this.cardCounters.add(new HiOpt1Counter());
 		this.cardCounters.add(new HiOpt2Counter());
-		this.cardCounters.add(new KOCounter());
 		this.cardCounters.add(new Omega2Counter());
 		this.cardCounters.add(new ZenCountCounter());
 	}
