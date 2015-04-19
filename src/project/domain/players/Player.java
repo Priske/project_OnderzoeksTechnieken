@@ -131,10 +131,10 @@ public class Player extends Participant {
 
 	public void makeBet() {
 		double cardCValue = this.cardCounterValue.get();
-		if(cardCValue > -2 && cardCValue < 2) {
-			this.placeBet(Bet.SAFE_BET);
-		} else if(cardCValue < -1) {
+		if(cardCValue < -1) {
 			this.placeBet(Bet.MIN_BET);
+		} else if(cardCValue > -2 && cardCValue < 3) {
+			this.placeBet(Bet.SAFE_BET);
 		} else if(cardCValue > 2 && cardCValue < 16) {
 			this.placeBet(Bet.GETTING_LUCKY_BET);
 		} else if(cardCValue > 15) {
