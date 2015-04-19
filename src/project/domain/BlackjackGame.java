@@ -18,8 +18,6 @@ import project.domain.players.ParticipantManager;
 import project.domain.players.Player;
 import project.domain.strategy.StrategyManager;
 import project.domain.strategy.dealer.DealerPlayStyle;
-import project.domain.strategy.player.MimicDealerPlaystyle;
-import project.domain.strategy.player.NeverBustPlaystyle;
 import project.domain.strategy.player.PlayerPlayStyle;
 import project.domain.strategy.player.ThorpsPlayStyle;
 
@@ -178,10 +176,10 @@ public class BlackjackGame implements SettingsManager {
 
 	private List<Player> createPlayers() {
 		List<Player> list = new ArrayList<>();
-		list.add(new Player("Ben", new MimicDealerPlaystyle()));
+		list.add(new Player("Ben", new ThorpsPlayStyle()));
 		list.add(new Player("Michiel", new ThorpsPlayStyle()));
-		list.add(new Player("Maxim", new NeverBustPlaystyle()));
-		//		list.add(new Player("Siel", new ThorpsPlayStyle()));
+		list.add(new Player("Maxim", new ThorpsPlayStyle()));
+		list.add(new Player("Siel", new ThorpsPlayStyle()));
 		return list;
 	}
 

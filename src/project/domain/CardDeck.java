@@ -13,7 +13,7 @@ public class CardDeck {
 	private final Queue<Card> cards = new ArrayDeque<>();
 
 	public CardDeck(int decks) {
-		this.aantalDecks = decks;
+		this.aantalDecks = 8;
 		this.reset();
 	}
 
