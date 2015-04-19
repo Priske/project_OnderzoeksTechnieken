@@ -37,6 +37,10 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
+	public SimpleObjectProperty<CardCounter> cardCounterProperty() {
+		return this.cardCounter;
+	}
+
 	public void resetCardCounter() {
 		this.cardCounterValue.set(0);
 	}

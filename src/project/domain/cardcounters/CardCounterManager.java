@@ -16,4 +16,8 @@ public class CardCounterManager {
 		this.cardCounters.add(new Red7Counter());
 		this.cardCounters.add(new ZedCountCounter());
 	}
+
+	public ObservableList<CardCounter> getCardCounters() {
+		return this.cardCounters;
+	}
 }
