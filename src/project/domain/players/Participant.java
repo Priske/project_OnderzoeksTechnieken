@@ -5,29 +5,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import project.domain.cardcounters.GlobalCardCounter;
 import project.domain.card.Card;
 import project.domain.card.CardFace;
+import project.domain.cardcounters.GlobalCardCounter;
+import project.domain.serializables.SerialIntegerProperty;
+import project.domain.serializables.SerialStringProperty;
 
 public abstract class Participant implements Serializable {
 
 	private static int _id;
-
 	private static final long serialVersionUID = 1L;
-	protected final ObservableList<Card> hand = FXCollections.observableArrayList();
-	private final SimpleIntegerProperty burned = new SimpleIntegerProperty();
-	private final SimpleIntegerProperty draw = new SimpleIntegerProperty();
+	protected final SerialIntegerProperty blackJack = new SerialIntegerProperty();
+	protected final SerialIntegerProperty burned = new SerialIntegerProperty();
+	protected final SerialIntegerProperty draw = new SerialIntegerProperty();
+	protected transient final ObservableList<Card> hand = FXCollections.observableArrayList();
+	protected final SerialIntegerProperty wins = new SerialIntegerProperty();
 	private final int id;
-	private final SimpleStringProperty name;
-	private final SimpleIntegerProperty twentyOne = new SimpleIntegerProperty();
-	private final SimpleIntegerProperty wins = new SimpleIntegerProperty();
+	private final SerialStringProperty name;
 
 	public Participant(String name) {
-		this.name = new SimpleStringProperty(name);
+		this.name = new SerialStringProperty(name);
 		this.id = _id++;
 	}
 
@@ -37,11 +37,11 @@ public abstract class Participant implements Serializable {
 	}
 
 	public synchronized void blackJack() {
-		this.twentyOne.set(this.twentyOne.get() + 1);
+		this.blackJack.set(this.blackJack.get() + 1);
 	}
 
 	public ReadOnlyIntegerProperty blackJackProperty() {
-		return this.twentyOne;
+		return this.blackJack;
 	}
 
 	public synchronized void burned() {
@@ -106,7 +106,7 @@ public abstract class Participant implements Serializable {
 		this.burned.set(0);
 		this.wins.set(0);
 		this.draw.set(0);
-		this.twentyOne.set(0);
+		this.blackJack.set(0);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import project.domain.*;
 import project.domain.players.Dealer;
@@ -279,9 +280,35 @@ public class OnderzoeksOpdracht extends Application {
 		return pane;
 	}
 
+	private Node buildMenuBar() {
+		MenuBar bar = new MenuBar();
+		{
+			Menu data = new Menu("Data");
+			{
+				MenuItem loadData = new MenuItem("Load data");
+				{
+					loadData.setOnAction((ActionEvent event) -> {
+						this.game.loadDataFile(new FileChooser().showOpenDialog(null));
+					});
+				}
+				data.getItems().add(loadData);
+				MenuItem saveData = new MenuItem("Save data");
+				{
+					saveData.setOnAction((ActionEvent event) -> {
+						this.game.saveDataFile(new FileChooser().showSaveDialog(null));
+					});
+				}
+				data.getItems().add(saveData);
+			}
+			bar.getMenus().add(data);
+		}
+		return bar;
+	}
+
 	private Scene buildScene() {
 		BorderPane borderPane = new BorderPane();
 		{
+			borderPane.setTop(this.buildMenuBar());
 			borderPane.setLeft(this.buildAccordion());
 			TabPane tabPane = new TabPane();
 			{

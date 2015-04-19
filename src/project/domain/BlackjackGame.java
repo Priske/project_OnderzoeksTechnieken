@@ -2,6 +2,7 @@ package project.domain;
 
 import be.mrtus.common.domain.SettingsManager;
 import be.mrtus.common.domain.SettingsManagerDefault;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -137,6 +138,10 @@ public class BlackjackGame implements SettingsManager {
 		return this.settingsMgr.getProperty(key);
 	}
 
+	public void loadDataFile(File file) {
+		this.gameMgr.loadDataFile(file);
+	}
+
 	public synchronized void play() {
 		this.gameMgr.play();
 //		this.printGameSummary();
@@ -160,6 +165,10 @@ public class BlackjackGame implements SettingsManager {
 	@Override
 	public void setProperty(String key, String value) {
 		this.settingsMgr.setProperty(key, value);
+	}
+
+	public void saveDataFile(File file) {
+		this.gameMgr.saveDataFile(file);
 	}
 
 	private List<Player> createPlayers() {

@@ -1,8 +1,11 @@
 package project.domain;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyLongProperty;
@@ -33,17 +36,16 @@ public class GameManager {
 		this.gamesPlayed.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			if((int)newValue == 100) {
 				this.shuffleGame();
-				System.out.println("Resetting deck");
 			}
 		});
 	}
 
-	public void countCard(Card card) {
-		this.players.forEach(p -> p.countCard(card));
-	}
-
 	public ReadOnlyLongProperty batchTimeProperty() {
 		return this.batchTime;
+	}
+
+	public void countCard(Card card) {
+		this.players.forEach(p -> p.countCard(card));
 	}
 
 	public ReadOnlyIntegerProperty gamesPlayedProperty() {
@@ -67,6 +69,44 @@ public class GameManager {
 			throw new IllegalArgumentException("Games to play cannot be smaller then 1.");
 		}
 		this.gamesToPlay.set(gamesToPlay);
+	}
+
+	public void saveDataFile(File file) {
+		if(file == null) {
+			throw new IllegalArgumentException("File cannot be null");
+		}
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(file));
+			oos.writeObject(new DataFile(this.dealer, this.players));
+		} catch (IOException ex) {
+			Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			try {
+				oos.close();
+			} catch (IOException ex) {
+				Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+	}
+
+	public void loadDataFile(File file) {
+		if(file == null) {
+			throw new IllegalArgumentException("File cannot be null");
+		}
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(file));
+			this.setData((DataFile)ois.readObject());
+		} catch (IOException | ClassNotFoundException ex) {
+			Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			try {
+				ois.close();
+			} catch (IOException ex) {
+				Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
 	}
 
 	public void play() {
@@ -111,6 +151,12 @@ public class GameManager {
 	private void finishGameRound() {
 		this.checkWinner();
 		this.dealer.collectCards(this.players);
+	}
+
+	private void setData(DataFile dataFile) {
+		this.players.clear();
+		this.players.addAll(dataFile.getPlayers());
+		this.dealer.set(dataFile.getDealer());
 	}
 
 	private void initiateGameRound() {

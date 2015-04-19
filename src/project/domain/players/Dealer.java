@@ -10,7 +10,7 @@ import project.domain.strategy.dealer.DealerPlayStyleDefault;
 public class Dealer extends Participant {
 
 	private static final long serialVersionUID = 1L;
-	private final CardDeck deck;
+	private transient final CardDeck deck;
 	private DealerPlayStyle playStyle;
 
 	public Dealer() {
@@ -21,6 +21,13 @@ public class Dealer extends Participant {
 		super("Dealer");
 		this.deck = new CardDeck(numberOfDecks);
 		this.playStyle = ps;
+	}
+
+	public void set(Dealer dealer) {
+		this.blackJack.set(dealer.blackJackProperty().get());
+		this.burned.set(dealer.getBurned());
+		this.wins.set(dealer.getWins());
+		this.draw.set(dealer.drawProperty().get());
 	}
 
 	public int getNumberDecks() {
