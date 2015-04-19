@@ -52,7 +52,7 @@ public class BlackjackGame implements SettingsManager {
 		this.addDefaultProperties(props);
 	}
 
-	public void resetPlayers() {
+	public void reloadPlayers() {
 		this.participantMgr.setPlayers(this.createPlayers());
 	}
 

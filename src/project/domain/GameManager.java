@@ -114,7 +114,7 @@ public class GameManager {
 	public void play() {
 		if(this.dataWasLoaded){
 			this.dataWasLoaded = false;
-			this.controller.resetPlayers();
+			this.controller.reloadPlayers();
 		}
 		long start = System.currentTimeMillis();
 		this.resetGame();
