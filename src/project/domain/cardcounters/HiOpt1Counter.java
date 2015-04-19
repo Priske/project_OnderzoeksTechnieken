@@ -7,7 +7,7 @@ public class HiOpt1Counter extends CardCounter {
 	private static final long serialVersionUID = 1L;
 
 	public HiOpt1Counter() {
-		super("Hi-Opt 2");
+		super("Hi-Opt 1");
 	}
 
 	@Override

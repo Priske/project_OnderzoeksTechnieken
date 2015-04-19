@@ -133,11 +133,11 @@ public class Player extends Participant {
 		double cardCValue = this.cardCounterValue.get();
 		if(cardCValue > -2 && cardCValue < 2) {
 			this.placeBet(Bet.SAFE_BET);
-		} else if(cardCValue < -2) {
+		} else if(cardCValue < -1) {
 			this.placeBet(Bet.MIN_BET);
-		} else if(cardCValue > 2 && cardCValue < 10) {
+		} else if(cardCValue > 2 && cardCValue < 16) {
 			this.placeBet(Bet.GETTING_LUCKY_BET);
-		} else if(cardCValue > 10) {
+		} else if(cardCValue > 15) {
 			this.placeBet(Bet.SUPER_SAYAN_BET);
 		}
 	}
