@@ -1,16 +1,12 @@
 package project.domain.players;
 
 import java.util.List;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import project.domain.Action;
 import project.domain.Bet;
 import project.domain.card.Card;
 import project.domain.cardcounters.CardCounter;
 import project.domain.cardcounters.DefaultCardCounter;
-import project.domain.exceptions.NotEnoughMoneyException;
 import project.domain.serializables.SerialDoubleProperty;
 import project.domain.serializables.SerialObjectProperty;
 import project.domain.statistics.StatisticsCollector;
@@ -21,19 +17,18 @@ public class Player extends Participant {
 
 	private static final long serialVersionUID = 1L;
 	private final int DEFAULT_MONEY = 10000;
-	private Bet bet;
 	private final SerialObjectProperty<CardCounter> cardCounter;
 	private final SerialDoubleProperty cardCounterValue = new SerialDoubleProperty(0);
 	private transient final StatisticsCollector collector;
 	private final SerialDoubleProperty money = new SerialDoubleProperty(this.DEFAULT_MONEY);
 	private final SerialObjectProperty<PlayerPlayStyle> strategy;
+	private final SerialDoubleProperty bet = new SerialDoubleProperty();
 
 	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
 		this.strategy = new SerialObjectProperty<>(playStyle);
 		this.cardCounter = new SerialObjectProperty<>(new DefaultCardCounter());
 		this.collector = new StatisticsCollector();
-		this.bet = this.makeBet();
 	}
 
 	public Player(String name, PlayerPlayStyle playStyle, List<Card> cards) {
@@ -41,17 +36,12 @@ public class Player extends Participant {
 		this.hand.addAll(cards);
 	}
 
-	public void addBet(double value) {
-		this.checkMoney(this.bet.getValue() + value);
-		this.bet.add(value);
-	}
-
 	public void addCardCountValue(double value) {
 		this.cardCounterValue.set(this.cardCounterValue.get() + value);
 	}
 
 	public ReadOnlyDoubleProperty betValueProperty() {
-		return this.bet.valueProperty();
+		return this.bet;
 	}
 
 	@Override
@@ -76,16 +66,12 @@ public class Player extends Participant {
 
 	public void checkMoney(double value) {
 		if(value > this.money.get()) {
-			throw new NotEnoughMoneyException();
+//			throw new NotEnoughMoneyException();
 		}
 	}
 
 	public void countCard(Card card) {
 		this.cardCounter.get().countCard(this, card);
-	}
-
-	public Bet getBet() {
-		return this.bet;
 	}
 
 	public double getCardCountValue() {
@@ -104,11 +90,6 @@ public class Player extends Participant {
 
 	public DoubleProperty moneyProperty() {
 		return this.money;
-	}
-
-	public void multiplyBet(double value) {
-		this.checkMoney(this.bet.getValue() * value);
-		this.bet.multiplyBet(value);
 	}
 
 	public Action play(Dealer dealer) {
@@ -148,18 +129,27 @@ public class Player extends Participant {
 		this.processBet(this.bet.getValue());
 	}
 
-	private Bet makeBet() {
-		return this.makeBet(10);
+	public void makeBet() {
+		double cardCValue = this.cardCounterValue.get();
+		if(cardCValue > -2 && cardCValue < 2) {
+			this.placeBet(Bet.SAFE_BET);
+		} else if(cardCValue < -2) {
+			this.placeBet(Bet.MIN_BET);
+		} else if(cardCValue > 2 && cardCValue < 10) {
+			this.placeBet(Bet.GETTING_LUCKY_BET);
+		} else if(cardCValue > 10) {
+			this.placeBet(Bet.SUPER_SAYAN_BET);
+		}
 	}
 
-	private Bet makeBet(double value) {
+	private void placeBet(double value) {
 		this.checkMoney(value);
-		return new Bet(value);
+		this.bet.set(value);
 	}
 
 	private void processBet(double value) {
 		this.money.set(this.money.get() + value);
-		this.bet.reset();
+		this.bet.set(0);
 	}
 
 	private Card requestCard(Dealer dealer) {

@@ -112,7 +112,7 @@ public class GameManager {
 	}
 
 	public void play() {
-		if(this.dataWasLoaded){
+		if(this.dataWasLoaded) {
 			this.dataWasLoaded = false;
 			this.controller.reloadPlayers();
 		}
@@ -182,6 +182,7 @@ public class GameManager {
 	}
 
 	private void initiateGameRound() {
+		this.players.forEach(p -> p.makeBet());
 		IntStream.range(0, 2).forEach(i -> {
 			this.players.forEach(p -> p.addCard(this.dealer.deal()));
 			this.dealer.takeCard();
@@ -211,8 +212,8 @@ public class GameManager {
 
 	private void playRound() {
 		this.initiateGameRound();
-		this.playDealer();
 		this.playPlayers();
+		this.playDealer();
 		this.finishGameRound();
 	}
 
