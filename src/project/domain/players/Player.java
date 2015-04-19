@@ -17,12 +17,12 @@ public class Player extends Participant {
 
 	private static final long serialVersionUID = 1L;
 	private final int DEFAULT_MONEY = 0;
+	private final SerialDoubleProperty bet = new SerialDoubleProperty();
 	private final SerialObjectProperty<CardCounter> cardCounter;
 	private final SerialDoubleProperty cardCounterValue = new SerialDoubleProperty(0);
 	private transient final StatisticsCollector collector;
 	private final SerialDoubleProperty money = new SerialDoubleProperty(this.DEFAULT_MONEY);
 	private final SerialObjectProperty<PlayerPlayStyle> strategy;
-	private final SerialDoubleProperty bet = new SerialDoubleProperty();
 
 	public Player(String name, PlayerPlayStyle playStyle) {
 		super(name);
@@ -88,6 +88,19 @@ public class Player extends Participant {
 		this.processBet(-this.bet.getValue());
 	}
 
+	public void makeBet() {
+		double cardCValue = this.cardCounterValue.get();
+		if(cardCValue < -1) {
+			this.placeBet(Bet.MIN_BET);
+		} else if(cardCValue > -2 && cardCValue < 3) {
+			this.placeBet(Bet.SAFE_BET);
+		} else if(cardCValue > 2 && cardCValue < 16) {
+			this.placeBet(Bet.GETTING_LUCKY_BET);
+		} else if(cardCValue > 15) {
+			this.placeBet(Bet.SUPER_SAYAN_BET);
+		}
+	}
+
 	public DoubleProperty moneyProperty() {
 		return this.money;
 	}
@@ -127,31 +140,6 @@ public class Player extends Participant {
 	public void won() {
 		super.won();
 		this.processBet(this.bet.getValue());
-	}
-
-//	public void makeBet() {
-//		double cardCValue = this.cardCounterValue.get();
-//		if(cardCValue < -1) {
-//			this.placeBet(Bet.MIN_BET);
-//		} else if(cardCValue > -2 && cardCValue < 3) {
-//			this.placeBet(Bet.SAFE_BET);
-//		} else if(cardCValue > 2 && cardCValue < 16) {
-//			this.placeBet(Bet.GETTING_LUCKY_BET);
-//		} else if(cardCValue > 15) {
-//			this.placeBet(Bet.SUPER_SAYAN_BET);
-//		}
-//	}
-	public void makeBet() {
-		double cardCValue = this.cardCounterValue.get();
-		if(cardCValue < -2) {
-			this.placeBet(Bet.MIN_BET);
-		} else if(cardCValue > -3 && cardCValue < 4) {
-			this.placeBet(Bet.SAFE_BET);
-		} else if(cardCValue > 3 && cardCValue < 16) {
-			this.placeBet(Bet.GETTING_LUCKY_BET);
-		} else if(cardCValue > 15) {
-			this.placeBet(Bet.SUPER_SAYAN_BET);
-		}
 	}
 
 	private void placeBet(double value) {
